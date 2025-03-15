@@ -3,7 +3,7 @@ services:
     image: postgres:17
     container_name: postgres_internship
     environment:
-      POSTGRES_DB: core-postgres
+      POSTGRES_DB: internship
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
