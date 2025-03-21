@@ -7,15 +7,6 @@ import java.time.Instant;
 
 @Schema(description = "Модель с токенами")
 public record TokenResponseDto(
-        @NotNull
-        String accessToken,
-
-        @NotNull
-        String refreshToken,
-
-        @NotNull
-        Instant accessTokenExpirationDate,
-
-        @NotNull
-        Instant refreshExpiredDateTime
+        TokenDto accessToken,
+        TokenDto refreshToken
 ) {}

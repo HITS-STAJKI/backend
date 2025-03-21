@@ -10,8 +10,8 @@ public record LoginCredentialsDto(
         @EmailSchema
         String email,
 
+        @Schema(description = "Пароль пользователя", example = "password123")
         @NotNull
         @Size(min = 6, max = 100, message = "Минимальная длина пароля - 6, максимальная - 100")
-        @Schema(description = "Пароль пользователя", example = "password123")
         String password
 ) {}
