@@ -1,4 +1,4 @@
-package ru.hits.internship.exceptions;
+package ru.hits.internship.common.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.hits.internship.exceptions.models.ErrorResponse;
-import ru.hits.internship.exceptions.models.ValidationErrorResponse;
+import ru.hits.internship.common.exceptions.models.ErrorResponse;
+import ru.hits.internship.common.exceptions.models.ValidationErrorResponse;
 
 import java.util.List;
 

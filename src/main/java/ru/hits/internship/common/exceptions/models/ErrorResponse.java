@@ -1,4 +1,4 @@
-package ru.hits.internship.exceptions.models;
+package ru.hits.internship.common.exceptions.models;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
