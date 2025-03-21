@@ -15,6 +15,7 @@ import java.util.UUID;
 public class GroupDto {
     @Schema(description = "Идентификатор группы", example = "123e4567-e89b-12d3-a456-426614174000")
     private UUID id;
+
     @Schema(description = "Номер группы", example = "972202")
     private String number;
 
