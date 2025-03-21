@@ -38,19 +38,26 @@ public class UserController {
     @Operation(summary = "Изменение информации текущего пользователя")
     @SecurityRequirement(name = "bearerAuth")
     @PutMapping
-    public void updateUser(@RequestBody @Valid UserEditDto editDto) {}
+    public void updateCurrentUser(@RequestBody @Valid UserEditDto editDto) {}
 
     @Operation(summary = "Получение информации пользователя")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{id}")
-    public UserResponseDto getUser(@PathVariable UUID id) {
+    public UserResponseDto getUserById(@PathVariable UUID id) {
+        return null;
+    }
+
+    @Operation(summary = "Получение информации текущего пользователя")
+    @SecurityRequirement(name = "bearerAuth")
+    @GetMapping
+    public UserResponseDto getCurrentUser() {
         return null;
     }
 
     @Operation(summary = "Получение списка пользователей")
     @SecurityRequirement(name = "bearerAuth")
-    @GetMapping
-    public PagedListDto<UserResponseDto> getUser(
+    @GetMapping("/list")
+    public PagedListDto<UserResponseDto> getUserList(
             @RequestParam(required = false) Optional<UserRole> userRole,
             @ParameterObject PaginationParameters pageable
     ) {
