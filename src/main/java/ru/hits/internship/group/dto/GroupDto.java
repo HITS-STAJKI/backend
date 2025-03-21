@@ -1,5 +1,6 @@
 package ru.hits.internship.group.dto;
 
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,7 @@ public class GroupDto {
     @Schema(description = "Номер группы", example = "972202")
     private String number;
 
-    @Schema(description = "Список студентов, обучающихся в группе")
+    @ArraySchema(schema = @Schema(implementation = StudentDto.class))
     private Set<StudentDto> students;
 
     @Schema(description = "Число студентов, обучающихся в группе", example = "16")
