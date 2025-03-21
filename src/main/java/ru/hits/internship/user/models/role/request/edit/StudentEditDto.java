@@ -1,4 +1,4 @@
-package ru.hits.internship.user.models.role.request;
+package ru.hits.internship.user.models.role.request.edit;
 
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;

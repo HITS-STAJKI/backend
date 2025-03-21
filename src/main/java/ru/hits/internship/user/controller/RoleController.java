@@ -5,7 +5,12 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-import ru.hits.internship.user.models.role.request.*;
+import ru.hits.internship.user.models.role.request.create.CuratorCreateDto;
+import ru.hits.internship.user.models.role.request.create.DeanCreateDto;
+import ru.hits.internship.user.models.role.request.create.StudentCreateDto;
+import ru.hits.internship.user.models.role.request.create.TeacherCreateDto;
+import ru.hits.internship.user.models.role.request.edit.CuratorEditDto;
+import ru.hits.internship.user.models.role.request.edit.StudentEditDto;
 import ru.hits.internship.user.models.role.response.*;
 
 import java.util.List;
