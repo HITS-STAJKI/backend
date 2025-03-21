@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.hits.internship.user.models.user.UserDto;
+import ru.hits.internship.user.models.user.UserResponseDto;
 
 @RestController
 @Tag(name = "Пользователь", description = "Отвечает за работу с пользователем")
@@ -20,7 +20,7 @@ public class UserController {
     )
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/profile")
-    public UserDto getUserProfile(
+    public UserResponseDto getUserProfile(
             @RequestParam(name = "email") @Parameter(description = "Почта пользователя") String email
     ) {
         return null;
