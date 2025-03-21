@@ -19,8 +19,8 @@ public class GroupDto {
     @Schema(description = "Номер группы", example = "972202")
     private String number;
 
-    @ArraySchema(schema = @Schema(implementation = StudentDto.class))
-    private Set<StudentDto> students;
+//    @ArraySchema(schema = @Schema(implementation = StudentDto.class))
+//    private Set<StudentDto> students;
 
     @Schema(description = "Число студентов, обучающихся в группе", example = "16")
     private int studentsCount;
