@@ -18,4 +18,4 @@ import java.lang.annotation.Target;
         regexp = "[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9_-]+",
         message = "Неверный адрес электронной почты"
 )
-public @interface Email {}
+public @interface EmailSchema {}

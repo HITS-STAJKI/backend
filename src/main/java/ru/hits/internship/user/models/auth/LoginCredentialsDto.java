@@ -3,11 +3,11 @@ package ru.hits.internship.user.models.auth;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import ru.hits.internship.user.annotations.Email;
+import ru.hits.internship.user.annotations.EmailSchema;
 
 @Schema(description = "Модель login'а")
-public record LoginRequestDto(
-        @Email
+public record LoginCredentialsDto(
+        @EmailSchema
         String email,
 
         @NotNull

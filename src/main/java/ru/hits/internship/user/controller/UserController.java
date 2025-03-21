@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.hits.internship.user.models.UserDto;
+import ru.hits.internship.user.models.user.UserDto;
 
 @RestController
 @Tag(name = "Пользователь", description = "Отвечает за работу с пользователем")

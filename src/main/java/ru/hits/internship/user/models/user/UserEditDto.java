@@ -1,14 +1,11 @@
-package ru.hits.internship.user.models.auth;
+package ru.hits.internship.user.models.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import ru.hits.internship.user.annotations.EmailSchema;
 
-@Schema(description = "Модель регистрации")
-public record RegistrationRequestDto(
-        @EmailSchema String email,
-
+@Schema(description = "Модель редактирования пользователя")
+public record UserEditDto(
         @Schema(description = "Имя пользователя", example = "Иван")
         @NotNull(message = "Имя должно быть заполнено")
         @NotBlank(message = "Имя должно быть заполнено")
