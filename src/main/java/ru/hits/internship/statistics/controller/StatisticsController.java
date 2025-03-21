@@ -1,4 +1,4 @@
-package ru.hits.internship.group.controller;
+package ru.hits.internship.statistics.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
