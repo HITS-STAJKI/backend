@@ -1,7 +1,7 @@
 package ru.hits.internship.user.models.role.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import ru.hits.internship.user.common.UserRole;
+import ru.hits.internship.user.models.role.UserRole;
 
 import java.util.UUID;
 
@@ -10,6 +10,6 @@ public record RoleResponseDto(
         @Schema(description = "Идентификатор роли")
         UUID id,
 
-        @Schema(description = "Роль", example = "STUDENT")
+        @Schema(description = "Роль")
         UserRole role
 ) {}
