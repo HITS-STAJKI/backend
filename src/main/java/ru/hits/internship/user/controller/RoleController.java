@@ -5,10 +5,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-import ru.hits.internship.user.models.role.request.CuratorCreateDto;
-import ru.hits.internship.user.models.role.request.DeanCreateDto;
-import ru.hits.internship.user.models.role.request.StudentCreateDto;
-import ru.hits.internship.user.models.role.request.TeacherCreateDto;
+import ru.hits.internship.user.models.role.request.*;
 import ru.hits.internship.user.models.role.response.*;
 
 import java.util.List;
@@ -23,6 +20,16 @@ public class RoleController {
     @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/{roleId}")
     public void deleteUserRole(@PathVariable UUID roleId) {}
+
+    @Operation(summary = "Изменение роли куратора")
+    @SecurityRequirement(name = "bearerAuth")
+    @PutMapping("/{id}/curator")
+    public void updateCuratorRole(@PathVariable String id, @RequestBody @Valid CuratorEditDto editDto) {}
+
+    @Operation(summary = "Изменение роли студента")
+    @SecurityRequirement(name = "bearerAuth")
+    @PutMapping("/{id}/student")
+    public void updateStudentRole(@PathVariable String id, @RequestBody @Valid StudentEditDto editDto) {}
 
     @Operation(summary = "Создание роли деканата")
     @SecurityRequirement(name = "bearerAuth")
