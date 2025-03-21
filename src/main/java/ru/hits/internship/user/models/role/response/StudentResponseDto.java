@@ -6,12 +6,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import java.util.UUID;
 
-@Schema(description = "Модель студента")
+@Schema(description = "Модель роли студента")
 public record StudentResponseDto(
-        @Schema(description = "Идентификатор роли", example = "3ea42ea8-5258-4086-a43f-113ff89577a1")
+        @Schema(description = "Идентификатор роли")
         UUID id,
 
-        @Schema(description = "Идентификатор группы", example = "3ea42ea8-5258-4086-a43f-113ff89577a1")
+        @Schema(description = "Идентификатор пользователя")
+        UUID userId,
+
+        @Schema(description = "Идентификатор группы")
         UUID groupId,
 
         // TODO: [#3787] Заменить UUID на InterviewDto

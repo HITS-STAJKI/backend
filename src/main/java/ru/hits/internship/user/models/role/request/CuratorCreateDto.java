@@ -1,17 +1,17 @@
-package ru.hits.internship.user.models.role.response;
+package ru.hits.internship.user.models.role.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
-@Schema(description = "Модель роли куратора")
-public record CuratorResponseDto(
-        @Schema(description = "Идентификатор роли")
-        UUID id,
-
+@Schema(description = "Модель создания роли куратора")
+public record CuratorCreateDto(
         @Schema(description = "Идентификатор пользователя")
+        @NotNull
         UUID userId,
 
         @Schema(description = "Идентификатор компании")
+        @NotNull
         UUID companyId
 ) {}

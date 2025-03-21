@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Schema(description = "Модель роли")
 public record RoleResponseDto(
-        @Schema(description = "Идентификатор роли", example = "3ea42ea8-5258-4086-a43f-113ff89577a1")
+        @Schema(description = "Идентификатор роли")
         UUID id,
 
         @Schema(description = "Роль", example = "STUDENT")

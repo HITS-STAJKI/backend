@@ -4,8 +4,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.UUID;
 
-@Schema(description = "Модель преподавателя")
+@Schema(description = "Модель роли преподавателя")
 public record TeacherResponseDto(
-        @Schema(description = "Идентификатор роли", example = "3ea42ea8-5258-4086-a43f-113ff89577a1")
-        UUID id
+        @Schema(description = "Идентификатор роли")
+        UUID id,
+
+        @Schema(description = "Идентификатор пользователя")
+        UUID userId
 ) {}

@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Schema(description = "Модель пользователя")
 public record UserResponseDto(
-        @Schema(description = "Идентификатор пользователя", example = "3ea42ea8-5258-4086-a43f-113ff89577a1")
+        @Schema(description = "Идентификатор пользователя")
         UUID id,
 
         @EmailSchema
