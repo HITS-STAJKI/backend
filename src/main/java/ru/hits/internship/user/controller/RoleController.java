@@ -4,14 +4,26 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.user.models.role.request.create.CuratorCreateDto;
 import ru.hits.internship.user.models.role.request.create.DeanCreateDto;
 import ru.hits.internship.user.models.role.request.create.StudentCreateDto;
 import ru.hits.internship.user.models.role.request.create.TeacherCreateDto;
 import ru.hits.internship.user.models.role.request.edit.CuratorEditDto;
 import ru.hits.internship.user.models.role.request.edit.StudentEditDto;
-import ru.hits.internship.user.models.role.response.*;
+import ru.hits.internship.user.models.role.response.CuratorDto;
+import ru.hits.internship.user.models.role.response.DeanDto;
+import ru.hits.internship.user.models.role.response.RoleDto;
+import ru.hits.internship.user.models.role.response.StudentDto;
+import ru.hits.internship.user.models.role.response.TeacherDto;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,78 +36,90 @@ public class RoleController {
     @Operation(summary = "Удаление роли пользователя")
     @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/{roleId}")
-    public void deleteUserRole(@PathVariable UUID roleId) {}
+    public Response deleteUserRole(@PathVariable UUID roleId) {
+        return null;
+    }
 
-    @Operation(summary = "Изменение роли куратора")
+    @Operation(summary = "Обновление информации о кураторе")
     @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/{id}/curator")
-    public void updateCuratorRole(@PathVariable String id, @RequestBody @Valid CuratorEditDto editDto) {}
+    public CuratorDto updateCuratorRole(
+            @PathVariable String id,
+            @RequestBody @Valid CuratorEditDto editDto
+    ) {
+        return null;
+    }
 
-    @Operation(summary = "Изменение роли студента")
+    @Operation(summary = "Обновление информации о студенте")
     @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/{id}/student")
-    public void updateStudentRole(@PathVariable String id, @RequestBody @Valid StudentEditDto editDto) {}
+    public StudentDto updateStudentRole(
+            @PathVariable String id,
+            @RequestBody @Valid StudentEditDto editDto
+    ) {
+        return null;
+    }
 
-    @Operation(summary = "Создание роли деканата")
+    @Operation(summary = "Создание представителя деканата")
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("dean")
-    public DeanResponseDto createDeanRole(@RequestBody @Valid DeanCreateDto createDto) {
+    public DeanDto createDeanRole(@RequestBody @Valid DeanCreateDto createDto) {
         return null;
     }
 
-    @Operation(summary = "Создание роли преподавателя")
+    @Operation(summary = "Создание преподавателя")
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("teacher")
-    public TeacherResponseDto createTeacherRole(@RequestBody @Valid TeacherCreateDto createDto) {
+    public TeacherDto createTeacherRole(@RequestBody @Valid TeacherCreateDto createDto) {
         return null;
     }
 
-    @Operation(summary = "Создание роли куратора")
+    @Operation(summary = "Создание куратора")
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("curator")
-    public CuratorResponseDto createCuratorRole(@RequestBody @Valid CuratorCreateDto createDto) {
+    public CuratorDto createCuratorRole(@RequestBody @Valid CuratorCreateDto createDto) {
         return null;
     }
 
-    @Operation(summary = "Создание роли студента")
+    @Operation(summary = "Создание студента")
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("student")
-    public StudentCreateDto createCuratorRole(@RequestBody @Valid StudentCreateDto createDto) {
+    public StudentDto createStudentRole(@RequestBody @Valid StudentCreateDto createDto) {
         return null;
     }
 
     @Operation(summary = "Получение списка ролей пользователя")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("user/{id}")
-    public List<RoleResponseDto> getUserRoles(@PathVariable UUID id) {
+    public List<RoleDto> getUserRoles(@PathVariable UUID id) {
         return null;
     }
 
-    @Operation(summary = "Получение роли деканата")
+    @Operation(summary = "Получение информации о представителе деканата")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{id}/dean")
-    public DeanResponseDto getDeanRole(@PathVariable UUID id) {
+    public DeanDto getDeanRole(@PathVariable UUID id) {
         return null;
     }
 
-    @Operation(summary = "Получение роли преподавателя")
+    @Operation(summary = "Получение информации о преподавателе")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{id}/teacher")
-    public TeacherResponseDto getTeacherRole(@PathVariable UUID id) {
+    public TeacherDto getTeacherRole(@PathVariable UUID id) {
         return null;
     }
 
-    @Operation(summary = "Получение роли куратора")
+    @Operation(summary = "Получение информации о кураторе")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{id}/curator")
-    public CuratorResponseDto getCuratorRole(@PathVariable UUID id) {
+    public CuratorDto getCuratorRole(@PathVariable UUID id) {
         return null;
     }
 
-    @Operation(summary = "Получение роли студента")
+    @Operation(summary = "Получение информации о студенте")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{id}/student")
-    public StudentResponseDto getStudentRole(@PathVariable UUID id) {
+    public StudentDto getStudentRole(@PathVariable UUID id) {
         return null;
     }
 }

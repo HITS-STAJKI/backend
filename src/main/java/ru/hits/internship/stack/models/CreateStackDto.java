@@ -9,8 +9,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Schema(description = "dto для создания стека")
-public class CreateUpdateStackDto {
-    @Schema(description = "Название стека", example = "Java")
+public class CreateStackDto {
+    @Schema(description = "Название стека", example = "Backend")
     @NotNull(message = "Название стека должно быть заполнено")
     @NotBlank(message = "Название стека должно быть заполнено")
     private String name;

@@ -2,7 +2,7 @@ package ru.hits.internship.user.models.user;
 
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
-import ru.hits.internship.user.models.role.response.RoleResponseDto;
+import ru.hits.internship.user.models.role.response.RoleDto;
 
 import java.util.Set;
 import java.util.UUID;
@@ -21,6 +21,6 @@ public record UserDto(
         @Schema(description = "Фамилия пользователя", example = "Иванов")
         String lastName,
 
-        @ArraySchema(schema = @Schema(implementation = RoleResponseDto.class, description = "Роль пользователя"))
-        Set<RoleResponseDto> roles
+        @ArraySchema(schema = @Schema(implementation = RoleDto.class, description = "Роль пользователя"))
+        Set<RoleDto> roles
 ) {}

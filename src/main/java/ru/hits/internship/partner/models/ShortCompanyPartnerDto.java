@@ -8,14 +8,14 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-@Schema(description = "dto для создания компаний партнеров")
-public class CreateCompanyPartnerDto {
+@Schema(description = "Сокращенное dto для компаний партнеров")
+public class ShortCompanyPartnerDto {
+    @Schema(description = "Идентификатор языка", example = "3ea42ea8-5258-4086-a43f-113ff89577a1")
+    @NotNull(message = "Идентификатор должен быть заполнен")
+    @NotBlank(message = "Идентификатор должен быть заполнен")
+    private String id;
     @Schema(description = "Имя компании", example = "1Сники")
     @NotNull(message = "Имя должно быть заполнено")
     @NotBlank(message = "Имя должно быть заполнено")
     private String name;
-    @Schema(description = "Информация о компании", example = "Крутые, вот контакты")
-    @NotNull(message = "Описание должно быть заполнено")
-    @NotBlank(message = "Описание должно быть заполнено")
-    private String description;
 }

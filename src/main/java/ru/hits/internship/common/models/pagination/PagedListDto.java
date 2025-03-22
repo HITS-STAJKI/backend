@@ -1,4 +1,4 @@
-package ru.hits.internship.common.models.Pagination;
+package ru.hits.internship.common.models.pagination;
 
 import org.springframework.data.domain.Page;
 

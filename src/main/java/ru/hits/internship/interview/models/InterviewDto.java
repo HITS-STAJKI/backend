@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import ru.hits.internship.partner.models.ShortCompanyPartnerDto;
 import ru.hits.internship.stack.models.StackDto;
 
 import java.util.UUID;
@@ -22,10 +23,6 @@ public class InterviewDto {
     private StatusEnum status;
     @NotNull
     private StackDto stack;
-    //TODO здесь нужен dto студента (в UserDto нет поля для группы)
-    //@NotNull
-    //private UserDto student;
-    //TODO здесь нужен dto компании-партнера
-    //@NotNull
-    //private CompanyPartnerDto companyPartner;
+    @NotNull
+    private ShortCompanyPartnerDto companyPartner;
 }
