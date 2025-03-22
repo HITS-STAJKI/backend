@@ -1,11 +1,15 @@
 package ru.hits.internship.group.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.hits.internship.common.exceptions.NotFoundException;
+import ru.hits.internship.common.models.Pagination.PagedListDto;
 import ru.hits.internship.group.dto.CreateGroupDto;
 import ru.hits.internship.group.dto.GroupDto;
+import ru.hits.internship.group.dto.GroupFilter;
 import ru.hits.internship.group.dto.UpdateGroupDto;
 import ru.hits.internship.group.entity.GroupEntity;
 import ru.hits.internship.group.mapper.GroupMapper;
@@ -32,6 +36,15 @@ public class GroupServiceImpl implements GroupService {
         // TODO: Согласовать мапперы для студентов и подключить к мапперу групп для корректного маппинга
         // return groupMapper.toDto(savedGroup);
         return null;
+    }
+
+    @Override
+    public PagedListDto<GroupDto> getGroups(GroupFilter groupFilter, Pageable pageable) {
+        // TODO: Реализовать с учетом фильтрации и пагинации, на данный момент - только с учетом pageable
+
+        Page<GroupEntity> groupsPage = groupRepository.findAll(pageable);
+
+        //return new PagedListDto<>(groupsPage.map(groupMapper::toDto));
     }
 
     @Override

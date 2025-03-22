@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.hits.internship.common.models.Pagination.PagedListDto;
 import ru.hits.internship.group.dto.CreateGroupDto;
 import ru.hits.internship.group.dto.GroupDto;
 import ru.hits.internship.group.dto.GroupFilter;
@@ -53,10 +54,10 @@ public class GroupController {
             security = {
                     @SecurityRequirement(name = "bearerAuth", scopes = {"ROLE_DEAN"})
             })
-    public Page<GroupDto> getGroups(@Valid @ParameterObject GroupFilter groupFilter,
-                                    @ParameterObject @PageableDefault(sort = "number",
+    public PagedListDto<GroupDto> getGroups(@Valid @ParameterObject GroupFilter groupFilter,
+                                            @ParameterObject @PageableDefault(sort = "number",
                                             direction = Sort.Direction.ASC) Pageable pageable) {
-        return null;
+        return groupService.getGroups(groupFilter, pageable);
     }
 
     @PatchMapping("/{id}")
