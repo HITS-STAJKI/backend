@@ -39,6 +39,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PagedListDto<GroupDto> getGroups(GroupFilter groupFilter, Pageable pageable) {
         // TODO: Реализовать с учетом фильтрации и пагинации, на данный момент - только с учетом pageable
 
