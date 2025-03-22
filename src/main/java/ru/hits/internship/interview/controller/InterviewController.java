@@ -4,37 +4,42 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+import ru.hits.internship.common.models.Pagination.PagedListDto;
 import ru.hits.internship.interview.models.CreateInterviewDto;
 import ru.hits.internship.interview.models.InterviewDto;
 import ru.hits.internship.interview.models.UpdateInterviewDto;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
 @Tag(name = "Отборы", description = "Отвечает за работу с отборами")
 @RequestMapping(value = "/api/v1/interview")
 public class InterviewController {
-    @Operation(description = "Создать отбор", summary = "Запрос доступен для студентов")
+    @Operation(summary = "Создать отбор", description = "Запрос доступен для студентов")
     //ID студента берется из токена
     @SecurityRequirement(name = "bearerAuth")
-    @PostMapping()
-    public InterviewDto createInterview(@RequestBody CreateInterviewDto createInterviewDto) {
+    @PostMapping
+    public InterviewDto createInterview(@Valid @RequestBody CreateInterviewDto createInterviewDto) {
         return null;
     }
 
-    @Operation(description = "Обновить отбор")
+    @Operation(summary = "Обновить отбор")
     @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/{interviewId}")
     public InterviewDto updateInterview(
             @PathVariable @Parameter(description = "Id отбора") UUID interviewId,
-            @RequestBody UpdateInterviewDto updateInterviewDto
+            @Valid @RequestBody UpdateInterviewDto updateInterviewDto
     ) {
         return null;
     }
 
-    @Operation(description = "Удалить отбор")
+    @Operation(summary = "Удалить отбор")
     @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/{interviewId}")
     public void deleteInterview(
@@ -42,7 +47,7 @@ public class InterviewController {
     ) {
     }
 
-    @Operation(description = "Получить отбор")
+    @Operation(summary = "Получить отбор")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{interviewId}")
     public InterviewDto getInterview(
@@ -51,23 +56,21 @@ public class InterviewController {
         return null;
     }
 
-    @Operation(description = "Получить список отборов", summary = "Запрос доступен для деканата")
+    @Operation(summary = "Получить список отборов", description = "Запрос доступен для деканата")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{studentId}/list")
-    public List<InterviewDto> getInterviewList(
+    public PagedListDto<InterviewDto> getInterviewList(
             @PathVariable @Parameter(description = "Id студента") UUID studentId,
-            @RequestParam(name = "pageNumber") @Parameter(description = "Номер страницы; начинается с нуля", required = true) int pageNumber,
-            @RequestParam(name = "pageSize") @Parameter(description = "Размер страницы", required = true) int pageSize
+            @ParameterObject @PageableDefault(direction = Sort.Direction.ASC) Pageable pageable
     ) {
         return null;
     }
 
-    @Operation(description = "Получить список отборов", summary = "Запрос доступен для студентов")
+    @Operation(summary = "Получить список отборов", description = "Запрос доступен для студентов")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/list")
-    public List<InterviewDto> getInterviewList(
-            @RequestParam(name = "pageNumber") @Parameter(description = "Номер страницы; начинается с нуля", required = true) int pageNumber,
-            @RequestParam(name = "pageSize") @Parameter(description = "Размер страницы", required = true) int pageSize
+    public PagedListDto<InterviewDto> getInterviewList(
+            @ParameterObject @PageableDefault(direction = Sort.Direction.ASC) Pageable pageable
     ) {
         return null;
     }

@@ -5,12 +5,16 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import ru.hits.internship.partner.models.CompanyPartnerShortDto;
 import ru.hits.internship.stack.models.StackDto;
+import ru.hits.internship.user.models.role.StudentDto;
 
 import java.util.UUID;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Schema(description = "dto отбора")
 public class InterviewDto {
     @Schema(description = "Идентификатор отбора", example = "3ea42ea8-5258-4086-a43f-113ff89577a1")
@@ -22,10 +26,8 @@ public class InterviewDto {
     private StatusEnum status;
     @NotNull
     private StackDto stack;
-    //TODO здесь нужен dto студента (в UserDto нет поля для группы)
-    //@NotNull
-    //private UserDto student;
-    //TODO здесь нужен dto компании-партнера
-    //@NotNull
-    //private CompanyPartnerDto companyPartner;
+    @NotNull
+    private StudentDto student;
+    @NotNull
+    private CompanyPartnerShortDto companyPartner;
 }

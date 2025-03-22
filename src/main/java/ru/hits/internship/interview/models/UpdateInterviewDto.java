@@ -5,11 +5,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Schema(description = "dto для обновления отбора")
 public class UpdateInterviewDto {
     @Schema(description = "Идентификатор стека", example = "3ea42ea8-5258-4086-a43f-113ff89577a1")
