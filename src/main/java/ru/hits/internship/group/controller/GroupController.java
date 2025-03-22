@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,13 +24,16 @@ import ru.hits.internship.group.dto.CreateGroupDto;
 import ru.hits.internship.group.dto.GroupDto;
 import ru.hits.internship.group.dto.GroupFilter;
 import ru.hits.internship.group.dto.UpdateGroupDto;
+import ru.hits.internship.group.service.GroupService;
 import java.util.UUID;
 
 @RestController
 @Validated
 @RequestMapping("/api/v1/groups")
+@RequiredArgsConstructor
 @Tag(name = "Группы", description = "Отвечает за работу с группами")
 public class GroupController {
+    private final GroupService groupService;
 
     @PostMapping
     @Operation(
@@ -39,7 +43,7 @@ public class GroupController {
                     @SecurityRequirement(name = "bearerAuth", scopes = {"ROLE_DEAN"})
             })
     public GroupDto createGroup(@Valid @RequestBody CreateGroupDto createGroupDto) {
-        return null;
+        return groupService.createGroup(createGroupDto);
     }
 
     @GetMapping
@@ -64,7 +68,7 @@ public class GroupController {
             })
     public GroupDto updateGroup(@PathVariable @Parameter(name = "id группы") UUID id,
                                 @Valid @RequestBody UpdateGroupDto updateGroupDto) {
-        return null;
+        return groupService.updateGroup(id, updateGroupDto);
     }
 
     @DeleteMapping("/{id}")
@@ -75,5 +79,6 @@ public class GroupController {
                     @SecurityRequirement(name = "bearerAuth", scopes = {"ROLE_DEAN"})
             })
     public void deleteGroup(@PathVariable @Parameter(name = "id группы") UUID id) {
+        groupService.deleteGroup(id);
     }
 }
