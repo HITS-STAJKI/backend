@@ -79,6 +79,7 @@ public class GroupController {
             security = {
                     @SecurityRequirement(name = "bearerAuth", scopes = {"ROLE_DEAN"})
             })
+    // TODO: подключить новый Response для возврата
     public void deleteGroup(@PathVariable @Parameter(name = "id группы") UUID id) {
         groupService.deleteGroup(id);
     }
