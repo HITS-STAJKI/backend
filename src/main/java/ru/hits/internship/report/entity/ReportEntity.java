@@ -35,8 +35,8 @@ public class ReportEntity {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
-    @Column(name = "filename", nullable = false)
-    private String filename;
+    @Column(name = "file_id")
+    private UUID fileId;
     @Column(name = "isApproved", nullable = false)
     private Boolean isApproved = false;
     @OneToMany(mappedBy = "report", cascade = CascadeType.ALL)
