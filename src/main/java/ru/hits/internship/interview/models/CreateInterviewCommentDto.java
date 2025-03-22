@@ -7,7 +7,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Schema(description = "dto для создания комментария к отбору")
-public class CreateUpdateInterviewCommentDto {
+public class CreateInterviewCommentDto {
     @Schema(description = "Текст комментария", example = "Прошел первый этап")
     private String content;
 }
+

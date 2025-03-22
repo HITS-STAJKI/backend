@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
-@Schema(description = "Модель изменения роли куратора")
+@Schema(description = "Модель для изменения куратора")
 public record CuratorEditDto(
         @Schema(description = "Идентификатор компании")
         @NotNull

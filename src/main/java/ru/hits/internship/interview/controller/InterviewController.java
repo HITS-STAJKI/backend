@@ -4,12 +4,24 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.*;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import ru.hits.internship.common.models.pagination.PagedListDto;
+import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.interview.models.CreateInterviewDto;
 import ru.hits.internship.interview.models.InterviewDto;
 import ru.hits.internship.interview.models.UpdateInterviewDto;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -19,7 +31,7 @@ public class InterviewController {
     @Operation(description = "Создать отбор", summary = "Запрос доступен для студентов")
     //ID студента берется из токена
     @SecurityRequirement(name = "bearerAuth")
-    @PostMapping()
+    @PostMapping
     public InterviewDto createInterview(@RequestBody CreateInterviewDto createInterviewDto) {
         return null;
     }
@@ -37,9 +49,10 @@ public class InterviewController {
     @Operation(description = "Удалить отбор")
     @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/{interviewId}")
-    public void deleteInterview(
+    public Response deleteInterview(
             @PathVariable @Parameter(description = "Id отбора") UUID interviewId
     ) {
+        return null;
     }
 
     @Operation(description = "Получить отбор")
@@ -51,23 +64,21 @@ public class InterviewController {
         return null;
     }
 
-    @Operation(description = "Получить список отборов", summary = "Запрос доступен для деканата")
+    @Operation(summary = "Получить список отборов конкретного студента")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{studentId}/list")
-    public List<InterviewDto> getInterviewList(
+    public PagedListDto<InterviewDto> getInterviewList(
             @PathVariable @Parameter(description = "Id студента") UUID studentId,
-            @RequestParam(name = "pageNumber") @Parameter(description = "Номер страницы; начинается с нуля", required = true) int pageNumber,
-            @RequestParam(name = "pageSize") @Parameter(description = "Размер страницы", required = true) int pageSize
+            @ParameterObject @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         return null;
     }
 
-    @Operation(description = "Получить список отборов", summary = "Запрос доступен для студентов")
+    @Operation(summary = "Получить список отборов")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/list")
-    public List<InterviewDto> getInterviewList(
-            @RequestParam(name = "pageNumber") @Parameter(description = "Номер страницы; начинается с нуля", required = true) int pageNumber,
-            @RequestParam(name = "pageSize") @Parameter(description = "Размер страницы", required = true) int pageSize
+    public PagedListDto<InterviewDto> getInterviewList(
+            @ParameterObject @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         return null;
     }

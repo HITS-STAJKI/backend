@@ -1,8 +1,9 @@
 package ru.hits.internship.user.models.auth;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 public record TokenDto(
-        String value,
-        Instant expirationDate
-) {}
+        String token,
+        LocalDateTime expirationDate
+) {
+}

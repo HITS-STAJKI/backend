@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.hits.internship.user.models.role.response.StudentResponseDto;
+import ru.hits.internship.user.models.role.response.StudentDto;
 
 import java.util.Set;
 import java.util.UUID;
@@ -21,8 +21,8 @@ public class GroupDto {
     @Schema(description = "Номер группы", example = "972202")
     private String number;
 
-    @ArraySchema(schema = @Schema(implementation = StudentResponseDto.class))
-    private Set<StudentResponseDto> students;
+    @ArraySchema(schema = @Schema(implementation = StudentDto.class))
+    private Set<StudentDto> students;
 
     @Schema(description = "Число студентов, обучающихся в группе", example = "16")
     private int studentsCount;

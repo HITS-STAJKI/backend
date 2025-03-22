@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.group.dto.CreateGroupDto;
 import ru.hits.internship.group.dto.GroupDto;
 import ru.hits.internship.group.dto.GroupFilter;
 import ru.hits.internship.group.dto.UpdateGroupDto;
+
 import java.util.UUID;
 
 @RestController
@@ -35,9 +37,8 @@ public class GroupController {
     @Operation(
             summary = "Создание группы",
             description = "Позволяет создать группу, указав её номер",
-            security = {
-                    @SecurityRequirement(name = "bearerAuth", scopes = {"ROLE_DEAN"})
-            })
+            security = @SecurityRequirement(name = "bearerAuth", scopes = {"ROLE_DEAN"})
+    )
     public GroupDto createGroup(@Valid @RequestBody CreateGroupDto createGroupDto) {
         return null;
     }
@@ -49,9 +50,9 @@ public class GroupController {
             security = {
                     @SecurityRequirement(name = "bearerAuth", scopes = {"ROLE_DEAN"})
             })
-    public Page<GroupDto> getGroups(@Valid @ParameterObject GroupFilter groupFilter,
-                                    @ParameterObject @PageableDefault(sort = "number",
-                                            direction = Sort.Direction.ASC) Pageable pageable) {
+    public Page<GroupDto> getGroups(
+            @Valid @ParameterObject GroupFilter groupFilter,
+            @ParameterObject @PageableDefault(sort = "number", direction = Sort.Direction.ASC) Pageable pageable) {
         return null;
     }
 
@@ -74,6 +75,7 @@ public class GroupController {
             security = {
                     @SecurityRequirement(name = "bearerAuth", scopes = {"ROLE_DEAN"})
             })
-    public void deleteGroup(@PathVariable @Parameter(name = "id группы") UUID id) {
+    public Response deleteGroup(@PathVariable @Parameter(name = "id группы") UUID id) {
+        return null;
     }
 }
