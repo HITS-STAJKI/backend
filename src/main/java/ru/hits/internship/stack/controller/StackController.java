@@ -4,11 +4,16 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+import ru.hits.internship.common.models.Pagination.PagedListDto;
 import ru.hits.internship.stack.models.CreateUpdateStackDto;
 import ru.hits.internship.stack.models.StackDto;
-
-import java.util.List;
+import ru.hits.internship.stack.models.StackFilter;
 
 @RestController
 @Tag(name = "Стек", description = "Отвечает за работу со стеками")
@@ -19,10 +24,9 @@ public class StackController {
     )
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/list")
-    public List<StackDto> getStackList(
-            @RequestParam(name = "pageNumber") @Parameter(description = "Номер страницы; начинается с нуля", required = true) int pageNumber,
-            @RequestParam(name = "pageSize") @Parameter(description = "Размер страницы", required = true) int pageSize,
-            @RequestParam(name = "query") @Parameter(description = "Название стека", required = false) String query
+    public PagedListDto<StackDto> getStackList(
+            @Valid @ParameterObject StackFilter groupFilter,
+            @ParameterObject @PageableDefault(sort = "name", direction = Sort.Direction.ASC) Pageable pageable
     ) {
         return null;
     }
@@ -42,9 +46,9 @@ public class StackController {
             summary = "Создать стек"
     )
     @SecurityRequirement(name = "bearerAuth")
-    @PostMapping()
+    @PostMapping
     public StackDto createStack(
-            @RequestBody CreateUpdateStackDto createUpdateStackDto
+            @Valid @RequestBody CreateUpdateStackDto createUpdateStackDto
     ) {
         return null;
     }
@@ -56,7 +60,7 @@ public class StackController {
     @PutMapping("/{stackId}")
     public StackDto updateStack(
             @PathVariable @Parameter(description = "Идентификатор стека", required = true) Long stackId,
-            @RequestBody CreateUpdateStackDto createUpdateStackDto
+            @Valid @RequestBody CreateUpdateStackDto createUpdateStackDto
     ) {
         return null;
     }
