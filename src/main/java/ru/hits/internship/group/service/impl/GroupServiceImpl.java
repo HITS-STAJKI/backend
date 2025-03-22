@@ -45,6 +45,7 @@ public class GroupServiceImpl implements GroupService {
         Page<GroupEntity> groupsPage = groupRepository.findAll(pageable);
 
         //return new PagedListDto<>(groupsPage.map(groupMapper::toDto));
+        return null;
     }
 
     @Override
