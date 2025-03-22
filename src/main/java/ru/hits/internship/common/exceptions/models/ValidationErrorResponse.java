@@ -1,4 +1,4 @@
-package ru.hits.internship.exceptions.models;
+package ru.hits.internship.common.exceptions.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
