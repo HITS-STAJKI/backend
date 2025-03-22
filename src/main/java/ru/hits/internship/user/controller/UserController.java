@@ -13,7 +13,7 @@ import ru.hits.internship.user.models.auth.LoginCredentialsDto;
 import ru.hits.internship.user.models.auth.RegistrationRequestDto;
 import ru.hits.internship.user.models.auth.TokenResponseDto;
 import ru.hits.internship.user.models.user.UserEditDto;
-import ru.hits.internship.user.models.user.UserResponseDto;
+import ru.hits.internship.user.models.user.UserDto;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -43,21 +43,21 @@ public class UserController {
     @Operation(summary = "Получение информации пользователя")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{id}")
-    public UserResponseDto getUserById(@PathVariable UUID id) {
+    public UserDto getUserById(@PathVariable UUID id) {
         return null;
     }
 
     @Operation(summary = "Получение информации текущего пользователя")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping
-    public UserResponseDto getCurrentUser() {
+    public UserDto getCurrentUser() {
         return null;
     }
 
     @Operation(summary = "Получение списка пользователей")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/list")
-    public PagedListDto<UserResponseDto> getUserList(
+    public PagedListDto<UserDto> getUserList(
             @RequestParam(required = false) Optional<UserRole> userRole,
             @ParameterObject PaginationParameters pageable
     ) {

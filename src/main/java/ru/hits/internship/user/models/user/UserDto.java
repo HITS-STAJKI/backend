@@ -2,15 +2,13 @@ package ru.hits.internship.user.models.user;
 
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import ru.hits.internship.user.models.role.response.RoleResponseDto;
 
 import java.util.Set;
 import java.util.UUID;
 
 @Schema(description = "Модель пользователя")
-public record UserResponseDto(
+public record UserDto(
         @Schema(description = "Идентификатор пользователя")
         UUID id,
 
