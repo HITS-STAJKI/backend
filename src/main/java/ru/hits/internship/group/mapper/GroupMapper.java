@@ -12,7 +12,6 @@ import ru.hits.internship.group.dto.GroupDto;
 import ru.hits.internship.group.dto.UpdateGroupDto;
 import ru.hits.internship.group.entity.GroupEntity;
 import ru.hits.internship.user.entity.role.StudentEntity;
-import ru.hits.internship.user.models.role.response.StudentResponseDto;
 import java.util.Optional;
 import java.util.Set;
 

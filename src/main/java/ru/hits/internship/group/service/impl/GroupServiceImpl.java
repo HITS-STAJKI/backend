@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.hits.internship.common.exceptions.NotFoundException;
-import ru.hits.internship.common.models.Pagination.PagedListDto;
+import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.group.dto.CreateGroupDto;
 import ru.hits.internship.group.dto.GroupDto;
 import ru.hits.internship.group.dto.GroupFilter;

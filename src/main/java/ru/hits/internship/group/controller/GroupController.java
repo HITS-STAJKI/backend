@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.hits.internship.common.models.Pagination.PagedListDto;
+import ru.hits.internship.common.models.pagination.PagedListDto;
+import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.group.dto.CreateGroupDto;
 import ru.hits.internship.group.dto.GroupDto;
 import ru.hits.internship.group.dto.GroupFilter;
@@ -78,8 +79,9 @@ public class GroupController {
             security = {
                     @SecurityRequirement(name = "bearerAuth", scopes = {"ROLE_DEAN"})
             })
-    // TODO: подключить новый Response для возврата
-    public void deleteGroup(@PathVariable @Parameter(name = "id группы") UUID id) {
+    public Response deleteGroup(@PathVariable @Parameter(name = "id группы") UUID id) {
         groupService.deleteGroup(id);
+
+        return new Response("Группа успешно удалена", 200);
     }
 }

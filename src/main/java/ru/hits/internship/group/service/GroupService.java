@@ -1,7 +1,7 @@
 package ru.hits.internship.group.service;
 
 import org.springframework.data.domain.Pageable;
-import ru.hits.internship.common.models.Pagination.PagedListDto;
+import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.group.dto.CreateGroupDto;
 import ru.hits.internship.group.dto.GroupDto;
 import ru.hits.internship.group.dto.GroupFilter;
