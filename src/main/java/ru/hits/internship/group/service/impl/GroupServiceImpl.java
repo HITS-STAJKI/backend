@@ -35,6 +35,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @Transactional
     public GroupDto updateGroup(UUID id, UpdateGroupDto updateGroupDto) {
         GroupEntity group = groupRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Группа с id %s не найдена".formatted(id)));
@@ -51,6 +52,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @Transactional
     public void deleteGroup(UUID id) {
         GroupEntity group = groupRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Группа с id %s не найдена".formatted(id)));
