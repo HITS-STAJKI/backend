@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -56,7 +55,7 @@ public class GroupController {
             })
     public PagedListDto<GroupDto> getGroups(@Valid @ParameterObject GroupFilter groupFilter,
                                             @ParameterObject @PageableDefault(sort = "number",
-                                            direction = Sort.Direction.ASC) Pageable pageable) {
+                                                    direction = Sort.Direction.ASC) Pageable pageable) {
         return groupService.getGroups(groupFilter, pageable);
     }
 
