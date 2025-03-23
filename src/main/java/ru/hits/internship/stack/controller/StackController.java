@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.stack.models.CreateStackDto;
+import jakarta.validation.Valid;
 import ru.hits.internship.stack.models.StackDto;
 
 import java.util.UUID;
@@ -43,9 +44,9 @@ public class StackController {
 
     @Operation(summary = "Создать стек")
     @SecurityRequirement(name = "bearerAuth")
-    @PostMapping()
+    @PostMapping
     public StackDto createStack(
-            @RequestBody CreateStackDto createUpdateStackDto
+            @Valid @RequestBody CreateStackDto createUpdateStackDto
     ) {
         return null;
     }
@@ -55,7 +56,7 @@ public class StackController {
     @PutMapping("/{stackId}")
     public StackDto updateStack(
             @PathVariable @Parameter(description = "Идентификатор стека", required = true) UUID stackId,
-            @RequestBody CreateStackDto createUpdateStackDto
+            @Valid @RequestBody CreateStackDto createUpdateStackDto
     ) {
         return null;
     }
