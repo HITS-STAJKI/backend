@@ -40,6 +40,8 @@ public class PracticeEntity {
     private Boolean isPaid;
     @Column(name = "is_approved", nullable = false)
     private Boolean isApproved;
+    @Column(name = "is_archived", nullable = false)
+    private Boolean isArchived;
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
     private StudentEntity student;

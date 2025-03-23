@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.hits.internship.user.models.user.UserDto;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -23,6 +24,10 @@ public class InterviewCommentDto {
     @NotNull(message = "Содержание должно быть заполнено")
     @NotBlank(message = "Содержание должно быть заполнено")
     private String content;
+    @Schema(description = "Время отправки комментария")
+    private LocalDateTime createdAt;
+    @Schema(description = "Время обновления комментария")
+    private LocalDateTime modifiedAt;
     @NotNull
     private UserDto author;
 }

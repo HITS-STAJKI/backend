@@ -5,8 +5,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -19,17 +19,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.hits.internship.common.models.pagination.PagedListDto;
+import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.group.dto.CreateGroupDto;
 import ru.hits.internship.group.dto.GroupDto;
 import ru.hits.internship.group.dto.GroupFilter;
 import ru.hits.internship.group.dto.UpdateGroupDto;
+import ru.hits.internship.group.service.GroupService;
 import java.util.UUID;
 
 @RestController
 @Validated
 @RequestMapping("/api/v1/groups")
+@RequiredArgsConstructor
 @Tag(name = "Группы", description = "Отвечает за работу с группами")
 public class GroupController {
+    private final GroupService groupService;
 
     @PostMapping
     @Operation(
@@ -39,7 +44,7 @@ public class GroupController {
                     @SecurityRequirement(name = "bearerAuth", scopes = {"ROLE_DEAN"})
             })
     public GroupDto createGroup(@Valid @RequestBody CreateGroupDto createGroupDto) {
-        return null;
+        return groupService.createGroup(createGroupDto);
     }
 
     @GetMapping
@@ -49,10 +54,10 @@ public class GroupController {
             security = {
                     @SecurityRequirement(name = "bearerAuth", scopes = {"ROLE_DEAN"})
             })
-    public Page<GroupDto> getGroups(@Valid @ParameterObject GroupFilter groupFilter,
-                                    @ParameterObject @PageableDefault(sort = "number",
-                                            direction = Sort.Direction.ASC) Pageable pageable) {
-        return null;
+    public PagedListDto<GroupDto> getGroups(@Valid @ParameterObject GroupFilter groupFilter,
+                                            @ParameterObject @PageableDefault(sort = "number",
+                                                    direction = Sort.Direction.ASC) Pageable pageable) {
+        return groupService.getGroups(groupFilter, pageable);
     }
 
     @PatchMapping("/{id}")
@@ -64,7 +69,7 @@ public class GroupController {
             })
     public GroupDto updateGroup(@PathVariable @Parameter(name = "id группы") UUID id,
                                 @Valid @RequestBody UpdateGroupDto updateGroupDto) {
-        return null;
+        return groupService.updateGroup(id, updateGroupDto);
     }
 
     @DeleteMapping("/{id}")
@@ -74,6 +79,9 @@ public class GroupController {
             security = {
                     @SecurityRequirement(name = "bearerAuth", scopes = {"ROLE_DEAN"})
             })
-    public void deleteGroup(@PathVariable @Parameter(name = "id группы") UUID id) {
+    public Response deleteGroup(@PathVariable @Parameter(name = "id группы") UUID id) {
+        groupService.deleteGroup(id);
+
+        return new Response("Группа успешно удалена", 200);
     }
 }

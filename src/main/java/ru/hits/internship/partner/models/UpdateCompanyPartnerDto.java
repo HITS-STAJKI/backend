@@ -8,8 +8,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-@Schema(description = "dto для создания компаний партнеров")
-public class CreateCompanyPartnerDto {
+@Schema(description = "dto для обновления компаний партнеров")
+public class UpdateCompanyPartnerDto {
     @Schema(description = "Имя компании", example = "1Сники")
     @NotNull(message = "Имя должно быть заполнено")
     @NotBlank(message = "Имя должно быть заполнено")

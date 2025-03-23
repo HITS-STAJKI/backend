@@ -4,11 +4,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.UUID;
 
-@Schema(description = "Модель роли деканата")
-public record DeanResponseDto(
+@Schema(description = "Модель студента")
+public record StudentDto(
         @Schema(description = "Идентификатор роли")
         UUID id,
 
         @Schema(description = "Идентификатор пользователя")
-        UUID userId
-) {}
+        UUID userId,
+
+        @Schema(description = "Идентификатор группы")
+        UUID groupId
+) {
+}

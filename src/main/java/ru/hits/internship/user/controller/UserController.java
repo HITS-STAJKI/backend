@@ -5,15 +5,22 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.web.bind.annotation.*;
-import ru.hits.internship.common.models.Pagination.PagedListDto;
-import ru.hits.internship.common.models.Pagination.PaginationParameters;
-import ru.hits.internship.user.models.role.UserRole;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import ru.hits.internship.common.models.pagination.PagedListDto;
+import ru.hits.internship.common.models.pagination.PaginationParameters;
 import ru.hits.internship.user.models.auth.LoginCredentialsDto;
 import ru.hits.internship.user.models.auth.RegistrationRequestDto;
-import ru.hits.internship.user.models.auth.TokenResponseDto;
-import ru.hits.internship.user.models.user.UserEditDto;
+import ru.hits.internship.user.models.auth.TokenDto;
+import ru.hits.internship.user.models.role.UserRole;
 import ru.hits.internship.user.models.user.UserDto;
+import ru.hits.internship.user.models.user.UserEditDto;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -25,20 +32,22 @@ public class UserController {
 
     @Operation(summary = "Вход в аккаунт")
     @PostMapping("/login")
-    public TokenResponseDto login(@RequestBody @Valid LoginCredentialsDto credentials) {
+    public TokenDto login(@RequestBody @Valid LoginCredentialsDto credentials) {
         return null;
     }
 
     @Operation(summary = "Регистрация")
     @PostMapping("/register")
-    public TokenResponseDto register(@RequestBody @Valid RegistrationRequestDto requestDto) {
+    public TokenDto register(@RequestBody @Valid RegistrationRequestDto requestDto) {
         return null;
     }
 
     @Operation(summary = "Изменение информации текущего пользователя")
     @SecurityRequirement(name = "bearerAuth")
     @PutMapping
-    public void updateCurrentUser(@RequestBody @Valid UserEditDto editDto) {}
+    public UserDto updateCurrentUser(@RequestBody @Valid UserEditDto editDto) {
+        return null;
+    }
 
     @Operation(summary = "Получение информации пользователя")
     @SecurityRequirement(name = "bearerAuth")

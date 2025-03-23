@@ -12,8 +12,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import ru.hits.internship.user.entity.UserEntity;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -28,6 +30,11 @@ public class ReportCommentEntity {
     private UUID id;
     @Column(name = "content", nullable = false)
     private String content;
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+    @Column(name = "modified_at", nullable = false)
+    private LocalDateTime modifiedAt;
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private UserEntity author;

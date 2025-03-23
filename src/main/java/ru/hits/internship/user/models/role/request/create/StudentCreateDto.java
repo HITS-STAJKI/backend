@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
-@Schema(description = "Модель создания роли студента")
+@Schema(description = "Модель для создания студента")
 public record StudentCreateDto(
         @Schema(description = "Идентификатор пользователя")
         @NotNull

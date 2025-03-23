@@ -11,9 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "dto для создания комментария к отбору")
-public class CreateUpdateInterviewCommentDto {
+public class CreateInterviewCommentDto {
     @Schema(description = "Текст комментария", example = "Прошел первый этап")
     @NotNull(message = "Текст комментария должен быть заполнен")
     @NotBlank(message = "Текст комментария должен быть заполнен")
     private String content;
 }
+

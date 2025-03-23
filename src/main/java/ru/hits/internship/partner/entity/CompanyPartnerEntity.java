@@ -30,6 +30,8 @@ public class CompanyPartnerEntity {
     private String name;
     @Column(name = "description", nullable = false)
     private String description;
+    @Column(name = "logo_filename", nullable = false)
+    private String logoFilename;
     @OneToOne
     @JoinColumn(name = "curator_id", referencedColumnName = "id")
     private CuratorEntity curator;
