@@ -9,13 +9,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.*;
-import ru.hits.internship.common.models.Pagination.PagedListDto;
-import ru.hits.internship.interview.models.CreateUpdateInterviewCommentDto;
-import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
+import ru.hits.internship.common.models.pagination.PagedListDto;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,11 +18,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.interview.models.CreateInterviewCommentDto;
-import ru.hits.internship.interview.models.InterviewCommentDto;
 import ru.hits.internship.interview.models.UpdateInterviewCommentDto;
+import ru.hits.internship.interview.models.InterviewCommentDto;
 
 import java.util.UUID;
 
@@ -53,7 +46,7 @@ public class InterviewCommentController {
     public InterviewCommentDto updateInterviewComment(
             @PathVariable @Parameter(description = "Id отбора") UUID interviewId,
             @PathVariable @Parameter(description = "Id комментария") UUID commentId,
-            @Valid RequestBody UpdateInterviewCommentDto updateInterviewCommentDto
+            @Valid @RequestBody UpdateInterviewCommentDto updateInterviewCommentDto
     ) {
         return null;
     }

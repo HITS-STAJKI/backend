@@ -21,17 +21,9 @@ import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.stack.models.CreateStackDto;
 import jakarta.validation.Valid;
-import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.*;
-import ru.hits.internship.common.models.Pagination.PagedListDto;
-import ru.hits.internship.stack.models.CreateUpdateStackDto;
 import ru.hits.internship.stack.models.StackDto;
 
 import java.util.UUID;
-import ru.hits.internship.stack.models.StackFilter;
 
 @RestController
 @Tag(name = "Стек", description = "Отвечает за работу со стеками")
