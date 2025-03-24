@@ -1,0 +1,80 @@
+package ru.hits.internship.partner.service.impl;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.hits.internship.common.exceptions.NotFoundException;
+import ru.hits.internship.common.models.pagination.PagedListDto;
+import ru.hits.internship.partner.entity.CompanyPartnerEntity;
+import ru.hits.internship.partner.mapper.CompanyPartnerMapper;
+import ru.hits.internship.partner.models.CompanyPartnerDto;
+import ru.hits.internship.partner.models.CreateCompanyPartnerDto;
+import ru.hits.internship.partner.models.ShortCompanyPartnerDto;
+import ru.hits.internship.partner.models.UpdateCompanyPartnerDto;
+import ru.hits.internship.partner.repository.CompanyPartnerRepository;
+import ru.hits.internship.partner.service.CompanyPartnerService;
+import ru.hits.internship.partner.validator.CompanyPartnerValidator;
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class CompanyPartnerServiceImpl implements CompanyPartnerService {
+    private final CompanyPartnerRepository companyPartnerRepository;
+    private final CompanyPartnerValidator companyPartnerValidator;
+    private final CompanyPartnerMapper companyPartnerMapper;
+
+    @Override
+    @Transactional
+    public CompanyPartnerDto createCompanyPartner(CreateCompanyPartnerDto createCompanyPartnerDto) {
+        companyPartnerValidator.checkCompanyPartnerAlreadyExists(createCompanyPartnerDto.getName());
+
+        CompanyPartnerEntity companyPartner = companyPartnerMapper.toEntity(createCompanyPartnerDto);
+        CompanyPartnerEntity savedCompanyPartner = companyPartnerRepository.save(companyPartner);
+
+        return companyPartnerMapper.toDto(savedCompanyPartner);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PagedListDto<ShortCompanyPartnerDto> getCompanyPartners(Pageable pageable) {
+        Page<CompanyPartnerEntity> companyPartnersPage = companyPartnerRepository.findAll(pageable);
+
+        return new PagedListDto<>(companyPartnersPage.map(companyPartnerMapper::toShortDto));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CompanyPartnerDto getCompanyPartner(UUID partnerId) {
+        CompanyPartnerEntity companyPartner = companyPartnerRepository.findById(partnerId)
+                .orElseThrow(() -> new NotFoundException("Компания-партнер с id %s не найдена".formatted(partnerId)));
+
+        return companyPartnerMapper.toDto(companyPartner);
+    }
+
+    @Override
+    @Transactional
+    public CompanyPartnerDto updateCompanyPartner(UUID partnerId, UpdateCompanyPartnerDto updateCompanyPartnerDto) {
+        CompanyPartnerEntity companyPartner = companyPartnerRepository.findById(partnerId)
+                .orElseThrow(() -> new NotFoundException("Компания-партнер с id %s не найдена".formatted(partnerId)));
+
+        companyPartnerValidator.checkCompanyPartnerAlreadyExistsNotSame(updateCompanyPartnerDto.getName(), partnerId);
+
+        companyPartnerMapper.updateCompanyPartnerEntity(companyPartner, updateCompanyPartnerDto);
+        CompanyPartnerEntity savedCompanyPartner = companyPartnerRepository.save(companyPartner);
+
+        return companyPartnerMapper.toDto(savedCompanyPartner);
+    }
+
+    @Override
+    @Transactional
+    public void deleteCompanyPartner(UUID partnerId) {
+        CompanyPartnerEntity companyPartner = companyPartnerRepository.findById(partnerId)
+                .orElseThrow(() -> new NotFoundException("Компания-партнер с id %s не найдена".formatted(partnerId)));
+
+        companyPartnerRepository.delete(companyPartner);
+    }
+
+
+}

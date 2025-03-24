@@ -21,10 +21,11 @@ public interface GroupMapper {
     @Mapping(target = "id", ignore = true)
     GroupEntity toEntity(CreateGroupDto createGroupDto);
 
-    // TODO: Согласовать вложенный маппинг для студентов -> интервью
-//    @Mapping(target = "studentsCount", source = "students", qualifiedByName = "studentsCount")
-//    GroupDto toDto(GroupEntity groupEntity);
-
+    // TODO: Согласовать вложенный маппинг для студентов -> интервью, пока игнорим
+    //@Mapping(target = "studentsCount", source = "students", qualifiedByName = "studentsCount")
+    @Mapping(target = "studentsCount", ignore = true)
+    @Mapping(target = "students", ignore = true)
+    GroupDto toDto(GroupEntity groupEntity);
 
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,

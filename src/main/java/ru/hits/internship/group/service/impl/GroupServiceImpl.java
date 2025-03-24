@@ -34,8 +34,7 @@ public class GroupServiceImpl implements GroupService {
         GroupEntity savedGroup = groupRepository.save(group);
 
         // TODO: Согласовать мапперы для студентов и подключить к мапперу групп для корректного маппинга
-        // return groupMapper.toDto(savedGroup);
-        return null;
+        return groupMapper.toDto(savedGroup);
     }
 
     @Override
@@ -45,8 +44,7 @@ public class GroupServiceImpl implements GroupService {
 
         Page<GroupEntity> groupsPage = groupRepository.findAll(pageable);
 
-        //return new PagedListDto<>(groupsPage.map(groupMapper::toDto));
-        return null;
+        return new PagedListDto<>(groupsPage.map(groupMapper::toDto));
     }
 
     @Override
@@ -55,15 +53,14 @@ public class GroupServiceImpl implements GroupService {
         GroupEntity group = groupRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Группа с id %s не найдена".formatted(id)));
 
-        groupValidator.checkGroupAlreadyExists(updateGroupDto.getNumber());
+        groupValidator.checkGroupAlreadyExistsNotSame(updateGroupDto.getNumber(), id);
 
         groupMapper.updateGroupEntity(group, updateGroupDto);
 
         GroupEntity savedGroup = groupRepository.save(group);
 
         // TODO: Согласовать мапперы для студентов и подключить к мапперу групп для корректного маппинга
-        // return groupMapper.toDto(savedGroup);
-        return null;
+        return groupMapper.toDto(savedGroup);
     }
 
     @Override
