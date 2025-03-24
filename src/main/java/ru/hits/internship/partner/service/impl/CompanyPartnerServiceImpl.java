@@ -20,6 +20,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+// TODO: не забыть logo компании
 public class CompanyPartnerServiceImpl implements CompanyPartnerService {
     private final CompanyPartnerRepository companyPartnerRepository;
     private final CompanyPartnerValidator companyPartnerValidator;

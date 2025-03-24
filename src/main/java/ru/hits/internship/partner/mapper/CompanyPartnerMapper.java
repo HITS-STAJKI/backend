@@ -15,7 +15,7 @@ import ru.hits.internship.partner.models.UpdateCompanyPartnerDto;
 @Mapper(componentModel = "spring")
 public interface CompanyPartnerMapper {
 
-    @Mapping(target = "logoFilename", constant = "ссылка на файл") // TODO: Откуда брать? Пока так
+    @Mapping(target = "logoFilename", constant = "ссылка на файл") // TODO
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "curator", ignore = true)
     CompanyPartnerEntity toEntity(CreateCompanyPartnerDto createCompanyPartnerDto);
