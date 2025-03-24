@@ -8,4 +8,6 @@ import java.util.UUID;
 @Repository
 public interface GroupRepository extends JpaRepository<GroupEntity, UUID> {
     boolean existsByNumberIgnoreCase(String number);
+
+    boolean existsByNumberIgnoreCaseAndIdNot(String number, UUID id);
 }

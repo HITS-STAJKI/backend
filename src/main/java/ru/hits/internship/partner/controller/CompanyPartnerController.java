@@ -5,10 +5,12 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,13 +25,18 @@ import ru.hits.internship.partner.models.CompanyPartnerDto;
 import ru.hits.internship.partner.models.CreateCompanyPartnerDto;
 import ru.hits.internship.partner.models.ShortCompanyPartnerDto;
 import ru.hits.internship.partner.models.UpdateCompanyPartnerDto;
+import ru.hits.internship.partner.service.CompanyPartnerService;
 
 import java.util.UUID;
 
 @RestController
 @Tag(name = "Компании-партнеры", description = "Отвечает за работу с компаниями-партнерами")
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/partner")
+// TODO: не забыть про логотип и куратора
 public class CompanyPartnerController {
+    private final CompanyPartnerService companyPartnerService;
+
     @Operation(
             summary = "Получение списка партнеров хитса",
             description = "Позволяет получить список компаний-партнеров с пагинацией"
@@ -38,7 +45,7 @@ public class CompanyPartnerController {
     public PagedListDto<ShortCompanyPartnerDto> getPartners(
             @ParameterObject @PageableDefault(sort = "name", direction = Sort.Direction.ASC) Pageable pageable
     ) {
-        return null;
+        return companyPartnerService.getCompanyPartners(pageable);
     }
 
     @Operation(
@@ -49,7 +56,7 @@ public class CompanyPartnerController {
     public CompanyPartnerDto getPartnerInfo(
             @Parameter(description = "Идентификатор партнера") @PathVariable UUID partnerId
     ) {
-        return null;
+        return companyPartnerService.getCompanyPartner(partnerId);
     }
 
     @Operation(
@@ -62,7 +69,7 @@ public class CompanyPartnerController {
             @Parameter(description = "Идентификатор партнера") @PathVariable UUID partnerId,
             @RequestBody @Valid UpdateCompanyPartnerDto updateCompanyPartnerDto
     ) {
-        return null;
+        return companyPartnerService.updateCompanyPartner(partnerId, updateCompanyPartnerDto);
     }
 
     @Operation(
@@ -74,7 +81,7 @@ public class CompanyPartnerController {
     public CompanyPartnerDto createPartner(
             @RequestBody @Valid CreateCompanyPartnerDto createCompanyPartnerDto
     ) {
-        return null;
+        return companyPartnerService.createCompanyPartner(createCompanyPartnerDto);
     }
 
     @Operation(
@@ -86,6 +93,8 @@ public class CompanyPartnerController {
     public Response deletePartner(
             @Parameter(description = "Идентификатор партнера") @PathVariable UUID partnerId
     ) {
-        return null;
+        companyPartnerService.deleteCompanyPartner(partnerId);
+
+        return new Response("Партнер успешно удален", HttpStatus.OK.value());
     }
 }
