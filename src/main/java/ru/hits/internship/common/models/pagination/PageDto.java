@@ -10,5 +10,6 @@ public record PageDto(
         int totalPages,
 
         @Schema(description = "Номер текущей страницы")
-        int number
-) {}
+        int currentPage
+) {
+}
