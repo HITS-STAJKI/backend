@@ -38,6 +38,7 @@ public class PracticeController {
     )
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping
+    //TODO("Добавить получение студента из Principal")
     public PracticeDto getCurrentStudentPractice(
             @RequestParam("id") @Parameter(description = "Id студента") UUID studentId
     ) {
@@ -49,7 +50,7 @@ public class PracticeController {
             description = "Позволяет получить полный список практик студента с пагинацией (вместе с архивированными)"
     )
     @SecurityRequirement(name = "bearerAuth")
-    @GetMapping("/list/archived")
+    @GetMapping("/list/all")
     public PagedListDto<PracticeDto> getStudentPractices(
             @RequestParam("id") @Parameter(description = "Id студента") UUID studentId,
             @ParameterObject @PageableDefault(sort = "createdAt", direction = Sort.Direction.ASC) Pageable pageable

@@ -37,11 +37,11 @@ public class PracticeEntity {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
     @Column(name = "is_paid", nullable = false)
-    private Boolean isPaid;
+    private Boolean isPaid = false;
     @Column(name = "is_approved", nullable = false)
-    private Boolean isApproved;
+    private Boolean isApproved = false;
     @Column(name = "is_archived", nullable = false)
-    private Boolean isArchived;
+    private Boolean isArchived = false;
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
     private StudentEntity student;

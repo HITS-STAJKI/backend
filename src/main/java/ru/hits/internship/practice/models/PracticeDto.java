@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import ru.hits.internship.partner.models.CompanyPartnerDto;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -17,6 +18,8 @@ public class PracticeDto {
     @NotNull(message = "Идентификатор должен быть заполнен")
     @NotBlank(message = "Идентификатор должен быть заполнен")
     private UUID id;
+    @Schema(description = "Место прохождения практики")
+    private CompanyPartnerDto company;
     @Schema(description = "Время создания практики")
     private LocalDateTime createdAt;
     @Schema(description = "Статус оплачиваемости", example = "true")
