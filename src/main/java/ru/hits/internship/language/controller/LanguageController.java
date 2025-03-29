@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,14 +19,18 @@ import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.language.models.CreateLanguageDto;
 import ru.hits.internship.language.models.LanguageDto;
 import ru.hits.internship.language.models.UpdateLanguageDto;
+import ru.hits.internship.language.service.LanguageService;
 
 import java.util.List;
 import java.util.UUID;
 
-@RestController
 @Tag(name = "Язык программирования", description = "Отвечает за работу с языками для отборов")
+@RequiredArgsConstructor
+@RestController
 @RequestMapping(value = "/api/v1/language")
 public class LanguageController {
+    private final LanguageService languageService;
+
     @Operation(
             summary = "Получить список языков",
             description = "Позволяет получить список доступных языков"
@@ -32,18 +38,18 @@ public class LanguageController {
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/list")
     public List<LanguageDto> getLanguageList(
-            @RequestParam(name = "query") @Parameter(description = "Название языка") String query
+            @RequestParam(name = "query", required = false) @Parameter(description = "Название языка") String query
     ) {
-        return null;
+        return languageService.getLanguages(query);
     }
 
     @Operation(summary = "Создать язык программирования")
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping()
     public LanguageDto createLanguage(
-            @RequestBody CreateLanguageDto createUpdateStackDto
+            @RequestBody @Valid CreateLanguageDto createLanguageDto
     ) {
-        return null;
+        return languageService.createLanguage(createLanguageDto);
     }
 
     @Operation(summary = "Обновить язык программирования")
@@ -51,9 +57,9 @@ public class LanguageController {
     @PutMapping("/{languageId}")
     public LanguageDto updateLanguage(
             @PathVariable @Parameter(description = "Идентификатор языка", required = true) UUID languageId,
-            @RequestBody UpdateLanguageDto createUpdateStackDto
+            @RequestBody @Valid UpdateLanguageDto updateLanguageDto
     ) {
-        return null;
+        return languageService.updateLanguage(languageId, updateLanguageDto);
     }
 
     @Operation(summary = "Удалить язык программирования")
@@ -62,6 +68,6 @@ public class LanguageController {
     public Response deleteLanguage(
             @PathVariable @Parameter(description = "Идентификатор языка", required = true) UUID languageId
     ) {
-        return null;
+        return languageService.deleteLanguage(languageId);
     }
 }
