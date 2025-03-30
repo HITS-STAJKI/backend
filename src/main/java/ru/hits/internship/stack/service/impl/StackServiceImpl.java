@@ -1,6 +1,7 @@
 package ru.hits.internship.stack.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.hits.internship.common.exceptions.AlreadyExistsException;
@@ -12,6 +13,7 @@ import ru.hits.internship.stack.models.StackDto;
 import ru.hits.internship.stack.models.UpdateStackDto;
 import ru.hits.internship.stack.repository.StackRepository;
 import ru.hits.internship.stack.service.StackService;
+import ru.hits.internship.stack.specification.StackSpecification;
 
 import java.util.List;
 import java.util.UUID;
@@ -26,11 +28,10 @@ public class StackServiceImpl implements StackService {
     @Override
     @Transactional(readOnly = true)
     public List<StackDto> getAllStacks(String query) {
-        if (query == null || query.isBlank()) {
-            return repository.findAll().stream().map(mapper::map).toList();
-        } else {
-            return repository.findAllByName(query).stream().map(mapper::map).toList();
-        }
+        Specification<StackEntity> spec = StackSpecification.hasName(query);
+        List<StackEntity> stacks = repository.findAll(spec);
+
+        return stacks.stream().map(mapper::map).toList();
     }
 
     @Override

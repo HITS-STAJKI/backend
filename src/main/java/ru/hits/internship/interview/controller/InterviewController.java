@@ -8,18 +8,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import ru.hits.internship.common.models.pagination.PagedListDto;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.interview.models.CreateInterviewDto;
 import ru.hits.internship.interview.models.InterviewDto;
@@ -40,10 +32,12 @@ public class InterviewController {
     //ID студента берется из токена
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping
-    public InterviewDto createInterview(@Valid @RequestBody CreateInterviewDto createInterviewDto) {
+    public InterviewDto createInterview(
+            @RequestParam("id") @Parameter(description = "Id студента") UUID studentId,
+            @Valid @RequestBody CreateInterviewDto createInterviewDto
+    ) {
         //TODO нужно получить ID студента из токена (feature/#3932?)
-        //return interviewService.createInterview(studentId, createInterviewDto);
-        return null;
+        return interviewService.createInterview(studentId, createInterviewDto);
     }
 
     @Operation(summary = "Обновить отбор")

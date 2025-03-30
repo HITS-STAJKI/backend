@@ -1,6 +1,7 @@
 package ru.hits.internship.interview.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,10 @@ import ru.hits.internship.interview.models.InterviewDto;
 import ru.hits.internship.interview.models.UpdateInterviewDto;
 import ru.hits.internship.interview.repository.InterviewRepository;
 import ru.hits.internship.interview.service.InterviewService;
+import ru.hits.internship.partner.entity.CompanyPartnerEntity;
+import ru.hits.internship.partner.repository.CompanyPartnerRepository;
+import ru.hits.internship.stack.entity.StackEntity;
+import ru.hits.internship.stack.repository.StackRepository;
 
 import java.util.UUID;
 
@@ -20,47 +25,85 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class InterviewServiceImpl implements InterviewService {
 
-    private final InterviewRepository repository;
-    private final InterviewMapper mapper;
+    private final InterviewRepository interviewRepository;
+    private final InterviewMapper interviewMapper;
+    private final StackRepository stackRepository;
+    private final CompanyPartnerRepository companyPartnerRepository;
+    //TODO Прикрутить репозиторий (feature/#3932?)
+    //private final StudentRepository studentRepository;
 
     @Override
     @Transactional
     public InterviewDto createInterview(UUID studentId, CreateInterviewDto createInterviewDto) {
-        return mapper.map(repository.save(mapper.map(studentId, createInterviewDto)));
+        InterviewEntity entity = interviewMapper.map(createInterviewDto);
+
+        UUID stackId = createInterviewDto.getStackId();
+        if (!stackRepository.existsById(stackId)) {
+            throw new NotFoundException("Стек с id %s не найден".formatted(stackId));
+        }
+        StackEntity stack = stackRepository.getReferenceById(stackId);
+        entity.setStack(stack);
+
+        UUID companyPartnerId = createInterviewDto.getCompanyPartnerId();
+        if (!companyPartnerRepository.existsById(companyPartnerId)) {
+            throw new NotFoundException("Партнер с id %s не найден".formatted(companyPartnerId));
+        }
+        CompanyPartnerEntity companyPartner = companyPartnerRepository.getReferenceById(companyPartnerId);
+        entity.setCompany(companyPartner);
+
+        //TODO Прикрутить репозиторий (feature/#3932?)
+        //if (!studentRepository.existsById(studentId)) {
+        //    throw new NotFoundException("Студент с id %s не найден".formatted(studentId));
+        //}
+        //StudentEntity student = studentRepository.getReferenceById(studentId);
+        //entity.setStudent(student);
+
+        InterviewEntity savedEntity = interviewRepository.save(entity);
+        return interviewMapper.map(savedEntity);
     }
 
     @Override
     @Transactional
     public InterviewDto updateInterview(UUID interviewId, UpdateInterviewDto updateInterviewDto) {
-        InterviewEntity interview = repository.findById(interviewId)
+        InterviewEntity interview = interviewRepository.findById(interviewId)
                 .orElseThrow(() -> new NotFoundException("Интервью с id %s не найдено".formatted(interviewId)));
 
-        mapper.update(interview, updateInterviewDto);
-        InterviewEntity savedInterview = repository.save(interview);
+        interviewMapper.update(interview, updateInterviewDto);
 
-        return mapper.map(savedInterview);
+        UUID stackId = updateInterviewDto.getStackId();
+        if (!stackRepository.existsById(stackId)) {
+            throw new NotFoundException("Стек с id %s не найден".formatted(stackId));
+        }
+        StackEntity stack = stackRepository.getReferenceById(stackId);
+        interview.setStack(stack);
+
+        InterviewEntity savedInterview = interviewRepository.save(interview);
+
+        return interviewMapper.map(savedInterview);
     }
 
     @Override
     @Transactional
     public void deleteInterview(UUID interviewId) {
-        InterviewEntity interview = repository.findById(interviewId)
+        InterviewEntity interview = interviewRepository.findById(interviewId)
                 .orElseThrow(() -> new NotFoundException("Интервью с id %s не найдено".formatted(interviewId)));
 
-        repository.delete(interview);
+        interviewRepository.delete(interview);
     }
 
     @Override
     @Transactional(readOnly = true)
     public InterviewDto getInterview(UUID interviewId) {
-        return repository.findById(interviewId)
-                .map(mapper::map)
+        return interviewRepository.findById(interviewId)
+                .map(interviewMapper::map)
                 .orElseThrow(() -> new NotFoundException("Интервью с id %s не найдено".formatted(interviewId)));
     }
 
     @Override
     @Transactional(readOnly = true)
     public PagedListDto<InterviewDto> getInterviewList(UUID studentId, Pageable pageable) {
-        return new PagedListDto<>(repository.findAllByStudentId(studentId, pageable).map(mapper::map));
+        Page<InterviewEntity> page = interviewRepository.findAllByStudentId(studentId, pageable);
+
+        return new PagedListDto<>(page.map(interviewMapper::map));
     }
 }
