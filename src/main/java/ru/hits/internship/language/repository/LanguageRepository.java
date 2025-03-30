@@ -9,4 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface LanguageRepository extends JpaRepository<LanguageEntity, UUID>, JpaSpecificationExecutor<LanguageEntity> {
+    Boolean existsByName(String name);
 }

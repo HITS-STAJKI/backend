@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.hits.internship.common.exceptions.AlreadyExistsException;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.language.entity.LanguageEntity;
@@ -40,6 +41,10 @@ public class LanguageServiceImpl implements LanguageService {
     @Override
     @Transactional
     public LanguageDto createLanguage(CreateLanguageDto createLanguageDto) {
+        if (repository.existsByName(createLanguageDto.getName())) {
+            throw new AlreadyExistsException("Язык с названием " + createLanguageDto.getName() + " уже существует");
+        }
+
         var languageEntity = mapper.toEntity(createLanguageDto);
 
         LanguageEntity entity = repository.save(languageEntity);
@@ -50,6 +55,10 @@ public class LanguageServiceImpl implements LanguageService {
     @Override
     @Transactional
     public LanguageDto updateLanguage(UUID languageId, UpdateLanguageDto updateLanguageDto) {
+        if (repository.existsByName(updateLanguageDto.getName())) {
+            throw new AlreadyExistsException("Язык с названием " + updateLanguageDto.getName() + " уже существует");
+        }
+
         var languageEntity = repository.findById(languageId)
                 .orElseThrow(() -> new NotFoundException(String.format("Язык с id: %s не найден", languageId)));
 
