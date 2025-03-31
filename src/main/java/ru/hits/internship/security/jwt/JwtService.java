@@ -25,7 +25,7 @@ public class JwtService {
     @Value("${jwt.lifetime}")
     private Duration lifetime;
 
-    public String getEmail(String token) {
+    public String getUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
