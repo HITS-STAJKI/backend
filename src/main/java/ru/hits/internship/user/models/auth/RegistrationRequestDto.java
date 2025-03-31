@@ -1,10 +1,13 @@
 package ru.hits.internship.user.models.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+
+import java.util.UUID;
 
 @Schema(description = "Модель регистрации")
 public record RegistrationRequestDto(

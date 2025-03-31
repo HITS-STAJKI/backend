@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,25 +22,29 @@ import ru.hits.internship.user.models.auth.TokenDto;
 import ru.hits.internship.user.models.role.UserRole;
 import ru.hits.internship.user.models.user.UserDto;
 import ru.hits.internship.user.models.user.UserEditDto;
+import ru.hits.internship.user.service.UserService;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @RestController
 @Tag(name = "Пользователь", description = "Отвечает за работу с пользователем")
 @RequestMapping(value = "/api/v1/user")
 public class UserController {
 
+    private final UserService userService;
+
     @Operation(summary = "Вход в аккаунт")
     @PostMapping("/login")
     public TokenDto login(@RequestBody @Valid LoginCredentialsDto credentials) {
-        return null;
+        return userService.login(credentials);
     }
 
     @Operation(summary = "Регистрация")
     @PostMapping("/register")
     public TokenDto register(@RequestBody @Valid RegistrationRequestDto requestDto) {
-        return null;
+        return userService.register(requestDto);
     }
 
     @Operation(summary = "Изменение информации текущего пользователя")

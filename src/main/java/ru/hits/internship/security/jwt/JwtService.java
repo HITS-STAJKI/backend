@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import ru.hits.internship.user.entity.UserEntity;
+import ru.hits.internship.user.models.auth.TokenDto;
 
 import javax.crypto.SecretKey;
 import java.time.Duration;
@@ -38,20 +39,22 @@ public class JwtService {
         }
     }
 
-    public String generateAccessToken(UserEntity user) {
+    public TokenDto generateAccessToken(UserEntity user) {
         String id = UUID.randomUUID().toString();
 
         Instant issuedDate = Instant.now();
-        Instant expiredDate = issuedDate.plusMillis(lifetime.toMillis());
+        Date expiredDate = Date.from(issuedDate.plusMillis(lifetime.toMillis()));
 
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .id(id)
                 .subject(user.getEmail())
                 .issuedAt(Date.from(issuedDate))
-                .expiration(Date.from(expiredDate))
+                .expiration(expiredDate)
                 .signWith(getSigningKey())
                 .claims(makeClaims(user))
                 .compact();
+
+        return new TokenDto(token, expiredDate);
     }
 
     private SecretKey getSigningKey() {
