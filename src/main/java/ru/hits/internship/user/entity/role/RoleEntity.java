@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.hits.internship.user.entity.UserEntity;
+import ru.hits.internship.user.models.role.UserRole;
 
 import java.util.UUID;
 
@@ -29,4 +30,6 @@ public abstract class RoleEntity {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
+
+    public abstract UserRole getUserRole();
 }

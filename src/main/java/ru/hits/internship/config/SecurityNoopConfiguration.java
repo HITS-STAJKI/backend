@@ -1,5 +1,6 @@
 package ru.hits.internship.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -10,24 +11,37 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.hits.internship.security.jwt.JwtFilter;
 
 import java.time.LocalDateTime;
 
 @EnableWebSecurity
 @Configuration
+@RequiredArgsConstructor
 public class SecurityNoopConfiguration {
+
+    private final JwtFilter jwtFilter;
+
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
+                        .requestMatchers(
+                                "/user/register/",
+                                "/user/login"
+                        ).permitAll()
                 )
                 .exceptionHandling(exception -> exception
                         .accessDeniedHandler(accessDeniedHandler())
-                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                )
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
-                        httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                        httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

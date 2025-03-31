@@ -33,6 +33,7 @@ dependencies {
     implementation "jakarta.validation:jakarta.validation-api:${jakartaValidationVersion}"
     implementation "jakarta.mail:jakarta.mail-api:${mailVersion}"
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${swaggerVersion}"
+    implementation("io.jsonwebtoken:jjwt-api:0.12.6")
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'

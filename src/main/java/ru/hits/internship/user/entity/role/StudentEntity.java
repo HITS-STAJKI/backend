@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.hits.internship.group.entity.GroupEntity;
 import ru.hits.internship.interview.entity.InterviewEntity;
+import ru.hits.internship.user.models.role.UserRole;
 
 import java.util.List;
 
@@ -27,4 +28,9 @@ public class StudentEntity extends RoleEntity {
     private GroupEntity group;
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<InterviewEntity> interviews;
+
+    @Override
+    public UserRole getUserRole() {
+        return UserRole.STUDENT;
+    }
 }

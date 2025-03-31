@@ -5,6 +5,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import ru.hits.internship.user.models.role.UserRole;
 
 @AllArgsConstructor
 @Getter
@@ -12,4 +13,9 @@ import lombok.Setter;
 @Entity
 @Table(name = "deans")
 public class DeanEntity extends RoleEntity {
+
+    @Override
+    public UserRole getUserRole() {
+        return UserRole.DEAN;
+    }
 }
