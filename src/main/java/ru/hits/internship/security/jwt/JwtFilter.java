@@ -42,9 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private void authenticateIfPossible(String username, String token) {
-        if (username == null || token == null
-                || SecurityContextHolder.getContext().getAuthentication() != null
-                || !jwtService.validateAccessToken(token)) {
+        if (username == null || token == null || SecurityContextHolder.getContext().getAuthentication() != null) {
             return;
         }
 

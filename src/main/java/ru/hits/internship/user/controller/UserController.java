@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.pagination.PagedListDto;
+import ru.hits.internship.user.UserMapper;
+import ru.hits.internship.user.entity.UserEntity;
 import ru.hits.internship.user.models.auth.LoginCredentialsDto;
 import ru.hits.internship.user.models.auth.RegistrationRequestDto;
 import ru.hits.internship.user.models.auth.TokenDto;
@@ -64,7 +67,7 @@ public class UserController {
     @Operation(summary = "Получение информации текущего пользователя")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping
-    public UserDto getCurrentUser() {
+    public UserDto getCurrentUser(@AuthenticationPrincipal UserEntity user) {
         return null;
     }
 

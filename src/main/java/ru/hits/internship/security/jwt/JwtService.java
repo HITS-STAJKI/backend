@@ -30,15 +30,6 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public boolean validateAccessToken(String token) {
-        try {
-            extractAllClaims(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
     public TokenDto generateAccessToken(UserEntity user) {
         String id = UUID.randomUUID().toString();
 
