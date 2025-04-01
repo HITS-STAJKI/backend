@@ -5,7 +5,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.model.dto.auth.TokenDto;
@@ -15,12 +14,9 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Component
 public class JwtService {
-
-    private static final String CLAIM_ROLES = "roles";
 
     @Value("${jwt.secret}")
     private String accessSecret;
@@ -44,7 +40,6 @@ public class JwtService {
                 .issuedAt(Date.from(issuedDate))
                 .expiration(expiredDate)
                 .signWith(getSigningKey())
-                .claims(makeClaims(user))
                 .compact();
 
         return new TokenDto(token, expiredDate);
@@ -65,15 +60,5 @@ public class JwtService {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-    }
-
-    private Map<String, Object> makeClaims(UserEntity user) {
-        Map<String, Object> claims = new HashMap<>();
-        Set<String> roles = user.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toSet());
-
-        claims.put(CLAIM_ROLES, roles);
-        return claims;
     }
 }
