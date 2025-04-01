@@ -17,7 +17,7 @@ public interface HasAuthorities {
         return Optional.ofNullable(getRoles())
                 .orElse(Collections.emptySet())
                 .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getUserRole().name()))
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getUserRole().name()))
                 .toList();
     }
 }
