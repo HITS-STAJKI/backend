@@ -9,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import ru.hits.internship.user.model.dto.user.UserDto;
 import ru.hits.internship.user.service.UserService;
 
 import java.io.IOException;
@@ -50,12 +49,8 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        UserDto userDto = userService.getUserByEmail(email);
-        var authToken = new UsernamePasswordAuthenticationToken(
-                userDto,
-                null,
-                userDto.getAuthorities()
-        );
+        var userDto = userService.getUserByEmail(email);
+        var authToken = new UsernamePasswordAuthenticationToken(userDto, null, userDto.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authToken);
     }
