@@ -1,4 +1,4 @@
-package ru.hits.internship.security.jwt;
+package ru.hits.internship.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

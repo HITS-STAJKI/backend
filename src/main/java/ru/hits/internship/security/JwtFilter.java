@@ -1,4 +1,4 @@
-package ru.hits.internship.security.jwt;
+package ru.hits.internship.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
