@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.hits.internship.user.models.role.response.StudentDto;
+import ru.hits.internship.user.model.dto.role.response.StudentDto;
 
 import java.util.Set;
 import java.util.UUID;

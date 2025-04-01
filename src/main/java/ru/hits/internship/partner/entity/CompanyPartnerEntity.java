@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.hits.internship.user.entity.role.CuratorEntity;
+import ru.hits.internship.user.model.entity.role.CuratorEntity;
 
 import java.util.UUID;
 

@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import ru.hits.internship.user.entity.UserEntity;
+import ru.hits.internship.user.model.entity.UserEntity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

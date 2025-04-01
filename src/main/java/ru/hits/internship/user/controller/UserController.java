@@ -17,14 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.pagination.PagedListDto;
-import ru.hits.internship.user.UserMapper;
-import ru.hits.internship.user.entity.UserEntity;
-import ru.hits.internship.user.models.auth.LoginCredentialsDto;
-import ru.hits.internship.user.models.auth.RegistrationRequestDto;
-import ru.hits.internship.user.models.auth.TokenDto;
-import ru.hits.internship.user.models.role.UserRole;
-import ru.hits.internship.user.models.user.UserDto;
-import ru.hits.internship.user.models.user.UserEditDto;
+import ru.hits.internship.user.model.dto.auth.LoginCredentialsDto;
+import ru.hits.internship.user.model.dto.auth.RegistrationRequestDto;
+import ru.hits.internship.user.model.dto.auth.TokenDto;
+import ru.hits.internship.user.model.common.UserRole;
+import ru.hits.internship.user.model.dto.user.UserDto;
+import ru.hits.internship.user.model.dto.user.UserEditDto;
 import ru.hits.internship.user.service.UserService;
 
 import java.util.Optional;
@@ -67,8 +65,8 @@ public class UserController {
     @Operation(summary = "Получение информации текущего пользователя")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping
-    public UserDto getCurrentUser(@AuthenticationPrincipal UserEntity user) {
-        return null;
+    public UserDto getCurrentUser(@AuthenticationPrincipal UserDto user) {
+        return user;
     }
 
     @Operation(summary = "Получение списка пользователей")

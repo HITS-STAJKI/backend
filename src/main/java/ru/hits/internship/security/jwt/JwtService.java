@@ -7,8 +7,8 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
-import ru.hits.internship.user.entity.UserEntity;
-import ru.hits.internship.user.models.auth.TokenDto;
+import ru.hits.internship.user.model.entity.UserEntity;
+import ru.hits.internship.user.model.dto.auth.TokenDto;
 
 import javax.crypto.SecretKey;
 import java.time.Duration;
@@ -20,13 +20,15 @@ import java.util.stream.Collectors;
 @Component
 public class JwtService {
 
+    private static final String CLAIM_ROLES = "roles";
+
     @Value("${jwt.secret}")
     private String accessSecret;
 
     @Value("${jwt.lifetime}")
     private Duration lifetime;
 
-    public String getUsername(String token) {
+    public String getEmail(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -71,7 +73,7 @@ public class JwtService {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
 
-        claims.put("roles", roles);
+        claims.put(CLAIM_ROLES, roles);
         return claims;
     }
 }
