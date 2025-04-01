@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.hits.internship.user.model.common.HasAuthorities;
 import ru.hits.internship.user.model.entity.role.RoleEntity;
 
 import java.util.*;
@@ -16,7 +15,7 @@ import java.util.*;
 @Setter
 @Entity
 @Table(name = "users")
-public class UserEntity implements HasAuthorities {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

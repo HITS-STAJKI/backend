@@ -1,7 +1,6 @@
 package ru.hits.internship.user.model.dto.role.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import ru.hits.internship.user.model.common.IRole;
 import ru.hits.internship.user.model.common.UserRole;
 
 import java.util.UUID;
@@ -13,10 +12,4 @@ public record RoleDto(
 
         @Schema(description = "Роль")
         UserRole userRole
-) implements IRole {
-
-        @Override
-        public UserRole getUserRole() {
-                return userRole;
-        }
-}
+) {}

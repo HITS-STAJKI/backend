@@ -12,7 +12,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.hits.internship.user.model.common.IRole;
 import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.model.common.UserRole;
 
@@ -24,7 +23,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class RoleEntity implements IRole {
+public abstract class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
