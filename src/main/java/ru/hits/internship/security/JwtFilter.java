@@ -49,8 +49,8 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        var userDto = userService.getUserByEmail(email);
-        var authToken = new UsernamePasswordAuthenticationToken(userDto, null, userDto.getAuthorities());
+        var authUser = userService.getAuthUserByEmail(email);
+        var authToken = new UsernamePasswordAuthenticationToken(authUser, null, authUser.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authToken);
     }
