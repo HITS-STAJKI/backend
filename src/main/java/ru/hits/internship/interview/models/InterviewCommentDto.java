@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.hits.internship.user.models.user.UserDto;
+import ru.hits.internship.user.model.dto.user.UserDto;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

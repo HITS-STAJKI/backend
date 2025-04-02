@@ -19,7 +19,7 @@ import lombok.Setter;
 import ru.hits.internship.interview.models.StatusEnum;
 import ru.hits.internship.partner.entity.CompanyPartnerEntity;
 import ru.hits.internship.stack.entity.StackEntity;
-import ru.hits.internship.user.entity.role.StudentEntity;
+import ru.hits.internship.user.model.entity.role.StudentEntity;
 
 import java.util.List;
 import java.util.UUID;

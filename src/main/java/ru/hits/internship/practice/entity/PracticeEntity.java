@@ -15,7 +15,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import ru.hits.internship.partner.entity.CompanyPartnerEntity;
-import ru.hits.internship.user.entity.role.StudentEntity;
+import ru.hits.internship.user.model.entity.role.StudentEntity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

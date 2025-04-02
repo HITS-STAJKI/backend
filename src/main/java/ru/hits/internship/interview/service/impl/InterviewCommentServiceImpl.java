@@ -16,7 +16,6 @@ import ru.hits.internship.interview.models.UpdateInterviewCommentDto;
 import ru.hits.internship.interview.repository.InterviewCommentRepository;
 import ru.hits.internship.interview.repository.InterviewRepository;
 import ru.hits.internship.interview.service.InterviewCommentService;
-import ru.hits.internship.user.entity.UserEntity;
 
 import java.util.UUID;
 
