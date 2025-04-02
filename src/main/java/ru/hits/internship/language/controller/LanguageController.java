@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,7 +46,8 @@ public class LanguageController {
 
     @Operation(summary = "Создать язык программирования")
     @SecurityRequirement(name = "bearerAuth")
-    @PostMapping()
+    @PostMapping
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
     public LanguageDto createLanguage(
             @RequestBody @Valid CreateLanguageDto createLanguageDto
     ) {
@@ -55,6 +57,7 @@ public class LanguageController {
     @Operation(summary = "Обновить язык программирования")
     @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/{languageId}")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
     public LanguageDto updateLanguage(
             @PathVariable @Parameter(description = "Идентификатор языка", required = true) UUID languageId,
             @RequestBody @Valid UpdateLanguageDto updateLanguageDto
@@ -65,6 +68,7 @@ public class LanguageController {
     @Operation(summary = "Удалить язык программирования")
     @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/{languageId}")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
     public Response deleteLanguage(
             @PathVariable @Parameter(description = "Идентификатор языка", required = true) UUID languageId
     ) {
