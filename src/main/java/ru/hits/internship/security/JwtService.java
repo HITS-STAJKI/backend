@@ -6,13 +6,14 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.model.dto.auth.TokenDto;
+import ru.hits.internship.user.model.entity.UserEntity;
 
 import javax.crypto.SecretKey;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.Date;
+import java.util.UUID;
 import java.util.function.Function;
 
 @Component

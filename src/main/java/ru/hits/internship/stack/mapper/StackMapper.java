@@ -1,6 +1,11 @@
 package ru.hits.internship.stack.mapper;
 
-import org.mapstruct.*;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 import ru.hits.internship.stack.entity.StackEntity;
 import ru.hits.internship.stack.models.CreateStackDto;
 import ru.hits.internship.stack.models.StackDto;

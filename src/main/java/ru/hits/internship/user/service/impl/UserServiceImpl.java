@@ -8,11 +8,11 @@ import ru.hits.internship.common.exceptions.InvalidCredentialException;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.security.JwtService;
 import ru.hits.internship.user.UserMapper;
-import ru.hits.internship.user.model.dto.user.AuthUser;
-import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.model.dto.auth.LoginCredentialsDto;
 import ru.hits.internship.user.model.dto.auth.RegistrationRequestDto;
 import ru.hits.internship.user.model.dto.auth.TokenDto;
+import ru.hits.internship.user.model.dto.user.AuthUser;
+import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.repository.UserRepository;
 import ru.hits.internship.user.service.UserService;
 

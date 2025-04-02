@@ -19,3 +19,6 @@ spring:
 jwt:
   lifetime: 1h
   secret: 7cc5f72d8500f4f68addccaa218998a2b855134bc0a04bdd13c06cb467c5293a
+logging:
+  level:
+    org.springframework.security: DEBUG

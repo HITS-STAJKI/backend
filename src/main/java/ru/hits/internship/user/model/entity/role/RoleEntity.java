@@ -12,8 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.model.common.UserRole;
+import ru.hits.internship.user.model.entity.UserEntity;
 
 import java.util.UUID;
 

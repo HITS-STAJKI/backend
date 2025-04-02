@@ -1,6 +1,11 @@
 package ru.hits.internship.interview.mapper;
 
-import org.mapstruct.*;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 import ru.hits.internship.interview.entity.InterviewEntity;
 import ru.hits.internship.interview.models.CreateInterviewDto;
 import ru.hits.internship.interview.models.InterviewDto;

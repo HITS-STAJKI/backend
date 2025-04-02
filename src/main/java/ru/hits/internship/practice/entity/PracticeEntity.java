@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import ru.hits.internship.partner.entity.CompanyPartnerEntity;
+import ru.hits.internship.report.entity.ReportEntity;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
 
 import java.time.LocalDateTime;
@@ -45,6 +47,9 @@ public class PracticeEntity {
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
     private StudentEntity student;
+    @OneToOne
+    @JoinColumn(name = "report_id")
+    private ReportEntity report;
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
     private CompanyPartnerEntity company;

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.hits.internship.common.exceptions.AlreadyExistsException;
 import ru.hits.internship.partner.repository.CompanyPartnerRepository;
+
 import java.util.UUID;
 
 @Component
