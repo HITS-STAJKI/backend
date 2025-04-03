@@ -3,6 +3,7 @@ package ru.hits.internship.partner.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.hits.internship.partner.entity.CompanyPartnerEntity;
+
 import java.util.UUID;
 
 @Repository

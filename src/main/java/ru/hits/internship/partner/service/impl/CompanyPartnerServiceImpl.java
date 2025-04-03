@@ -16,6 +16,7 @@ import ru.hits.internship.partner.models.UpdateCompanyPartnerDto;
 import ru.hits.internship.partner.repository.CompanyPartnerRepository;
 import ru.hits.internship.partner.service.CompanyPartnerService;
 import ru.hits.internship.partner.validator.CompanyPartnerValidator;
+
 import java.util.UUID;
 
 @Service

@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import ru.hits.internship.user.model.entity.UserEntity;
 
 import java.time.LocalDateTime;
@@ -33,7 +34,8 @@ public class ReportCommentEntity {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
-    @Column(name = "modified_at", nullable = false)
+    @Column(name = "modified_at")
+    @UpdateTimestamp
     private LocalDateTime modifiedAt;
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
