@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
@@ -26,6 +26,7 @@ import ru.hits.internship.interview.models.CreateInterviewCommentDto;
 import ru.hits.internship.interview.models.InterviewCommentDto;
 import ru.hits.internship.interview.models.UpdateInterviewCommentDto;
 import ru.hits.internship.interview.service.InterviewCommentService;
+import ru.hits.internship.user.model.dto.user.AuthUser;
 
 import java.util.UUID;
 
@@ -38,40 +39,37 @@ public class InterviewCommentController {
     private final InterviewCommentService interviewCommentService;
 
     @Operation(summary = "Создать комментарий к отбору")
-    //ID автора берется из токена
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping
     public InterviewCommentDto createInterviewComment(
-            @RequestParam("id") @Parameter(description = "Id автора") UUID authorId,
+            @AuthenticationPrincipal AuthUser user,
             @PathVariable @Parameter(description = "Id отбора") UUID interviewId,
             @Valid @RequestBody CreateInterviewCommentDto createInterviewCommentDto
     ) {
-        //TODO нужно проверить, что у пользователя есть доступ к отбору (т.е. пользователь - либо студент, создавший отбор, либо деканат) (feature/#3932?)
-        //TODO нужно получить ID автора (пользователя) из токена (feature/#3932?)
-        return interviewCommentService.createComment(authorId, interviewId, createInterviewCommentDto);
+        return interviewCommentService.createComment(user, interviewId, createInterviewCommentDto);
     }
 
     @Operation(summary = "Обновить комментарий к отбору")
     @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/{commentId}")
     public InterviewCommentDto updateInterviewComment(
+            @AuthenticationPrincipal AuthUser user,
             @PathVariable @Parameter(description = "Id отбора") UUID interviewId,
             @PathVariable @Parameter(description = "Id комментария") UUID commentId,
             @Valid @RequestBody UpdateInterviewCommentDto updateInterviewCommentDto
     ) {
-        //TODO нужно проверить, что у пользователя есть доступ к комментарию (т.е. пользователь - автор комментария) (feature/#3932?)
-        return interviewCommentService.updateComment(commentId, updateInterviewCommentDto);
+        return interviewCommentService.updateComment(user, commentId, updateInterviewCommentDto);
     }
 
     @Operation(summary = "Удалить комментарий к отбору")
     @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/{commentId}")
     public Response deleteInterviewComment(
+            @AuthenticationPrincipal AuthUser user,
             @PathVariable @Parameter(description = "Id отбора") UUID interviewId,
             @PathVariable @Parameter(description = "Id комментария") UUID commentId
     ) {
-        //TODO нужно проверить, что у пользователя есть доступ к комментарию (т.е. пользователь - автор комментария) (feature/#3932?)
-        interviewCommentService.deleteComment(commentId);
+        interviewCommentService.deleteComment(user, commentId);
 
         return new Response("Комментарий успешно удален", HttpStatus.OK.value());
     }
@@ -80,10 +78,10 @@ public class InterviewCommentController {
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/list")
     public PagedListDto<InterviewCommentDto> getInterviewCommentList(
+            @AuthenticationPrincipal AuthUser user,
             @PathVariable @Parameter(description = "Id отбора") UUID interviewId,
             @ParameterObject @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        //TODO нужно проверить, что у пользователя есть доступ к отбору (т.е. пользователь - либо студент, создавший отбор, либо деканат) (feature/#3932?)
-        return interviewCommentService.getCommentList(interviewId, pageable);
+        return interviewCommentService.getCommentList(user, interviewId, pageable);
     }
 }

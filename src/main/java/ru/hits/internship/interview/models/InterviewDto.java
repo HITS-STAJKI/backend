@@ -5,9 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import ru.hits.internship.language.models.LanguageDto;
 import ru.hits.internship.partner.models.ShortCompanyPartnerDto;
 import ru.hits.internship.stack.models.StackDto;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -23,6 +25,8 @@ public class InterviewDto {
     private StatusEnum status;
     @NotNull
     private StackDto stack;
+    @NotNull
+    private List<LanguageDto> languages;
     @NotNull
     private ShortCompanyPartnerDto companyPartner;
 }
