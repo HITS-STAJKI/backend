@@ -5,23 +5,25 @@ import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.interview.models.CreateInterviewCommentDto;
 import ru.hits.internship.interview.models.InterviewCommentDto;
 import ru.hits.internship.interview.models.UpdateInterviewCommentDto;
+import ru.hits.internship.user.model.dto.user.AuthUser;
 
 import java.util.UUID;
 
 public interface InterviewCommentService {
 
     InterviewCommentDto createComment(
-            UUID authorId,
+            AuthUser user,
             UUID interviewId,
             CreateInterviewCommentDto createInterviewCommentDto
     );
 
     InterviewCommentDto updateComment(
+            AuthUser user,
             UUID commentId,
             UpdateInterviewCommentDto updateInterviewCommentDto
     );
 
-    void deleteComment(UUID commentId);
+    void deleteComment(AuthUser user, UUID commentId);
 
-    PagedListDto<InterviewCommentDto> getCommentList(UUID interviewId, Pageable pageable);
+    PagedListDto<InterviewCommentDto> getCommentList(AuthUser user, UUID interviewId, Pageable pageable);
 }

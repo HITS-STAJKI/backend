@@ -5,18 +5,21 @@ import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.interview.models.CreateInterviewDto;
 import ru.hits.internship.interview.models.InterviewDto;
 import ru.hits.internship.interview.models.UpdateInterviewDto;
+import ru.hits.internship.user.model.dto.user.AuthUser;
 
 import java.util.UUID;
 
 public interface InterviewService {
 
-    InterviewDto createInterview(UUID studentId, CreateInterviewDto createInterviewDto);
+    InterviewDto createInterview(AuthUser user, CreateInterviewDto createInterviewDto);
 
-    InterviewDto updateInterview(UUID interviewId, UpdateInterviewDto updateInterviewDto);
+    InterviewDto updateInterview(AuthUser user, UUID interviewId, UpdateInterviewDto updateInterviewDto);
 
-    void deleteInterview(UUID interviewId);
+    void deleteInterview(AuthUser user, UUID interviewId);
 
-    InterviewDto getInterview(UUID interviewId);
+    InterviewDto getInterview(AuthUser user, UUID interviewId);
 
-    PagedListDto<InterviewDto> getInterviewList(UUID studentId, Pageable pageable);
+    PagedListDto<InterviewDto> getInterviewList(AuthUser user, UUID studentId, Pageable pageable);
+
+    PagedListDto<InterviewDto> getInterviewList(AuthUser user, Pageable pageable);
 }
