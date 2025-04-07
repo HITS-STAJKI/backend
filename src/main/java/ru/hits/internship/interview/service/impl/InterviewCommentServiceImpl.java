@@ -58,7 +58,7 @@ public class InterviewCommentServiceImpl implements InterviewCommentService {
         InterviewEntity interview = interviewRepository.getReferenceById(interviewId);
         entity.setInterview(interview);
 
-        InterviewCommentEntity savedEntity = commentRepository.save(entity);
+        InterviewCommentEntity savedEntity = commentRepository.saveAndFlush(entity);
         return commentMapper.map(savedEntity);
     }
 
@@ -73,7 +73,7 @@ public class InterviewCommentServiceImpl implements InterviewCommentService {
         }
 
         commentMapper.update(comment, updateInterviewCommentDto);
-        InterviewCommentEntity savedComment = commentRepository.save(comment);
+        InterviewCommentEntity savedComment = commentRepository.saveAndFlush(comment);
 
         return commentMapper.map(savedComment);
     }

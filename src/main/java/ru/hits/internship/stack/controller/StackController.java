@@ -41,7 +41,7 @@ public class StackController {
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/list")
     public List<StackDto> getStackList(
-            @RequestParam(name = "query") @Parameter(description = "Название стека") String query
+            @RequestParam(name = "query", required = false) @Parameter(description = "Название стека") String query
     ) {
         return stackService.getAllStacks(query);
     }
