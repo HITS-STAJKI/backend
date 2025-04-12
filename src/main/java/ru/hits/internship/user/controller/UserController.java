@@ -72,20 +72,19 @@ public class UserController {
         return authService.updatePassword(authUser.id(), editDto);
     }
 
+    @Operation(summary = "Получение информации текущего пользователя")
+    @SecurityRequirement(name = "bearerAuth")
+    @GetMapping
+    public UserDetailsDto getCurrentUser(@AuthenticationPrincipal AuthUser authUser) {
+        return userService.getUserDetailsById(authUser.id());
+    }
+
     @Operation(summary = "Получение информации пользователя")
     @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('DEAN')")
     @GetMapping("/{id}")
     public UserDetailsDto getUserById(@PathVariable UUID id) {
         return userService.getUserDetailsById(id);
-    }
-
-    @Operation(summary = "Получение информации текущего пользователя")
-    @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("hasRole('DEAN')")
-    @GetMapping
-    public UserDetailsDto getCurrentUser(@AuthenticationPrincipal AuthUser authUser) {
-        return userService.getUserDetailsById(authUser.id());
     }
 
     @Operation(summary = "Получение списка пользователей")

@@ -3,6 +3,9 @@ package ru.hits.internship.user.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.user.model.dto.role.response.RoleDto;
+import ru.hits.internship.user.model.dto.user.AuthUser;
+import ru.hits.internship.user.service.UserService;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,12 +22,19 @@ import java.util.UUID;
 @RestController
 @Tag(name = "Роль", description = "Отвечает за работу с ролями пользователей")
 @RequestMapping(value = "/api/v1/role")
+@RequiredArgsConstructor
 public class RoleController {
+
+    private final UserService userService;
 
     @Operation(summary = "Удаление роли пользователя")
     @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('DEAN')")
     @DeleteMapping("/{roleId}")
-    public Response deleteUserRole(@PathVariable UUID roleId) {
-        return null;
+    public Response deleteUserRole(
+            @AuthenticationPrincipal AuthUser authUser,
+            @PathVariable UUID roleId
+    ) {
+        return userService.deleteRole(authUser.id(), roleId);
     }
 }

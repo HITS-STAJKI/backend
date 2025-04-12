@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ru.hits.internship.common.Foundation;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
+import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.user.UserMapper;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.user.UserDetailsDto;
@@ -31,6 +33,12 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
+    public PagedListDto<UserDto> getAllUsers(UUID userId, Pageable pageable) {
+        Page<UserDto> userPage = userRepository.findAllByIdNot(userId, pageable).map(UserMapper.INSTANCE::toDto);
+        return new PagedListDto<>(userPage);
+    }
+
+    @Override
     public UserShortDto updateUser(UUID userId, UserEditDto editDto) {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(UserEntity.class, userId));
@@ -42,9 +50,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PagedListDto<UserDto> getAllUsers(UUID userId, Pageable pageable) {
-        Page<UserDto> userPage = userRepository.findAllByIdNot(userId, pageable).map(UserMapper.INSTANCE::toDto);
-        return new PagedListDto<>(userPage);
+    public Response deleteRole(UUID userId, UUID roleId) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(UserEntity.class, userId));
+
+        RoleEntity role = user.getRoles().stream()
+                .filter(r -> r.getId().equals(roleId))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException(RoleEntity.class, roleId));
+
+        user.getRoles().remove(role);
+        userRepository.save(user);
+
+        return new Response("Роль успешно удалена", HttpStatus.OK.value());
     }
 
     @Override
