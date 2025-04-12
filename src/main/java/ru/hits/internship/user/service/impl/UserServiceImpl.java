@@ -1,6 +1,7 @@
 package ru.hits.internship.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,8 @@ import ru.hits.internship.user.UserMapper;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.user.UserDetailsDto;
 import ru.hits.internship.user.model.dto.user.UserDto;
+import ru.hits.internship.user.model.dto.user.UserEditDto;
+import ru.hits.internship.user.model.dto.user.UserShortDto;
 import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.model.entity.role.*;
 import ru.hits.internship.user.repository.*;
@@ -26,6 +29,17 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
+    @Override
+    public UserShortDto updateUser(UUID userId, UserEditDto editDto) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(UserEntity.class, userId));
+
+        UserEntity updatedUser = UserMapper.INSTANCE.updateUser(user, editDto);
+        userRepository.save(updatedUser);
+
+        return UserMapper.INSTANCE.toShortDto(updatedUser);
+    }
 
     @Override
     public PagedListDto<UserDto> getAllUsers(UUID userId, Pageable pageable) {
