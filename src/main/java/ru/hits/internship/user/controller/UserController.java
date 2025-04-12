@@ -76,6 +76,7 @@ public class UserController {
 
     @Operation(summary = "Получение информации текущего пользователя")
     @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('DEAN')")
     @GetMapping
     public UserDetailsDto getCurrentUser(@AuthenticationPrincipal AuthUser authUser) {
         return userService.getUserDetailsById(authUser.id());
@@ -83,11 +84,13 @@ public class UserController {
 
     @Operation(summary = "Получение списка пользователей")
     @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('DEAN')")
     @GetMapping("/list")
     public PagedListDto<UserDto> getUserList(
+            @AuthenticationPrincipal AuthUser authUser,
             @RequestParam(required = false) Optional<UserRole> userRole,
             @ParameterObject Pageable pageable
     ) {
-        return null;
+        return userService.getAllUsers(authUser.id(), pageable);
     }
 }
