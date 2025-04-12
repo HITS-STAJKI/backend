@@ -3,19 +3,12 @@ package ru.hits.internship.user.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.response.Response;
-import ru.hits.internship.user.model.dto.role.request.create.CuratorCreateDto;
-import ru.hits.internship.user.model.dto.role.request.edit.CuratorEditDto;
-import ru.hits.internship.user.model.dto.role.response.CuratorDto;
 import ru.hits.internship.user.model.dto.role.response.RoleDto;
 
 import java.util.List;
@@ -33,34 +26,10 @@ public class RoleController {
         return null;
     }
 
-    @Operation(summary = "Обновление информации о кураторе")
-    @SecurityRequirement(name = "bearerAuth")
-    @PutMapping("/{id}/curator")
-    public CuratorDto updateCuratorRole(
-            @PathVariable String id,
-            @RequestBody @Valid CuratorEditDto editDto
-    ) {
-        return null;
-    }
-
-    @Operation(summary = "Создание куратора")
-    @SecurityRequirement(name = "bearerAuth")
-    @PostMapping("curator")
-    public CuratorDto createCuratorRole(@RequestBody @Valid CuratorCreateDto createDto) {
-        return null;
-    }
-
     @Operation(summary = "Получение списка ролей пользователя")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("user/{id}")
     public List<RoleDto> getUserRoles(@PathVariable UUID id) {
-        return null;
-    }
-
-    @Operation(summary = "Получение информации о кураторе")
-    @SecurityRequirement(name = "bearerAuth")
-    @GetMapping("/{id}/curator")
-    public CuratorDto getCuratorRole(@PathVariable UUID id) {
         return null;
     }
 }
