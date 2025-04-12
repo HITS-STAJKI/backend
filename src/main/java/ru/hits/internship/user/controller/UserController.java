@@ -23,6 +23,7 @@ import ru.hits.internship.user.model.dto.auth.PasswordEditDto;
 import ru.hits.internship.user.model.dto.auth.RegistrationRequestDto;
 import ru.hits.internship.user.model.dto.auth.TokenDto;
 import ru.hits.internship.user.model.dto.user.AuthUser;
+import ru.hits.internship.user.model.dto.user.UserDetailsDto;
 import ru.hits.internship.user.model.dto.user.UserDto;
 import ru.hits.internship.user.model.dto.user.UserEditDto;
 import ru.hits.internship.user.service.UserService;
@@ -65,14 +66,14 @@ public class UserController {
     @Operation(summary = "Получение информации пользователя")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{id}")
-    public UserDto getUserById(@PathVariable UUID id) {
+    public UserDetailsDto getUserById(@PathVariable UUID id) {
         return null;
     }
 
     @Operation(summary = "Получение информации текущего пользователя")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping
-    public UserDto getCurrentUser(@AuthenticationPrincipal AuthUser user) {
+    public UserDetailsDto getCurrentUser(@AuthenticationPrincipal AuthUser user) {
         return null;
     }
 
