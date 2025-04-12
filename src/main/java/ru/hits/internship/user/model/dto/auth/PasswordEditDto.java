@@ -6,17 +6,17 @@ import jakarta.validation.constraints.Size;
 
 @Schema(description = "Модель для изменения пароля")
 public record PasswordEditDto(
-        @Schema(description = "Пароль пользователя", example = "password123")
+        @Schema(description = "Старый пароль пользователя", example = "password123")
         @NotNull
         @Size(min = 6, max = 100, message = "Минимальная длина пароля - 6, максимальная - 100")
         String oldPassword,
 
-        @Schema(description = "Пароль пользователя", example = "password123")
+        @Schema(description = "Новый пароль пользователя", example = "password123")
         @NotNull
         @Size(min = 6, max = 100, message = "Минимальная длина пароля - 6, максимальная - 100")
         String newPassword,
 
-        @Schema(description = "Пароль пользователя", example = "password123")
+        @Schema(description = "Повтор нового пароля пользователя", example = "password123")
         @NotNull
         @Size(min = 6, max = 100, message = "Минимальная длина пароля - 6, максимальная - 100")
         String repeatNewPassword
