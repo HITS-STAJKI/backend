@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.auth.LoginCredentialsDto;
+import ru.hits.internship.user.model.dto.auth.PasswordEditDto;
 import ru.hits.internship.user.model.dto.auth.RegistrationRequestDto;
 import ru.hits.internship.user.model.dto.auth.TokenDto;
 import ru.hits.internship.user.model.dto.user.AuthUser;
@@ -55,6 +56,11 @@ public class UserController {
     public UserDto updateCurrentUser(@RequestBody @Valid UserEditDto editDto) {
         return null;
     }
+
+    @Operation(summary = "Изменение пароля текущего пользователя")
+    @SecurityRequirement(name = "bearerAuth")
+    @PutMapping("/password")
+    public void updateCurrentUserPassword(@RequestBody @Valid PasswordEditDto password) {}
 
     @Operation(summary = "Получение информации пользователя")
     @SecurityRequirement(name = "bearerAuth")
