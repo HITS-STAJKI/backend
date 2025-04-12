@@ -14,15 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.user.model.dto.role.request.create.CuratorCreateDto;
-import ru.hits.internship.user.model.dto.role.request.create.DeanCreateDto;
-import ru.hits.internship.user.model.dto.role.request.create.StudentCreateDto;
 import ru.hits.internship.user.model.dto.role.request.create.TeacherCreateDto;
 import ru.hits.internship.user.model.dto.role.request.edit.CuratorEditDto;
-import ru.hits.internship.user.model.dto.role.request.edit.StudentEditDto;
 import ru.hits.internship.user.model.dto.role.response.CuratorDto;
-import ru.hits.internship.user.model.dto.role.response.DeanDto;
 import ru.hits.internship.user.model.dto.role.response.RoleDto;
-import ru.hits.internship.user.model.dto.role.response.StudentDto;
 import ru.hits.internship.user.model.dto.role.response.TeacherDto;
 
 import java.util.List;
@@ -50,13 +45,6 @@ public class RoleController {
         return null;
     }
 
-    @Operation(summary = "Создание представителя деканата")
-    @SecurityRequirement(name = "bearerAuth")
-    @PostMapping("dean")
-    public DeanDto createDeanRole(@RequestBody @Valid DeanCreateDto createDto) {
-        return null;
-    }
-
     @Operation(summary = "Создание преподавателя")
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("teacher")
@@ -75,13 +63,6 @@ public class RoleController {
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("user/{id}")
     public List<RoleDto> getUserRoles(@PathVariable UUID id) {
-        return null;
-    }
-
-    @Operation(summary = "Получение информации о представителе деканата")
-    @SecurityRequirement(name = "bearerAuth")
-    @GetMapping("/{id}/dean")
-    public DeanDto getDeanRole(@PathVariable UUID id) {
         return null;
     }
 
