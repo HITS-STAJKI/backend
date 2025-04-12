@@ -14,11 +14,11 @@ import ru.hits.internship.user.model.dto.auth.TokenDto;
 import ru.hits.internship.user.model.dto.user.AuthUser;
 import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.repository.UserRepository;
-import ru.hits.internship.user.service.UserService;
+import ru.hits.internship.user.service.AuthService;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class AuthServiceImpl implements AuthService {
 
     private final JwtService jwtService;
     private final UserRepository userRepository;

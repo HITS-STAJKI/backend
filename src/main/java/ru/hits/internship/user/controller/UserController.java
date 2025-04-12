@@ -26,7 +26,7 @@ import ru.hits.internship.user.model.dto.user.AuthUser;
 import ru.hits.internship.user.model.dto.user.UserDetailsDto;
 import ru.hits.internship.user.model.dto.user.UserDto;
 import ru.hits.internship.user.model.dto.user.UserEditDto;
-import ru.hits.internship.user.service.UserService;
+import ru.hits.internship.user.service.AuthService;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -37,18 +37,18 @@ import java.util.UUID;
 @RequestMapping(value = "/api/v1/user")
 public class UserController {
 
-    private final UserService userService;
+    private final AuthService authService;
 
     @Operation(summary = "Вход в аккаунт")
     @PostMapping("/login")
     public TokenDto login(@RequestBody @Valid LoginCredentialsDto credentials) {
-        return userService.login(credentials);
+        return authService.login(credentials);
     }
 
     @Operation(summary = "Регистрация")
     @PostMapping("/register")
     public TokenDto register(@RequestBody @Valid RegistrationRequestDto requestDto) {
-        return userService.register(requestDto);
+        return authService.register(requestDto);
     }
 
     @Operation(summary = "Изменение информации текущего пользователя")
