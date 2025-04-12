@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
+import ru.hits.internship.group.dto.GroupFilter;
 import ru.hits.internship.partner.models.CompanyPartnerDto;
 import ru.hits.internship.partner.models.CreateCompanyPartnerDto;
+import ru.hits.internship.partner.models.PartnerFilter;
 import ru.hits.internship.partner.models.ShortCompanyPartnerDto;
 import ru.hits.internship.partner.models.UpdateCompanyPartnerDto;
 import ru.hits.internship.partner.service.CompanyPartnerService;
@@ -42,10 +44,10 @@ public class CompanyPartnerController {
             description = "Позволяет получить список компаний-партнеров с пагинацией"
     )
     @GetMapping("/list")
-    public PagedListDto<ShortCompanyPartnerDto> getPartners(
+    public PagedListDto<ShortCompanyPartnerDto> getPartners(@Valid @ParameterObject PartnerFilter partnerFilter,
             @ParameterObject @PageableDefault(sort = "name", direction = Sort.Direction.ASC) Pageable pageable
     ) {
-        return companyPartnerService.getCompanyPartners(pageable);
+        return companyPartnerService.getCompanyPartners(partnerFilter, pageable);
     }
 
     @Operation(

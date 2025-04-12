@@ -11,6 +11,7 @@ import ru.hits.internship.partner.entity.CompanyPartnerEntity;
 import ru.hits.internship.partner.mapper.CompanyPartnerMapper;
 import ru.hits.internship.partner.models.CompanyPartnerDto;
 import ru.hits.internship.partner.models.CreateCompanyPartnerDto;
+import ru.hits.internship.partner.models.PartnerFilter;
 import ru.hits.internship.partner.models.ShortCompanyPartnerDto;
 import ru.hits.internship.partner.models.UpdateCompanyPartnerDto;
 import ru.hits.internship.partner.repository.CompanyPartnerRepository;
@@ -40,7 +41,7 @@ public class CompanyPartnerServiceImpl implements CompanyPartnerService {
 
     @Override
     @Transactional(readOnly = true)
-    public PagedListDto<ShortCompanyPartnerDto> getCompanyPartners(Pageable pageable) {
+    public PagedListDto<ShortCompanyPartnerDto> getCompanyPartners(PartnerFilter partnerFilter, Pageable pageable) {
         Page<CompanyPartnerEntity> companyPartnersPage = companyPartnerRepository.findAll(pageable);
 
         return new PagedListDto<>(companyPartnersPage.map(companyPartnerMapper::toShortDto));
