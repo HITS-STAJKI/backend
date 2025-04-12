@@ -2,16 +2,16 @@ package ru.hits.internship.user.model.dto.role.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import ru.hits.internship.user.model.common.UserRole;
+import ru.hits.internship.group.dto.GroupShortDto;
 
 import java.util.UUID;
 
-@Schema(description = "Модель роли")
-public record RoleDto(
+@Schema(description = "Модель студента")
+public record StudentShortDto(
         @NotNull
         @Schema(description = "Идентификатор роли")
         UUID id,
 
-        @Schema(description = "Роль")
-        UserRole userRole
+        @NotNull
+        GroupShortDto group
 ) {}

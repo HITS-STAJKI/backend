@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.auth.LoginCredentialsDto;
+import ru.hits.internship.user.model.dto.auth.PasswordEditDto;
 import ru.hits.internship.user.model.dto.auth.RegistrationRequestDto;
 import ru.hits.internship.user.model.dto.auth.TokenDto;
 import ru.hits.internship.user.model.dto.user.AuthUser;
+import ru.hits.internship.user.model.dto.user.UserDetailsDto;
 import ru.hits.internship.user.model.dto.user.UserDto;
 import ru.hits.internship.user.model.dto.user.UserEditDto;
 import ru.hits.internship.user.service.UserService;
@@ -56,17 +58,22 @@ public class UserController {
         return null;
     }
 
+    @Operation(summary = "Изменение пароля текущего пользователя")
+    @SecurityRequirement(name = "bearerAuth")
+    @PutMapping("/password")
+    public void updateCurrentUserPassword(@RequestBody @Valid PasswordEditDto password) {}
+
     @Operation(summary = "Получение информации пользователя")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{id}")
-    public UserDto getUserById(@PathVariable UUID id) {
+    public UserDetailsDto getUserById(@PathVariable UUID id) {
         return null;
     }
 
     @Operation(summary = "Получение информации текущего пользователя")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping
-    public UserDto getCurrentUser(@AuthenticationPrincipal AuthUser user) {
+    public UserDetailsDto getCurrentUser(@AuthenticationPrincipal AuthUser user) {
         return null;
     }
 
