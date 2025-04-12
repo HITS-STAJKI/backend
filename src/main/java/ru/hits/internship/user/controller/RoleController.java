@@ -50,16 +50,6 @@ public class RoleController {
         return null;
     }
 
-    @Operation(summary = "Обновление информации о студенте")
-    @SecurityRequirement(name = "bearerAuth")
-    @PutMapping("/{id}/student")
-    public StudentDto updateStudentRole(
-            @PathVariable String id,
-            @RequestBody @Valid StudentEditDto editDto
-    ) {
-        return null;
-    }
-
     @Operation(summary = "Создание представителя деканата")
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("dean")
@@ -78,13 +68,6 @@ public class RoleController {
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("curator")
     public CuratorDto createCuratorRole(@RequestBody @Valid CuratorCreateDto createDto) {
-        return null;
-    }
-
-    @Operation(summary = "Создание студента")
-    @SecurityRequirement(name = "bearerAuth")
-    @PostMapping("student")
-    public StudentDto createStudentRole(@RequestBody @Valid StudentCreateDto createDto) {
         return null;
     }
 
@@ -113,13 +96,6 @@ public class RoleController {
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{id}/curator")
     public CuratorDto getCuratorRole(@PathVariable UUID id) {
-        return null;
-    }
-
-    @Operation(summary = "Получение информации о студенте")
-    @SecurityRequirement(name = "bearerAuth")
-    @GetMapping("/{id}/student")
-    public StudentDto getStudentRole(@PathVariable UUID id) {
         return null;
     }
 }
