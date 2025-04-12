@@ -14,11 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.user.model.dto.role.request.create.CuratorCreateDto;
-import ru.hits.internship.user.model.dto.role.request.create.TeacherCreateDto;
 import ru.hits.internship.user.model.dto.role.request.edit.CuratorEditDto;
 import ru.hits.internship.user.model.dto.role.response.CuratorDto;
 import ru.hits.internship.user.model.dto.role.response.RoleDto;
-import ru.hits.internship.user.model.dto.role.response.TeacherDto;
 
 import java.util.List;
 import java.util.UUID;
@@ -45,13 +43,6 @@ public class RoleController {
         return null;
     }
 
-    @Operation(summary = "Создание преподавателя")
-    @SecurityRequirement(name = "bearerAuth")
-    @PostMapping("teacher")
-    public TeacherDto createTeacherRole(@RequestBody @Valid TeacherCreateDto createDto) {
-        return null;
-    }
-
     @Operation(summary = "Создание куратора")
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("curator")
@@ -63,13 +54,6 @@ public class RoleController {
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("user/{id}")
     public List<RoleDto> getUserRoles(@PathVariable UUID id) {
-        return null;
-    }
-
-    @Operation(summary = "Получение информации о преподавателе")
-    @SecurityRequirement(name = "bearerAuth")
-    @GetMapping("/{id}/teacher")
-    public TeacherDto getTeacherRole(@PathVariable UUID id) {
         return null;
     }
 
