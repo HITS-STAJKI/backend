@@ -10,26 +10,11 @@ import ru.hits.internship.user.model.dto.role.request.edit.StudentEditDto;
 import ru.hits.internship.user.model.dto.role.response.StudentDto;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @Tag(name = "Студент", description = "Отвечает за работу со студентами")
 @RequestMapping(value = "/api/v1/student")
 public class StudentController {
-
-    @Operation(summary = "Получение информации о студенте текущего пользователя")
-    @SecurityRequirement(name = "bearerAuth")
-    @GetMapping
-    public StudentDto getCurrentStudent() {
-        return null;
-    }
-
-    @Operation(summary = "Получение информации о студенте")
-    @SecurityRequirement(name = "bearerAuth")
-    @GetMapping("/{id}")
-    public StudentDto getStudentById(@PathVariable UUID id) {
-        return null;
-    }
 
     @Operation(summary = "Получение всех студентов")
     @SecurityRequirement(name = "bearerAuth")

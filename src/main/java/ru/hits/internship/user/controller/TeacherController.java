@@ -9,26 +9,11 @@ import ru.hits.internship.user.model.dto.role.request.create.TeacherCreateDto;
 import ru.hits.internship.user.model.dto.role.response.TeacherDto;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @Tag(name = "Преподаватель", description = "Отвечает за работу с преподавателями")
 @RequestMapping(value = "/api/v1/teacher")
 public class TeacherController {
-
-    @Operation(summary = "Получение информации о преподавателе текущего пользователя")
-    @SecurityRequirement(name = "bearerAuth")
-    @GetMapping
-    public TeacherDto getCurrentTeacher() {
-        return null;
-    }
-
-    @Operation(summary = "Получение информации о преподавателе")
-    @SecurityRequirement(name = "bearerAuth")
-    @GetMapping("/{id}")
-    public TeacherDto getTeacherById(@PathVariable UUID id) {
-        return null;
-    }
 
     @Operation(summary = "Получение всех преподавателей")
     @SecurityRequirement(name = "bearerAuth")

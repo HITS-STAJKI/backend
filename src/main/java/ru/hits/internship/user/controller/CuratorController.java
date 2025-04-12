@@ -9,24 +9,17 @@ import ru.hits.internship.user.model.dto.role.request.create.CuratorCreateDto;
 import ru.hits.internship.user.model.dto.role.request.edit.CuratorEditDto;
 import ru.hits.internship.user.model.dto.role.response.CuratorDto;
 
-import java.util.UUID;
+import java.util.List;
 
 @RestController
 @Tag(name = "Куратор", description = "Отвечает за работу с кураторами")
 @RequestMapping(value = "/api/v1/curator")
 public class CuratorController {
 
-    @Operation(summary = "Получение информации о кураторе текущего пользователя")
+    @Operation(summary = "Получение всех кураторов")
     @SecurityRequirement(name = "bearerAuth")
-    @GetMapping
-    public CuratorDto getCurrentCurator() {
-        return null;
-    }
-
-    @Operation(summary = "Получение информации о кураторе")
-    @SecurityRequirement(name = "bearerAuth")
-    @GetMapping("/{id}")
-    public CuratorDto getCuratorById(@PathVariable UUID id) {
+    @GetMapping("/list")
+    public List<CuratorDto> getAllCurators() {
         return null;
     }
 

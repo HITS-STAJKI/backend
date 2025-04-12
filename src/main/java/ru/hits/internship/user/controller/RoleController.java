@@ -25,11 +25,4 @@ public class RoleController {
     public Response deleteUserRole(@PathVariable UUID roleId) {
         return null;
     }
-
-    @Operation(summary = "Получение списка ролей пользователя")
-    @SecurityRequirement(name = "bearerAuth")
-    @GetMapping("user/{id}")
-    public List<RoleDto> getUserRoles(@PathVariable UUID id) {
-        return null;
-    }
 }
