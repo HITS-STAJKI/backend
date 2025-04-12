@@ -12,6 +12,8 @@ import ru.hits.internship.user.model.dto.role.request.create.CuratorCreateDto;
 import ru.hits.internship.user.model.dto.role.request.edit.CuratorEditDto;
 import ru.hits.internship.user.model.dto.role.response.CuratorDto;
 
+import java.util.UUID;
+
 @RestController
 @Tag(name = "Куратор", description = "Отвечает за работу с кураторами")
 @RequestMapping(value = "/api/v1/curator")
@@ -20,7 +22,10 @@ public class CuratorController {
     @Operation(summary = "Получение всех кураторов")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/list")
-    public PagedListDto<CuratorDto> getAllCurators(@ParameterObject Pageable pageable) {
+    public PagedListDto<CuratorDto> getAllCurators(
+            @ParameterObject Pageable pageable,
+            @RequestParam(required = false) UUID companyId
+    ) {
         return null;
     }
 

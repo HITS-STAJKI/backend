@@ -8,11 +8,14 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import ru.hits.internship.common.models.pagination.PagedListDto;
+import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.role.request.create.StudentCreateDto;
 import ru.hits.internship.user.model.dto.role.request.edit.StudentEditDto;
 import ru.hits.internship.user.model.dto.role.response.StudentDto;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @Tag(name = "Студент", description = "Отвечает за работу со студентами")
@@ -22,7 +25,10 @@ public class StudentController {
     @Operation(summary = "Получение всех студентов")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/list")
-    public PagedListDto<StudentDto> getAllStudents(@ParameterObject Pageable pageable) {
+    public PagedListDto<StudentDto> getAllStudents(
+            @ParameterObject Pageable pageable,
+            @RequestParam(required = false) UUID groupId
+    ) {
         return null;
     }
 
