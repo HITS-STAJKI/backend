@@ -1,20 +1,25 @@
 package ru.hits.internship.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.exceptions.InvalidCredentialException;
 import ru.hits.internship.common.exceptions.NotFoundException;
+import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.security.JwtService;
 import ru.hits.internship.user.UserMapper;
 import ru.hits.internship.user.model.dto.auth.LoginCredentialsDto;
+import ru.hits.internship.user.model.dto.auth.PasswordEditDto;
 import ru.hits.internship.user.model.dto.auth.RegistrationRequestDto;
 import ru.hits.internship.user.model.dto.auth.TokenDto;
 import ru.hits.internship.user.model.dto.user.AuthUser;
 import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.repository.UserRepository;
 import ru.hits.internship.user.service.AuthService;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -55,5 +60,23 @@ public class AuthServiceImpl implements AuthService {
 
         userRepository.save(userEntity);
         return jwtService.generateAccessToken(userEntity);
+    }
+
+    @Override
+    public Response updatePassword(UUID userId, PasswordEditDto editDto) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(UserEntity.class, userId));
+
+        if (!passwordEncoder.matches(editDto.oldPassword(), user.getPassword())) {
+            throw new BadRequestException("Old password doesn't match");
+        }
+        if (!editDto.newPassword().equals(editDto.repeatNewPassword())) {
+            throw new BadRequestException("Passwords don't match");
+        }
+
+        user.setPassword(passwordEncoder.encode(editDto.newPassword()));
+        userRepository.save(user);
+
+        return new Response("Password changed successfully", HttpStatus.OK.value());
     }
 }

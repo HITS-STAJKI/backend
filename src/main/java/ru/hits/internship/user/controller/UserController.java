@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.pagination.PagedListDto;
+import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.auth.LoginCredentialsDto;
 import ru.hits.internship.user.model.dto.auth.PasswordEditDto;
@@ -64,7 +65,12 @@ public class UserController {
     @Operation(summary = "Изменение пароля текущего пользователя")
     @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/password")
-    public void updateCurrentUserPassword(@RequestBody @Valid PasswordEditDto password) {}
+    public Response updateCurrentUserPassword(
+            @AuthenticationPrincipal AuthUser authUser,
+            @RequestBody @Valid PasswordEditDto editDto
+    ) {
+        return authService.updatePassword(authUser.id(), editDto);
+    }
 
     @Operation(summary = "Получение информации пользователя")
     @SecurityRequirement(name = "bearerAuth")
