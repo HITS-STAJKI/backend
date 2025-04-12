@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ import ru.hits.internship.user.model.dto.user.UserDetailsDto;
 import ru.hits.internship.user.model.dto.user.UserDto;
 import ru.hits.internship.user.model.dto.user.UserEditDto;
 import ru.hits.internship.user.service.AuthService;
+import ru.hits.internship.user.service.UserService;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -37,6 +39,7 @@ import java.util.UUID;
 @RequestMapping(value = "/api/v1/user")
 public class UserController {
 
+    private final UserService userService;
     private final AuthService authService;
 
     @Operation(summary = "Вход в аккаунт")
@@ -65,16 +68,17 @@ public class UserController {
 
     @Operation(summary = "Получение информации пользователя")
     @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('DEAN')")
     @GetMapping("/{id}")
     public UserDetailsDto getUserById(@PathVariable UUID id) {
-        return null;
+        return userService.getUserDetailsById(id);
     }
 
     @Operation(summary = "Получение информации текущего пользователя")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping
-    public UserDetailsDto getCurrentUser(@AuthenticationPrincipal AuthUser user) {
-        return null;
+    public UserDetailsDto getCurrentUser(@AuthenticationPrincipal AuthUser authUser) {
+        return userService.getUserDetailsById(authUser.id());
     }
 
     @Operation(summary = "Получение списка пользователей")
