@@ -9,7 +9,7 @@ import ru.hits.internship.common.exceptions.InvalidCredentialException;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.security.JwtService;
-import ru.hits.internship.user.UserMapper;
+import ru.hits.internship.user.mapper.UserMapper;
 import ru.hits.internship.user.model.dto.auth.LoginCredentialsDto;
 import ru.hits.internship.user.model.dto.auth.PasswordEditDto;
 import ru.hits.internship.user.model.dto.auth.RegistrationRequestDto;

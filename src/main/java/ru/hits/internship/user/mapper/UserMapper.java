@@ -1,4 +1,4 @@
-package ru.hits.internship.user;
+package ru.hits.internship.user.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
