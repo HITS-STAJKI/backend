@@ -16,6 +16,13 @@ import java.util.UUID;
 @RequestMapping(value = "/api/v1/dean")
 public class DeanController {
 
+    @Operation(summary = "Получение информации о представителе деканата текущего пользователя")
+    @SecurityRequirement(name = "bearerAuth")
+    @GetMapping
+    public DeanDto getCurrentDean() {
+        return null;
+    }
+
     @Operation(summary = "Получение информации о представителе деканата")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{id}")

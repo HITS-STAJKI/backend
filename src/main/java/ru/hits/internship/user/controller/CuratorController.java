@@ -16,6 +16,13 @@ import java.util.UUID;
 @RequestMapping(value = "/api/v1/curator")
 public class CuratorController {
 
+    @Operation(summary = "Получение информации о кураторе текущего пользователя")
+    @SecurityRequirement(name = "bearerAuth")
+    @GetMapping
+    public CuratorDto getCurrentCurator() {
+        return null;
+    }
+
     @Operation(summary = "Получение информации о кураторе")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{id}")

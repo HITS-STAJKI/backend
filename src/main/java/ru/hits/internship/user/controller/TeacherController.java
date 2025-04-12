@@ -16,6 +16,13 @@ import java.util.UUID;
 @RequestMapping(value = "/api/v1/teacher")
 public class TeacherController {
 
+    @Operation(summary = "Получение информации о преподавателе текущего пользователя")
+    @SecurityRequirement(name = "bearerAuth")
+    @GetMapping
+    public TeacherDto getCurrentTeacher() {
+        return null;
+    }
+
     @Operation(summary = "Получение информации о преподавателе")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{id}")
