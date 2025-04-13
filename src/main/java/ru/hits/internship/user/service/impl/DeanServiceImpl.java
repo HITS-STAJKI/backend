@@ -1,10 +1,12 @@
 package ru.hits.internship.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.exceptions.NotFoundException;
+import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.user.mapper.DeanMapper;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.role.request.create.DeanCreateDto;
@@ -14,7 +16,8 @@ import ru.hits.internship.user.model.entity.role.DeanEntity;
 import ru.hits.internship.user.repository.DeanRepository;
 import ru.hits.internship.user.repository.UserRepository;
 import ru.hits.internship.user.service.DeanService;
-import ru.hits.internship.user.utils.RoleChecker;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +25,14 @@ public class DeanServiceImpl implements DeanService {
 
     private final UserRepository userRepository;
     private final DeanRepository deanRepository;
+
+    @Override
+    public PagedListDto<DeanDto> getAllDeans(UUID userId, Pageable pageable) {
+        Page<DeanEntity> deanPage = deanRepository.findAllByUserIdNot(userId, pageable);
+        Page<DeanDto> deanDtoPage = deanPage.map(DeanMapper.INSTANCE::toDto);
+
+        return new PagedListDto<>(deanDtoPage);
+    }
 
     @Override
     public DeanDto createDean(DeanCreateDto createDto) {

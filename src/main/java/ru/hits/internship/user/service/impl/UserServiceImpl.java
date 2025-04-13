@@ -33,8 +33,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PagedListDto<UserDto> getAllUsers(UUID userId, Pageable pageable) {
-        Page<UserDto> userPage = userRepository.findAllByIdNot(userId, pageable).map(UserMapper.INSTANCE::toDto);
-        return new PagedListDto<>(userPage);
+        Page<UserEntity> userPage = userRepository.findAllByIdNot(userId, pageable);
+        Page<UserDto> userDtoPage = userPage.map(UserMapper.INSTANCE::toDto);
+
+        return new PagedListDto<>(userDtoPage);
     }
 
     @Override

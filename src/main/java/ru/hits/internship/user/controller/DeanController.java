@@ -8,10 +8,12 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.user.model.dto.role.request.create.DeanCreateDto;
 import ru.hits.internship.user.model.dto.role.response.DeanDto;
+import ru.hits.internship.user.model.dto.user.AuthUser;
 import ru.hits.internship.user.service.DeanService;
 
 @RestController
@@ -26,8 +28,11 @@ public class DeanController {
     @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('DEAN')")
     @GetMapping("/list")
-    public PagedListDto<DeanDto> getAllDeans(@ParameterObject Pageable pageable) {
-        return null;
+    public PagedListDto<DeanDto> getAllDeans(
+            @AuthenticationPrincipal AuthUser authUser,
+            @ParameterObject Pageable pageable
+    ) {
+        return deanService.getAllDeans(authUser.id(), pageable);
     }
 
     @Operation(summary = "Создание представителя деканата")
