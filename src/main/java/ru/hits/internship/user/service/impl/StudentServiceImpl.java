@@ -12,6 +12,7 @@ import ru.hits.internship.user.mapper.StudentMapper;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.role.request.create.DeanCreateDto;
 import ru.hits.internship.user.model.dto.role.request.create.StudentCreateDto;
+import ru.hits.internship.user.model.dto.role.request.edit.StudentEditDto;
 import ru.hits.internship.user.model.dto.role.response.DeanDto;
 import ru.hits.internship.user.model.dto.role.response.StudentDto;
 import ru.hits.internship.user.model.entity.UserEntity;
@@ -36,6 +37,20 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public PagedListDto<StudentDto> getAllStudents(UUID userId, Pageable pageable) {
         return studentRepository.findAll(userId, pageable, StudentMapper.INSTANCE::toDto);
+    }
+
+    @Override
+    public StudentDto updateStudent(UUID studentId, StudentEditDto editDto) {
+        StudentEntity student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new NotFoundException(StudentEntity.class, studentId));
+
+        GroupEntity group = groupRepository.findById(editDto.groupId())
+                .orElseThrow(() -> new NotFoundException(GroupEntity.class, editDto.groupId()));
+
+        StudentEntity updatedStudent = StudentMapper.INSTANCE.updateStudent(student, group);
+        studentRepository.save(updatedStudent);
+
+        return StudentMapper.INSTANCE.toDto(updatedStudent);
     }
 
     @Override

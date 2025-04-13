@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.hits.internship.common.models.pagination.PagedListDto;
@@ -26,17 +27,6 @@ public class StudentController {
 
     private final StudentService studentService;
 
-    @Operation(summary = "Получение всех студентов")
-    @SecurityRequirement(name = "bearerAuth")
-    @GetMapping("/list")
-    public PagedListDto<StudentDto> getAllStudents(
-            @AuthenticationPrincipal AuthUser authUser,
-            @ParameterObject Pageable pageable,
-            @RequestParam(required = false) UUID groupId
-    ) {
-        return studentService.getAllStudents(authUser.id(), pageable);
-    }
-
     @Operation(summary = "Создание студента для текущего пользователя")
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping
@@ -49,11 +39,24 @@ public class StudentController {
 
     @Operation(summary = "Обновление информации о студенте")
     @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('DEAN')")
     @PutMapping("/{id}")
     public StudentDto updateStudent(
-            @PathVariable String id,
+            @PathVariable UUID id,
             @RequestBody @Valid StudentEditDto editDto
     ) {
-        return null;
+        return studentService.updateStudent(id, editDto);
+    }
+
+    @Operation(summary = "Получение всех студентов")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('DEAN')")
+    @GetMapping("/list")
+    public PagedListDto<StudentDto> getAllStudents(
+            @AuthenticationPrincipal AuthUser authUser,
+            @ParameterObject Pageable pageable,
+            @RequestParam(required = false) UUID groupId
+    ) {
+        return studentService.getAllStudents(authUser.id(), pageable);
     }
 }

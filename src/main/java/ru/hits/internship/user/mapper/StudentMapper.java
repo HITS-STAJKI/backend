@@ -2,6 +2,7 @@ package ru.hits.internship.user.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import ru.hits.internship.group.entity.GroupEntity;
@@ -14,6 +15,9 @@ public interface StudentMapper {
     StudentMapper INSTANCE = Mappers.getMapper(StudentMapper.class);
 
     StudentDto toDto(StudentEntity dean);
+
+    @Mapping(target = "id", ignore = true)
+    StudentEntity updateStudent(@MappingTarget StudentEntity student, GroupEntity group);
 
     @Mapping(target = "id", ignore = true)
     StudentEntity toEntity(UserEntity user, GroupEntity group);
