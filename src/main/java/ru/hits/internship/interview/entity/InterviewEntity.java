@@ -1,22 +1,12 @@
 package ru.hits.internship.interview.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.hits.internship.interview.models.StatusEnum;
+import ru.hits.internship.language.entity.LanguageEntity;
 import ru.hits.internship.partner.entity.CompanyPartnerEntity;
 import ru.hits.internship.stack.entity.StackEntity;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
@@ -40,6 +30,8 @@ public class InterviewEntity {
     @ManyToOne
     @JoinColumn(name = "stack_id", nullable = false)
     private StackEntity stack;
+    @ManyToMany
+    private List<LanguageEntity> languages;
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
     private StudentEntity student;

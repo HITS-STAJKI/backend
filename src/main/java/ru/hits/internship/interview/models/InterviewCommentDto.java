@@ -18,7 +18,6 @@ import java.util.UUID;
 public class InterviewCommentDto {
     @Schema(description = "Идентификатор комментария", example = "3ea42ea8-5258-4086-a43f-113ff89577a1")
     @NotNull(message = "Идентификатор должен быть заполнен")
-    @NotBlank(message = "Идентификатор должен быть заполнен")
     private UUID id;
     @Schema(description = "Содержание комментария", example = "Комментарий")
     @NotNull(message = "Содержание должно быть заполнено")

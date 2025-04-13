@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 public class StackDto {
     @Schema(description = "Идентификатор стека", example = "3ea42ea8-5258-4086-a43f-113ff89577a1")
     @NotNull(message = "Идентификатор должен быть заполнен")
-    @NotBlank(message = "Идентификатор должен быть заполнен")
     private String id;
     @Schema(description = "Название стека", example = "Java")
     @NotNull(message = "Название стека должно быть заполнено")
