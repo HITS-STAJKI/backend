@@ -19,7 +19,10 @@ public interface UserMapper {
     AuthUser toAuthUser(UserEntity entity);
     UserEntity toEntity(RegistrationRequestDto registrationDto);
 
-    @Mapping(target = "groupId", source = "group.id")
-    @Mapping(target = "userId", source = "user.id")
-    StudentDto toStudentDto(StudentEntity studentEntity);
+    @Mapping(target = "id", source = "user.id")
+    @Mapping(target = "email", source = "user.email")
+    @Mapping(target = "firstName", source = "user.firstName")
+    @Mapping(target = "lastName", source = "user.lastName")
+    @Mapping(target = "roles", source = "user.roles")
+    UserDto toDtoFromStudent(StudentEntity studentEntity);
 }
