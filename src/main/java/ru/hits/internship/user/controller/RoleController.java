@@ -7,16 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.response.Response;
-import ru.hits.internship.user.model.dto.role.response.RoleDto;
 import ru.hits.internship.user.model.dto.user.AuthUser;
 import ru.hits.internship.user.service.UserService;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
