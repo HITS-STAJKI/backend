@@ -41,6 +41,7 @@ public class CompanyPartnerController {
             summary = "Получение списка партнеров хитса",
             description = "Позволяет получить список компаний-партнеров с пагинацией"
     )
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/list")
     public PagedListDto<ShortCompanyPartnerDto> getPartners(
             @ParameterObject @PageableDefault(sort = "name", direction = Sort.Direction.ASC) Pageable pageable
@@ -52,6 +53,7 @@ public class CompanyPartnerController {
             summary = "Получение подробной информации о партнере",
             description = "Позволяет получить подробную информацию о партнере"
     )
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{partnerId}")
     public CompanyPartnerDto getPartnerInfo(
             @Parameter(description = "Идентификатор партнера") @PathVariable UUID partnerId
