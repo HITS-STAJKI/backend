@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ru.hits.internship.common.Foundation;
+import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
@@ -41,8 +42,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserShortDto updateUser(UUID userId, UserEditDto editDto) {
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException(UserEntity.class, userId));
+        UserEntity user = userRepository.findByIdOrThrow(userId);
 
         UserEntity updatedUser = UserMapper.INSTANCE.updateUser(user, editDto);
         userRepository.save(updatedUser);
@@ -52,8 +52,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response deleteRole(UUID userId, UUID roleId) {
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException(UserEntity.class, userId));
+        UserEntity user = userRepository.findByIdOrThrow(userId);
 
         RoleEntity role = user.getRoles().stream()
                 .filter(r -> r.getId().equals(roleId))
@@ -68,9 +67,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetailsDto getUserDetailsById(UUID id) {
-        UserEntity user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(UserEntity.class, id));
-
+        UserEntity user = userRepository.findByIdOrThrow(id);
         Map<UserRole, RoleEntity> rolesByType = user.getRoles().stream()
                 .collect(Collectors.toMap(RoleEntity::getUserRole, Function.identity()));
 

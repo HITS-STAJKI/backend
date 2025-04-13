@@ -24,14 +24,24 @@ public class RoleController {
 
     private final UserService userService;
 
-    @Operation(summary = "Удаление роли пользователя")
+    @Operation(summary = "Удаление роли текущего пользователя")
     @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("hasRole('DEAN')")
     @DeleteMapping("/{roleId}")
-    public Response deleteUserRole(
+    public Response deleteCurrentUserRole(
             @AuthenticationPrincipal AuthUser authUser,
             @PathVariable UUID roleId
     ) {
         return userService.deleteRole(authUser.id(), roleId);
+    }
+
+    @Operation(summary = "Удаление роли пользователя")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('DEAN')")
+    @DeleteMapping("/{roleId}/user/{userId}")
+    public Response deleteUserRole(
+            @PathVariable UUID roleId,
+            @PathVariable UUID userId
+    ) {
+        return userService.deleteRole(userId, roleId);
     }
 }

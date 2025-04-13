@@ -64,8 +64,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public Response updatePassword(UUID userId, PasswordEditDto editDto) {
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException(UserEntity.class, userId));
+        UserEntity user = userRepository.findByIdOrThrow(userId);
 
         if (!passwordEncoder.matches(editDto.oldPassword(), user.getPassword())) {
             throw new BadRequestException("Old password doesn't match");
