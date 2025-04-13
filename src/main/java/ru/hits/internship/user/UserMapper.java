@@ -1,6 +1,7 @@
 package ru.hits.internship.user;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import ru.hits.internship.user.model.dto.auth.RegistrationRequestDto;
@@ -18,5 +19,7 @@ public interface UserMapper {
     AuthUser toAuthUser(UserEntity entity);
     UserEntity toEntity(RegistrationRequestDto registrationDto);
 
+    @Mapping(target = "groupId", source = "group.id")
+    @Mapping(target = "userId", source = "user.id")
     StudentDto toStudentDto(StudentEntity studentEntity);
 }
