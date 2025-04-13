@@ -7,10 +7,6 @@ import java.util.UUID;
 
 @Schema(description = "Модель для создания студента")
 public record StudentCreateDto(
-        @Schema(description = "Идентификатор пользователя")
-        @NotNull
-        UUID userId,
-
         @Schema(description = "Идентификатор группы")
         @NotNull
         UUID groupId

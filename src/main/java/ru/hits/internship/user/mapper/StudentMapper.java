@@ -6,6 +6,7 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import ru.hits.internship.group.entity.GroupEntity;
 import ru.hits.internship.user.model.dto.role.response.StudentDto;
+import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = UserMapper.class)
@@ -15,5 +16,5 @@ public interface StudentMapper {
     StudentDto toDto(StudentEntity dean);
 
     @Mapping(target = "id", ignore = true)
-    StudentEntity toEntity(GroupEntity group);
+    StudentEntity toEntity(UserEntity user, GroupEntity group);
 }
