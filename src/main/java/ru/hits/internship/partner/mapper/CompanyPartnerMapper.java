@@ -11,17 +11,18 @@ import ru.hits.internship.partner.models.CompanyPartnerDto;
 import ru.hits.internship.partner.models.CreateCompanyPartnerDto;
 import ru.hits.internship.partner.models.ShortCompanyPartnerDto;
 import ru.hits.internship.partner.models.UpdateCompanyPartnerDto;
+import ru.hits.internship.user.UserMapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {UserMapper.class})
 public interface CompanyPartnerMapper {
 
     @Mapping(target = "logoFilename", constant = "ссылка на файл") // TODO
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "curator", ignore = true)
+    @Mapping(target = "practices", ignore = true)
     CompanyPartnerEntity toEntity(CreateCompanyPartnerDto createCompanyPartnerDto);
 
-    // TODO: Согласовать вложенный маппинг для куратора и подцепить сюда маппер пользователей (пока нету)
-    @Mapping(target = "curator", ignore = true) // Пока что игнорим для билда
+    @Mapping(target = "curator", source = "curator.user")
     CompanyPartnerDto toDto(CompanyPartnerEntity companyPartnerEntity);
 
     ShortCompanyPartnerDto toShortDto(CompanyPartnerEntity companyPartnerEntity);

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.hits.internship.user.model.dto.role.response.StudentDto;
+import ru.hits.internship.user.model.dto.user.UserDto;
 
 import java.util.Set;
 import java.util.UUID;
@@ -21,8 +22,8 @@ public class GroupDto {
     @Schema(description = "Номер группы", example = "972202")
     private String number;
 
-    @ArraySchema(schema = @Schema(implementation = StudentDto.class))
-    private Set<StudentDto> students;
+    @ArraySchema(schema = @Schema(implementation = UserDto.class))
+    private Set<UserDto> students;
 
     @Schema(description = "Число студентов, обучающихся в группе", example = "16")
     private int studentsCount;

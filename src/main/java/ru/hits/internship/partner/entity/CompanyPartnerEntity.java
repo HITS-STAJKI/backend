@@ -1,19 +1,24 @@
 package ru.hits.internship.partner.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.hits.internship.practice.entity.PracticeEntity;
 import ru.hits.internship.user.model.entity.role.CuratorEntity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -35,4 +40,7 @@ public class CompanyPartnerEntity {
     @OneToOne
     @JoinColumn(name = "curator_id", referencedColumnName = "id")
     private CuratorEntity curator;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PracticeEntity> practices = new ArrayList<>();
 }
