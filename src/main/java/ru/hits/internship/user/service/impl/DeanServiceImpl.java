@@ -29,10 +29,7 @@ public class DeanServiceImpl implements DeanService {
 
     @Override
     public PagedListDto<DeanDto> getAllDeans(UUID userId, Pageable pageable) {
-        Page<DeanEntity> deanPage = deanRepository.findAllByUserIdNot(userId, pageable);
-        Page<DeanDto> deanDtoPage = deanPage.map(DeanMapper.INSTANCE::toDto);
-
-        return new PagedListDto<>(deanDtoPage);
+        return deanRepository.findAll(userId, pageable, DeanMapper.INSTANCE::toDto);
     }
 
     @Override
