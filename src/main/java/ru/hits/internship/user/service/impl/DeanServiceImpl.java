@@ -16,6 +16,7 @@ import ru.hits.internship.user.model.entity.role.DeanEntity;
 import ru.hits.internship.user.repository.DeanRepository;
 import ru.hits.internship.user.repository.UserRepository;
 import ru.hits.internship.user.service.DeanService;
+import ru.hits.internship.user.utils.RoleChecker;
 
 import java.util.UUID;
 
@@ -36,12 +37,8 @@ public class DeanServiceImpl implements DeanService {
 
     @Override
     public DeanDto createDean(DeanCreateDto createDto) {
-        UserEntity user = userRepository.findById(createDto.userId())
-                .orElseThrow(() -> new NotFoundException(UserEntity.class, createDto.userId()));
-
-        if (user.getRoles().stream().anyMatch(roleEntity -> roleEntity.getUserRole().equals(UserRole.DEAN))) {
-            throw new BadRequestException("User is already has dean role");
-        }
+        UserEntity user = userRepository.findByIdOrThrow(createDto.userId());
+        RoleChecker.verifyRoleAvailable(user, UserRole.DEAN);
 
         DeanEntity dean = DeanMapper.INSTANCE.toEntity(user);
         deanRepository.save(dean);
