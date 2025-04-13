@@ -30,11 +30,22 @@ public class StudentController {
     @Operation(summary = "Создание студента для текущего пользователя")
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping
-    public StudentDto createStudent(
+    public StudentDto createStudentForCurrentUser(
             @AuthenticationPrincipal AuthUser authUser,
             @RequestBody @Valid StudentCreateDto createDto
     ) {
         return studentService.createStudent(authUser.id(), createDto);
+    }
+
+    @Operation(summary = "Создание студента")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('DEAN')")
+    @PostMapping("user/{userId}")
+    public StudentDto createStudent(
+            @PathVariable UUID userId,
+            @RequestBody @Valid StudentCreateDto createDto
+    ) {
+        return studentService.createStudent(userId, createDto);
     }
 
     @Operation(summary = "Обновление информации о студенте")
