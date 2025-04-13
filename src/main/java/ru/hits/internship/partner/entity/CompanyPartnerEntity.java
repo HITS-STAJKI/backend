@@ -32,7 +32,6 @@ public class CompanyPartnerEntity {
     private String description;
     @Column(name = "logo_filename")
     private String logoFilename;
-    @OneToOne
-    @JoinColumn(name = "curator_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "companyPartner")
     private CuratorEntity curator;
 }
