@@ -1,11 +1,8 @@
 package ru.hits.internship.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.hits.internship.common.exceptions.BadRequestException;
-import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.user.mapper.DeanMapper;
 import ru.hits.internship.user.model.common.UserRole;

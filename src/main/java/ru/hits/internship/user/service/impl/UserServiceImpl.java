@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ru.hits.internship.common.Foundation;
-import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;

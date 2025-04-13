@@ -7,18 +7,13 @@ import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.group.entity.GroupEntity;
 import ru.hits.internship.group.repository.GroupRepository;
-import ru.hits.internship.user.mapper.DeanMapper;
 import ru.hits.internship.user.mapper.StudentMapper;
 import ru.hits.internship.user.model.common.UserRole;
-import ru.hits.internship.user.model.dto.role.request.create.DeanCreateDto;
 import ru.hits.internship.user.model.dto.role.request.create.StudentCreateDto;
 import ru.hits.internship.user.model.dto.role.request.edit.StudentEditDto;
-import ru.hits.internship.user.model.dto.role.response.DeanDto;
 import ru.hits.internship.user.model.dto.role.response.StudentDto;
 import ru.hits.internship.user.model.entity.UserEntity;
-import ru.hits.internship.user.model.entity.role.DeanEntity;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
-import ru.hits.internship.user.repository.DeanRepository;
 import ru.hits.internship.user.repository.StudentRepository;
 import ru.hits.internship.user.repository.UserRepository;
 import ru.hits.internship.user.service.StudentService;
@@ -40,20 +35,6 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentDto updateStudent(UUID studentId, StudentEditDto editDto) {
-        StudentEntity student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new NotFoundException(StudentEntity.class, studentId));
-
-        GroupEntity group = groupRepository.findById(editDto.groupId())
-                .orElseThrow(() -> new NotFoundException(GroupEntity.class, editDto.groupId()));
-
-        StudentEntity updatedStudent = StudentMapper.INSTANCE.updateStudent(student, group);
-        studentRepository.save(updatedStudent);
-
-        return StudentMapper.INSTANCE.toDto(updatedStudent);
-    }
-
-    @Override
     public StudentDto createStudent(UUID userId, StudentCreateDto createDto) {
         GroupEntity group = groupRepository.findById(createDto.groupId())
                 .orElseThrow(() -> new NotFoundException(GroupEntity.class, createDto.groupId()));
@@ -65,5 +46,19 @@ public class StudentServiceImpl implements StudentService {
         studentRepository.save(student);
 
         return StudentMapper.INSTANCE.toDto(student);
+    }
+
+    @Override
+    public StudentDto updateStudent(UUID studentId, StudentEditDto editDto) {
+        StudentEntity student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new NotFoundException(StudentEntity.class, studentId));
+
+        GroupEntity group = groupRepository.findById(editDto.groupId())
+                .orElseThrow(() -> new NotFoundException(GroupEntity.class, editDto.groupId()));
+
+        StudentEntity updatedStudent = StudentMapper.INSTANCE.updateStudent(student, group);
+        studentRepository.save(updatedStudent);
+
+        return StudentMapper.INSTANCE.toDto(updatedStudent);
     }
 }
