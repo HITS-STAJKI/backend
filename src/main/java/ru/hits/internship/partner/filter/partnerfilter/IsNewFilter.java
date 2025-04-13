@@ -17,7 +17,7 @@ public class IsNewFilter implements Filter<CompanyPartnerEntity, PartnerFilter> 
 
     @Override
     public boolean isApplicable(PartnerFilter filter) {
-        return filter.getIsNew() != null && Boolean.TRUE.equals(filter.getIsNew());
+        return Boolean.TRUE.equals(filter.getIsNew());
     }
 
     @Override
