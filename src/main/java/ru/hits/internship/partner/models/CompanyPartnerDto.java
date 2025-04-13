@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.hits.internship.user.model.dto.user.UserDto;
+import ru.hits.internship.user.model.dto.user.UserShortDto;
 
 @Data
 @AllArgsConstructor
@@ -26,5 +26,5 @@ public class CompanyPartnerDto {
     @NotBlank(message = "Описание должно быть заполнено")
     private String description;
     @Schema(description = "Куратор, закрепленный за компанией")
-    private UserDto curator;
+    private UserShortDto curator;
 }
