@@ -17,9 +17,9 @@ import ru.hits.internship.user.model.entity.role.TeacherEntity;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    UserDto toDto(UserEntity entity);
-    UserShortDto toShortDto(UserEntity entity);
-    AuthUser toAuthUser(UserEntity entity);
+    UserDto toDto(UserEntity user);
+    UserShortDto toShortDto(UserEntity user);
+    AuthUser toAuthUser(UserEntity user);
     UserEntity toEntity(RegistrationRequestDto registrationDto);
     UserEntity updateUser(@MappingTarget UserEntity user, UserEditDto editDto);
 

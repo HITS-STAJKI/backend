@@ -14,11 +14,11 @@ import ru.hits.internship.user.model.entity.role.StudentEntity;
 public interface StudentMapper {
     StudentMapper INSTANCE = Mappers.getMapper(StudentMapper.class);
 
-    StudentDto toDto(StudentEntity dean);
-
-    @Mapping(target = "id", ignore = true)
-    StudentEntity updateStudent(@MappingTarget StudentEntity student, GroupEntity group);
+    StudentDto toDto(StudentEntity student);
 
     @Mapping(target = "id", ignore = true)
     StudentEntity toEntity(UserEntity user, GroupEntity group);
+
+    @Mapping(target = "id", ignore = true)
+    StudentEntity updateStudent(@MappingTarget StudentEntity student, GroupEntity group);
 }
