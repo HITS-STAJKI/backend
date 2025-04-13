@@ -13,12 +13,13 @@ import ru.hits.internship.partner.models.ShortCompanyPartnerDto;
 import ru.hits.internship.partner.models.UpdateCompanyPartnerDto;
 import ru.hits.internship.user.mapper.UserMapper;
 
-@Mapper(componentModel = "spring", uses = UserMapper.class)
+@Mapper(componentModel = "spring", uses = { UserMapper.class })
 public interface CompanyPartnerMapper {
 
     @Mapping(target = "logoFilename", constant = "ссылка на файл") // TODO
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "curator", ignore = true)
+    @Mapping(target = "practices", ignore = true)
     CompanyPartnerEntity toEntity(CreateCompanyPartnerDto createCompanyPartnerDto);
 
     @Mapping(target = "curator", source = "companyPartnerEntity.curator.user")
