@@ -23,6 +23,7 @@ import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.interview.models.CreateInterviewDto;
 import ru.hits.internship.interview.models.InterviewDto;
+import ru.hits.internship.interview.models.InterviewFilter;
 import ru.hits.internship.interview.models.UpdateInterviewDto;
 import ru.hits.internship.interview.service.InterviewService;
 import ru.hits.internship.user.model.dto.user.AuthUser;
@@ -80,15 +81,15 @@ public class InterviewController {
         return interviewService.getInterview(user, interviewId);
     }
 
-    @Operation(summary = "Получить список отборов конкретного студента", description = "Запрос доступен для деканата")
+    @Operation(summary = "Получить список отборов", description = "Запрос доступен для деканата")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{studentId}/list")
     public PagedListDto<InterviewDto> getInterviewList(
             @AuthenticationPrincipal AuthUser user,
-            @PathVariable @Parameter(description = "Id студента") UUID studentId,
+            @Valid @ParameterObject InterviewFilter interviewFilter,
             @ParameterObject @PageableDefault Pageable pageable
     ) {
-        return interviewService.getInterviewList(user, studentId, pageable);
+        return interviewService.getInterviewList(user, interviewFilter, pageable);
     }
 
     @Operation(summary = "Получить список отборов", description = "Запрос доступен для студентов")

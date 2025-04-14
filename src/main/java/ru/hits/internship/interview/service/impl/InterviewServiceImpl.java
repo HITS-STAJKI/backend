@@ -3,15 +3,18 @@ package ru.hits.internship.interview.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.hits.internship.common.exceptions.ForbiddenException;
 import ru.hits.internship.common.exceptions.NotFoundException;
+import ru.hits.internship.common.filters.Filter;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.interview.entity.InterviewEntity;
 import ru.hits.internship.interview.mapper.InterviewMapper;
 import ru.hits.internship.interview.models.CreateInterviewDto;
 import ru.hits.internship.interview.models.InterviewDto;
+import ru.hits.internship.interview.models.InterviewFilter;
 import ru.hits.internship.interview.models.UpdateInterviewDto;
 import ru.hits.internship.interview.repository.InterviewRepository;
 import ru.hits.internship.interview.service.InterviewService;
@@ -27,10 +30,7 @@ import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
 import ru.hits.internship.user.repository.UserRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static ru.hits.internship.interview.service.common.InterviewUtils.getStudentIdIfExists;
 import static ru.hits.internship.interview.service.common.InterviewUtils.isUserAuthor;
@@ -46,6 +46,7 @@ public class InterviewServiceImpl implements InterviewService {
     private final LanguageRepository languageRepository;
     private final CompanyPartnerRepository companyPartnerRepository;
     private final UserRepository userRepository;
+    private final List<Filter<InterviewEntity, InterviewFilter>> filters;
 
     @Override
     @Transactional
@@ -71,7 +72,7 @@ public class InterviewServiceImpl implements InterviewService {
                 .orElseThrow(() -> new NotFoundException("Пользователь не имеет роли студента"));
         entity.setStudent(student);
 
-        InterviewEntity savedEntity = interviewRepository.save(entity);
+        InterviewEntity savedEntity = interviewRepository.saveAndFlush(entity);
         return interviewMapper.map(savedEntity);
     }
 
@@ -93,7 +94,7 @@ public class InterviewServiceImpl implements InterviewService {
         List<LanguageEntity> languages = getLanguageReferences(updateInterviewDto.getLanguageIds());
         interview.setLanguages(languages);
 
-        InterviewEntity savedInterview = interviewRepository.save(interview);
+        InterviewEntity savedInterview = interviewRepository.saveAndFlush(interview);
 
         return interviewMapper.map(savedInterview);
     }
@@ -125,12 +126,21 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
     @Override
-    public PagedListDto<InterviewDto> getInterviewList(AuthUser user, UUID studentId, Pageable pageable) {
+    public PagedListDto<InterviewDto> getInterviewList(AuthUser user, InterviewFilter interviewFilter, Pageable pageable) {
         if (!isUserHasRole(user, UserRole.DEAN) && !isUserHasRole(user, UserRole.CURATOR)) {
             throw new ForbiddenException();
         }
 
-        return getInterviewListByStudentId(studentId, pageable);
+        Specification<InterviewEntity> specification = Optional.ofNullable(interviewFilter)
+                .map(filter -> filters.stream()
+                        .map(f -> f.build(filter))
+                        .filter(Objects::nonNull)
+                        .reduce(Specification.where(null), Specification::and))
+                .orElse(Specification.where(null));
+
+        Page<InterviewEntity> page = interviewRepository.findAll(specification, pageable);
+
+        return new PagedListDto<>(page.map(interviewMapper::map));
     }
 
     @Override
@@ -141,12 +151,7 @@ public class InterviewServiceImpl implements InterviewService {
             throw new NotFoundException("Пользователь не имеет роли студента");
         }
 
-        return getInterviewListByStudentId(studentId.get(), pageable);
-    }
-
-    @Transactional(readOnly = true)
-    private PagedListDto<InterviewDto> getInterviewListByStudentId(UUID studentId, Pageable pageable) {
-        Page<InterviewEntity> page = interviewRepository.findAllByStudentId(studentId, pageable);
+        Page<InterviewEntity> page = interviewRepository.findAllByStudentId(studentId.get(), pageable);
 
         return new PagedListDto<>(page.map(interviewMapper::map));
     }
