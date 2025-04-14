@@ -13,5 +13,5 @@ public record CuratorShortDto(
         UUID id,
 
         @NotNull
-        ShortCompanyPartnerDto company
+        ShortCompanyPartnerDto companyPartner
 ) {}

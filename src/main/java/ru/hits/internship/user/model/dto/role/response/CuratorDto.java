@@ -17,5 +17,5 @@ public record CuratorDto(
         UserShortDto user,
 
         @NotNull
-        ShortCompanyPartnerDto company
+        ShortCompanyPartnerDto companyPartner
 ) {}

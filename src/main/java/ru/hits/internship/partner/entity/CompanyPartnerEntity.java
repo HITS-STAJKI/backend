@@ -35,10 +35,9 @@ public class CompanyPartnerEntity {
     private String name;
     @Column(name = "description", nullable = false)
     private String description;
-    @Column(name = "logo_filename", nullable = false)
+    @Column(name = "logo_filename")
     private String logoFilename;
-    @OneToOne
-    @JoinColumn(name = "curator_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "companyPartner")
     private CuratorEntity curator;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)

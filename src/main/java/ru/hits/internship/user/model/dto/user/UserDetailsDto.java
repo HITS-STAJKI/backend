@@ -1,10 +1,10 @@
 package ru.hits.internship.user.model.dto.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import ru.hits.internship.user.model.dto.role.response.*;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Schema(description = "Подробная модель пользователя")
@@ -25,11 +25,15 @@ public record UserDetailsDto (
         @Schema(description = "Фамилия пользователя", example = "Иванов")
         String lastName,
 
-        Optional<DeanShortDto> dean,
+        @Nullable
+        DeanShortDto dean,
 
-        Optional<StudentShortDto> student,
+        @Nullable
+        StudentShortDto student,
 
-        Optional<CuratorShortDto> curator,
+        @Nullable
+        CuratorShortDto curator,
 
-        Optional<TeacherShortDto> teacher
+        @Nullable
+        TeacherShortDto teacher
 ) {}

@@ -36,6 +36,6 @@ public class UserEntity {
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<RoleEntity> roles;
 }

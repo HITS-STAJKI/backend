@@ -9,7 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import ru.hits.internship.user.service.UserService;
+import ru.hits.internship.user.service.AuthService;
 
 import java.io.IOException;
 
@@ -21,7 +21,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
     private final JwtService jwtService;
-    private final UserService userService;
+    private final AuthService authService;
 
     @Override
     protected void doFilterInternal(
@@ -49,7 +49,7 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        var authUser = userService.getAuthUserByEmail(email);
+        var authUser = authService.getAuthUserByEmail(email);
         var authToken = new UsernamePasswordAuthenticationToken(authUser, null, authUser.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authToken);

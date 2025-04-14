@@ -6,7 +6,7 @@ import ru.hits.internship.report.entity.ReportCommentEntity;
 import ru.hits.internship.report.entity.ReportEntity;
 import ru.hits.internship.report.models.CreateReportCommentDto;
 import ru.hits.internship.report.models.ReportCommentDto;
-import ru.hits.internship.user.UserMapper;
+import ru.hits.internship.user.mapper.UserMapper;
 import ru.hits.internship.user.model.entity.UserEntity;
 
 @Mapper(componentModel = "spring", uses = {UserMapper.class})
