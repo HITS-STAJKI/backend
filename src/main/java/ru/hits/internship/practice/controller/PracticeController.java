@@ -10,6 +10,8 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +24,7 @@ import ru.hits.internship.practice.models.CreatePracticeDto;
 import ru.hits.internship.practice.models.PracticeDto;
 import ru.hits.internship.practice.models.UpdatePracticeDto;
 import ru.hits.internship.practice.service.PracticeService;
+import ru.hits.internship.user.model.dto.user.AuthUser;
 
 import java.util.UUID;
 
@@ -33,12 +36,23 @@ public class PracticeController {
     private final PracticeService practiceService;
 
     @Operation(
+            summary = "Получение информации о практике студентом",
+            description = "Позволяет студенту получить информацию о своей практике"
+    )
+    @SecurityRequirement(name = "bearerAuth")
+    @GetMapping("/my")
+    @PreAuthorize("hasRole('STUDENT')")
+    public PracticeDto getMyPractice(@AuthenticationPrincipal AuthUser authUser) {
+        return practiceService.getStudentCurrentPractice(authUser.id());
+    }
+
+    @Operation(
             summary = "Получение информации о практике студента",
             description = "Позволяет получить информацию о практике студента"
     )
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping
-    //TODO("Добавить получение студента из Principal")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
     public PracticeDto getCurrentStudentPractice(
             @RequestParam("id") @Parameter(description = "Id студента") UUID studentId
     ) {
@@ -51,6 +65,7 @@ public class PracticeController {
     )
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/list/all")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
     public PagedListDto<PracticeDto> getStudentPractices(
             @RequestParam("id") @Parameter(description = "Id студента") UUID studentId,
             @ParameterObject @PageableDefault(sort = "createdAt", direction = Sort.Direction.ASC) Pageable pageable
@@ -64,8 +79,12 @@ public class PracticeController {
     )
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping
-    public PracticeDto createStudentPractice(@RequestBody @Valid CreatePracticeDto createPracticeDto) {
-        return practiceService.createStudentPractice(createPracticeDto);
+    @PreAuthorize("hasRole('STUDENT')")
+    public PracticeDto createStudentPractice(
+            @AuthenticationPrincipal AuthUser authUser,
+            @RequestBody @Valid CreatePracticeDto createPracticeDto
+    ) {
+        return practiceService.createStudentPractice(authUser, createPracticeDto);
     }
 
     @Operation(
@@ -74,6 +93,7 @@ public class PracticeController {
     )
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/approve")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
     public PracticeDto approveStudentPractice(
             @RequestParam("id") @Parameter(description = "Id практики") UUID practiceId
     ) {
@@ -86,6 +106,7 @@ public class PracticeController {
     )
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/list/unapproved")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
     public PagedListDto<PracticeDto> getPracticeRequests(
             @ParameterObject @PageableDefault(sort = "createdAt", direction = Sort.Direction.ASC) Pageable pageable
     ) {
@@ -98,6 +119,7 @@ public class PracticeController {
     )
     @SecurityRequirement(name = "bearerAuth")
     @PutMapping
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
     public PracticeDto updatePractice(
             @RequestParam("id") @Parameter(description = "Id практики") UUID practiceId,
             @RequestBody @Valid UpdatePracticeDto updatePracticeDto
@@ -111,6 +133,7 @@ public class PracticeController {
     )
     @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/archive")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
     public PracticeDto archiveStudentPractice(
             @RequestParam("id") @Parameter(description = "Id практики") UUID practiceId
     ) {

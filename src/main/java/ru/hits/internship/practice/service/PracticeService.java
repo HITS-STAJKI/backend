@@ -5,6 +5,7 @@ import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.practice.models.CreatePracticeDto;
 import ru.hits.internship.practice.models.PracticeDto;
 import ru.hits.internship.practice.models.UpdatePracticeDto;
+import ru.hits.internship.user.model.dto.user.AuthUser;
 
 import java.util.UUID;
 
@@ -13,7 +14,7 @@ public interface PracticeService {
 
     PagedListDto<PracticeDto> getStudentPractices(UUID studentId, Pageable pageable);
 
-    PracticeDto createStudentPractice(CreatePracticeDto createPracticeDto);
+    PracticeDto createStudentPractice(AuthUser user, CreatePracticeDto createPracticeDto);
 
     PracticeDto approveStudentPractice(UUID practiceId);
 

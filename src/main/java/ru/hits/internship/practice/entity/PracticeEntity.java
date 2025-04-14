@@ -53,4 +53,9 @@ public class PracticeEntity {
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
     private CompanyPartnerEntity company;
+
+    public PracticeEntity(StudentEntity student, CompanyPartnerEntity company) {
+        this.student = student;
+        this.company = company;
+    }
 }
