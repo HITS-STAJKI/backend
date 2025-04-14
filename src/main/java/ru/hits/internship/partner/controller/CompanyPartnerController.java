@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -68,6 +69,7 @@ public class CompanyPartnerController {
             description = "Позволяет получить обновить информацию о партнере"
     )
     @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('DEAN')")
     @PutMapping("/{partnerId}")
     public CompanyPartnerDto updatePartnerInfo(
             @Parameter(description = "Идентификатор партнера") @PathVariable UUID partnerId,
@@ -81,6 +83,7 @@ public class CompanyPartnerController {
             description = "Позволяет создать нового партнера"
     )
     @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('DEAN')")
     @PostMapping
     public CompanyPartnerDto createPartner(
             @RequestBody @Valid CreateCompanyPartnerDto createCompanyPartnerDto
@@ -93,6 +96,7 @@ public class CompanyPartnerController {
             description = "Позволяет удалить партнера"
     )
     @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('DEAN')")
     @DeleteMapping("/{partnerId}")
     public Response deletePartner(
             @Parameter(description = "Идентификатор партнера") @PathVariable UUID partnerId
