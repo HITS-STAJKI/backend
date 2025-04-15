@@ -19,13 +19,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.practice.models.CreatePracticeDto;
 import ru.hits.internship.practice.models.PracticeDto;
 import ru.hits.internship.practice.models.UpdatePracticeDto;
+import ru.hits.internship.practice.models.filter.GetAllPracticeFilter;
 import ru.hits.internship.practice.service.PracticeService;
+import ru.hits.internship.user.model.common.UserRole;
+import ru.hits.internship.user.model.dto.role.response.RoleDto;
 import ru.hits.internship.user.model.dto.user.AuthUser;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Tag(name = "Практики", description = "Отвечает за работу с практиками студентов")
@@ -43,7 +48,10 @@ public class PracticeController {
     @GetMapping("/my")
     @PreAuthorize("hasRole('STUDENT')")
     public PracticeDto getMyPractice(@AuthenticationPrincipal AuthUser authUser) {
-        return practiceService.getStudentCurrentPractice(authUser.id());
+        RoleDto studentDto = Optional.of(authUser.roles().get(UserRole.STUDENT))
+                .orElseThrow(() -> new BadRequestException("Пользователь не является студентом"));
+
+        return practiceService.getStudentCurrentPractice(studentDto.id());
     }
 
     @Operation(
@@ -60,11 +68,25 @@ public class PracticeController {
     }
 
     @Operation(
+            summary = "Получить список практик всех студентов",
+            description = "Позволяет получить полный список практик с пагинацией (вместе с архивированными)"
+    )
+    @SecurityRequirement(name = "bearerAuth")
+    @GetMapping("/list/all")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
+    public PagedListDto<PracticeDto> getAllPractices(
+            @ParameterObject GetAllPracticeFilter filter,
+            @ParameterObject @PageableDefault(sort = "createdAt", direction = Sort.Direction.ASC) Pageable pageable
+    ) {
+        return practiceService.getAllPractices(filter, pageable);
+    }
+
+    @Operation(
             summary = "Получить список практик студента",
             description = "Позволяет получить полный список практик студента с пагинацией (вместе с архивированными)"
     )
     @SecurityRequirement(name = "bearerAuth")
-    @GetMapping("/list/all")
+    @GetMapping("/list")
     @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
     public PagedListDto<PracticeDto> getStudentPractices(
             @RequestParam("id") @Parameter(description = "Id студента") UUID studentId,
