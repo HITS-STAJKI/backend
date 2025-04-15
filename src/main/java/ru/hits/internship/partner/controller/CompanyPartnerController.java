@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
-import ru.hits.internship.group.dto.GroupFilter;
 import ru.hits.internship.partner.models.CompanyPartnerDto;
 import ru.hits.internship.partner.models.CreateCompanyPartnerDto;
 import ru.hits.internship.partner.models.PartnerFilter;

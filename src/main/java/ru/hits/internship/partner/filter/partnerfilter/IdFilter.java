@@ -5,8 +5,8 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.stereotype.Component;
-import ru.hits.internship.partner.entity.CompanyPartnerEntity;
 import ru.hits.internship.common.filters.Filter;
+import ru.hits.internship.partner.entity.CompanyPartnerEntity;
 import ru.hits.internship.partner.models.PartnerFilter;
 
 @Component("partnerFilterId")

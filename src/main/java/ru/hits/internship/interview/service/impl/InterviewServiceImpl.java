@@ -125,6 +125,7 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PagedListDto<InterviewDto> getInterviewList(AuthUser user, UUID studentId, Pageable pageable) {
         if (!isUserHasRole(user, UserRole.DEAN) && !isUserHasRole(user, UserRole.CURATOR)) {
             throw new ForbiddenException();
@@ -134,6 +135,7 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PagedListDto<InterviewDto> getInterviewList(AuthUser user, Pageable pageable) {
         Optional<UUID> studentId = getStudentIdIfExists(user);
 
@@ -144,7 +146,6 @@ public class InterviewServiceImpl implements InterviewService {
         return getInterviewListByStudentId(studentId.get(), pageable);
     }
 
-    @Transactional(readOnly = true)
     private PagedListDto<InterviewDto> getInterviewListByStudentId(UUID studentId, Pageable pageable) {
         Page<InterviewEntity> page = interviewRepository.findAllByStudentId(studentId, pageable);
 

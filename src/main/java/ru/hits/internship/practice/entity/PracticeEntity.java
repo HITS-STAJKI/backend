@@ -1,5 +1,6 @@
 package ru.hits.internship.practice.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,13 +45,18 @@ public class PracticeEntity {
     private Boolean isApproved = false;
     @Column(name = "is_archived", nullable = false)
     private Boolean isArchived = false;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id", nullable = false)
     private StudentEntity student;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "report_id")
     private ReportEntity report;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "company_id", nullable = false)
     private CompanyPartnerEntity company;
+
+    public PracticeEntity(StudentEntity student, CompanyPartnerEntity company) {
+        this.student = student;
+        this.company = company;
+    }
 }

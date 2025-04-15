@@ -25,7 +25,11 @@ import ru.hits.internship.user.model.dto.auth.LoginCredentialsDto;
 import ru.hits.internship.user.model.dto.auth.PasswordEditDto;
 import ru.hits.internship.user.model.dto.auth.RegistrationRequestDto;
 import ru.hits.internship.user.model.dto.auth.TokenDto;
-import ru.hits.internship.user.model.dto.user.*;
+import ru.hits.internship.user.model.dto.user.AuthUser;
+import ru.hits.internship.user.model.dto.user.UserDetailsDto;
+import ru.hits.internship.user.model.dto.user.UserDto;
+import ru.hits.internship.user.model.dto.user.UserEditDto;
+import ru.hits.internship.user.model.dto.user.UserShortDto;
 import ru.hits.internship.user.service.AuthService;
 import ru.hits.internship.user.service.UserService;
 
