@@ -95,22 +95,25 @@ public class PracticeServiceImpl implements PracticeService {
 
         var practice = new PracticeEntity(student, company);
 
-        var report = new ReportEntity();
-        report.setAuthor(student.getUser());
-        report.setPractice(practice);
-        practice.setReport(report);
-
         var savedPractice = repository.save(practice);
 
         return mapper.toDto(savedPractice);
     }
 
     @Override
-    public PracticeDto approveStudentPractice(UUID practiceId) {
-        var practice = repository.findById(practiceId)
-                .orElseThrow(() -> new NotFoundException(String.format("Практика с id: %s не найдена", practiceId)));
+    public PracticeDto approveStudentPractice(UUID studentId) {
+        var student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new NotFoundException(String.format("Не найден студент с id: %s ", studentId)));
+        var practice = repository.findByStudentIdAndIsArchivedFalse(studentId)
+                .orElseThrow(() -> new NotFoundException(String.format("У студента с id: %s не найдена практика", studentId)));
 
         practice.setIsApproved(true);
+
+        var report = new ReportEntity();
+        report.setAuthor(student.getUser());
+        report.setPractice(practice);
+        practice.setReport(report);
+
         var savedPractice = repository.save(practice);
 
         return mapper.toDto(savedPractice);

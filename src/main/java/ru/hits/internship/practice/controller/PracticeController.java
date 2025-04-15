@@ -117,9 +117,9 @@ public class PracticeController {
     @PostMapping("/approve")
     @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
     public PracticeDto approveStudentPractice(
-            @RequestParam("id") @Parameter(description = "Id практики") UUID practiceId
+            @RequestParam("id") @Parameter(description = "Id студента") UUID studentId
     ) {
-        return practiceService.approveStudentPractice(practiceId);
+        return practiceService.approveStudentPractice(studentId);
     }
 
     @Operation(

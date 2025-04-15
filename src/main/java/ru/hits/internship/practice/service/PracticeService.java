@@ -19,7 +19,7 @@ public interface PracticeService {
 
     PracticeDto createStudentPractice(AuthUser user, CreatePracticeDto createPracticeDto);
 
-    PracticeDto approveStudentPractice(UUID practiceId);
+    PracticeDto approveStudentPractice(UUID studentId);
 
     PagedListDto<PracticeDto> getPracticeRequests(Pageable pageable);
 
