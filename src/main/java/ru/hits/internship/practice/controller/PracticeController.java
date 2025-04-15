@@ -23,6 +23,7 @@ import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.practice.models.CreatePracticeDto;
 import ru.hits.internship.practice.models.PracticeDto;
 import ru.hits.internship.practice.models.UpdatePracticeDto;
+import ru.hits.internship.practice.models.filter.GetAllPracticeFilter;
 import ru.hits.internship.practice.service.PracticeService;
 import ru.hits.internship.user.model.dto.user.AuthUser;
 
@@ -60,11 +61,25 @@ public class PracticeController {
     }
 
     @Operation(
+            summary = "Получить список практик всех студентов",
+            description = "Позволяет получить полный список практик с пагинацией (вместе с архивированными)"
+    )
+    @SecurityRequirement(name = "bearerAuth")
+    @GetMapping("/list/all")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
+    public PagedListDto<PracticeDto> getAllPractices(
+            @ParameterObject GetAllPracticeFilter filter,
+            @ParameterObject @PageableDefault(sort = "createdAt", direction = Sort.Direction.ASC) Pageable pageable
+    ) {
+        return practiceService.getAllPractices(filter, pageable);
+    }
+
+    @Operation(
             summary = "Получить список практик студента",
             description = "Позволяет получить полный список практик студента с пагинацией (вместе с архивированными)"
     )
     @SecurityRequirement(name = "bearerAuth")
-    @GetMapping("/list/all")
+    @GetMapping("/list")
     @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
     public PagedListDto<PracticeDto> getStudentPractices(
             @RequestParam("id") @Parameter(description = "Id студента") UUID studentId,

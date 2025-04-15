@@ -3,6 +3,7 @@ package ru.hits.internship.practice.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.exceptions.NotFoundException;
@@ -13,7 +14,9 @@ import ru.hits.internship.practice.mapper.PracticeMapper;
 import ru.hits.internship.practice.models.CreatePracticeDto;
 import ru.hits.internship.practice.models.PracticeDto;
 import ru.hits.internship.practice.models.UpdatePracticeDto;
+import ru.hits.internship.practice.models.filter.GetAllPracticeFilter;
 import ru.hits.internship.practice.repository.PracticeRepository;
+import ru.hits.internship.practice.specification.PracticeSpecification;
 import ru.hits.internship.report.entity.ReportEntity;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.role.response.RoleDto;
@@ -45,6 +48,22 @@ public class PracticeServiceImpl implements PracticeService {
                 .map(mapper::toDto);
 
         return new PagedListDto<>(practices);
+    }
+
+    @Override
+    public PagedListDto<PracticeDto> getAllPractices(GetAllPracticeFilter filter, Pageable pageable) {
+        Specification<PracticeEntity> specification = Specification
+                .where(PracticeSpecification.hasReport(filter.getHasReport()))
+                .and(PracticeSpecification.isReportApproved(filter.getIsReportApproved()))
+                .and(PracticeSpecification.hasCompanyId(filter.getCompanyId()))
+                .and(PracticeSpecification.hasGroupInGroupIds(filter.getGroupIds()))
+                .and(PracticeSpecification.isArchived(filter.getIsArchived()))
+                .and(PracticeSpecification.hasStudentName(filter.getStudentName()))
+                .and(PracticeSpecification.isPracticeApproved(filter.getIsPracticeApproved()));
+
+        Page<PracticeEntity> practicesPage = repository.findAll(specification, pageable);
+
+        return new PagedListDto<>(practicesPage.map(mapper::toDto));
     }
 
     @Override
