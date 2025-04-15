@@ -21,13 +21,9 @@ public record RegistrationRequestDto(
         @Size(min = 6, max = 100, message = "Минимальная длина пароля - 6, максимальная - 100")
         String password,
 
-        @Schema(description = "Имя пользователя", example = "Иван")
-        @NotNull(message = "Имя должно быть заполнено")
-        @NotBlank(message = "Имя должно быть заполнено")
-        String firstName,
 
-        @Schema(description = "Фамилия пользователя", example = "Иванов")
-        @NotNull(message = "Фамилия должна быть заполнена")
-        @NotBlank(message = "Фамилия должна быть заполнена")
-        String lastName
+        @Schema(description = "ФИО пользователя", example = "Иванов Иван Иванович")
+        @NotNull(message = "ФИО должно быть заполнено")
+        @NotBlank(message = "ФИО должно быть заполнено")
+        String fullName
 ) {}

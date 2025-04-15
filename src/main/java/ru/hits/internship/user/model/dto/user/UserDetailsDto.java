@@ -21,12 +21,8 @@ public record UserDetailsDto (
         String email,
 
         @NotNull
-        @Schema(description = "Имя пользователя", example = "Иван")
-        String firstName,
-
-        @NotNull
-        @Schema(description = "Фамилия пользователя", example = "Иванов")
-        String lastName,
+        @Schema(description = "ФИО пользователя", example = "Иванов Иван Иванович")
+        String fullName,
 
         @Nullable
         DeanShortDto dean,

@@ -49,8 +49,7 @@ public interface UserMapper {
 
     @Mapping(target = "id", source = "user.id")
     @Mapping(target = "email", source = "user.email")
-    @Mapping(target = "firstName", source = "user.firstName")
-    @Mapping(target = "lastName", source = "user.lastName")
+    @Mapping(target = "fullName", source = "user.fullName")
     @Mapping(target = "roles", source = "user.roles")
     UserDto toDtoFromStudent(StudentEntity studentEntity);
 

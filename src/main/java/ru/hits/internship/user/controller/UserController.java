@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
+import ru.hits.internship.partner.models.PartnerFilter;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.auth.LoginCredentialsDto;
 import ru.hits.internship.user.model.dto.auth.PasswordEditDto;
@@ -98,8 +99,9 @@ public class UserController {
     public PagedListDto<UserDto> getUserList(
             @AuthenticationPrincipal AuthUser authUser,
             @RequestParam(required = false) Optional<UserRole> userRole,
+            @ParameterObject UserFilter userFilter,
             @ParameterObject Pageable pageable
     ) {
-        return userService.getAllUsers(authUser.id(), pageable);
+        return userService.getAllUsers(authUser.id(), userFilter, pageable);
     }
 }
