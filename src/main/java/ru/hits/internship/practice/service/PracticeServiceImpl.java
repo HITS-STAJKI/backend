@@ -75,6 +75,12 @@ public class PracticeServiceImpl implements PracticeService {
         RoleDto studentDto = Optional.of(authUser.roles().get(UserRole.STUDENT))
                 .orElseThrow(() -> new BadRequestException("Пользователь не является студентом"));
 
+        repository.findByStudentIdAndIsArchivedFalse(studentDto.id())
+                .ifPresent(practiceEntity -> {
+                            throw new BadRequestException("Студент уже находится на практике");
+                        }
+                );
+
         var company = companyPartnerRepository.findById(companyId)
                 .orElseThrow(() -> new NotFoundException(String.format("Компания с id: %s не найдена", companyId)));
         var student = studentRepository.findById(studentDto.id())
