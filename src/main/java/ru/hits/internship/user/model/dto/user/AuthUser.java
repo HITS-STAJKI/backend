@@ -13,8 +13,7 @@ import java.util.UUID;
 public record AuthUser (
         UUID id,
         String email,
-        String firstName,
-        String lastName,
+        String fullName,
         Set<RoleDto> roles
 ) {
     public Collection<? extends GrantedAuthority> getAuthorities() {

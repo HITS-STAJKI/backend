@@ -15,11 +15,9 @@ public record UserDto (
         @Schema(description = "Адрес электронной почты", example = "example@example.ru")
         String email,
 
-        @Schema(description = "Имя пользователя", example = "Иван")
-        String firstName,
 
-        @Schema(description = "Фамилия пользователя", example = "Иванов")
-        String lastName,
+        @Schema(description = "ФИО пользователя", example = "Иванов Иван Иванович")
+        String fullName,
 
         @ArraySchema(schema = @Schema(implementation = RoleDto.class, description = "Роль пользователя"))
         Set<RoleDto> roles

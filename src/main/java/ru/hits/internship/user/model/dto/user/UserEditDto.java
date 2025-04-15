@@ -6,13 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Schema(description = "Модель редактирования пользователя")
 public record UserEditDto(
-        @Schema(description = "Имя пользователя", example = "Иван")
-        @NotNull(message = "Имя должно быть заполнено")
-        @NotBlank(message = "Имя должно быть заполнено")
-        String firstName,
-
-        @Schema(description = "Фамилия пользователя", example = "Иванов")
-        @NotNull(message = "Фамилия должна быть заполнена")
-        @NotBlank(message = "Фамилия должна быть заполнена")
-        String lastName
+        @Schema(description = "Полное имя пользователя", example = "Иванов Иван Иванович")
+        @NotBlank(message = "Полное имя должно быть заполнено")
+        String fullName
 ) {}
