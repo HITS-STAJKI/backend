@@ -9,9 +9,9 @@ import ru.hits.internship.interview.entity.InterviewCommentEntity;
 import ru.hits.internship.interview.models.CreateInterviewCommentDto;
 import ru.hits.internship.interview.models.InterviewCommentDto;
 import ru.hits.internship.interview.models.UpdateInterviewCommentDto;
+import ru.hits.internship.user.mapper.UserMapper;
 
-//TODO Прикрутить маппер (feature/#3932?)
-@Mapper(componentModel = "spring"/*, uses = {UserMapper.class}*/)
+@Mapper(componentModel = "spring", uses = {UserMapper.class})
 public interface InterviewCommentMapper {
 
     @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)

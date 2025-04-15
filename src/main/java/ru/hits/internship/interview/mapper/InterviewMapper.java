@@ -13,8 +13,9 @@ import ru.hits.internship.interview.models.UpdateInterviewDto;
 import ru.hits.internship.language.mapper.LanguageMapper;
 import ru.hits.internship.partner.mapper.CompanyPartnerMapper;
 import ru.hits.internship.stack.mapper.StackMapper;
+import ru.hits.internship.user.mapper.UserMapper;
 
-@Mapper(componentModel = "spring", uses = {StackMapper.class, CompanyPartnerMapper.class, LanguageMapper.class})
+@Mapper(componentModel = "spring", uses = {StackMapper.class, CompanyPartnerMapper.class, LanguageMapper.class, UserMapper.class})
 public interface InterviewMapper {
 
     @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -25,5 +26,6 @@ public interface InterviewMapper {
     void update(@MappingTarget InterviewEntity entity, UpdateInterviewDto dto);
 
     @Mapping(target = "companyPartner", source = "company")
+    @Mapping(target = "student", source = "student.user")
     InterviewDto map(InterviewEntity entity);
 }

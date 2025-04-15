@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import ru.hits.internship.language.models.LanguageDto;
 import ru.hits.internship.partner.models.ShortCompanyPartnerDto;
 import ru.hits.internship.stack.models.StackDto;
+import ru.hits.internship.user.model.dto.user.UserDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,4 +37,6 @@ public class InterviewDto {
     private List<LanguageDto> languages;
     @NotNull
     private ShortCompanyPartnerDto companyPartner;
+    @NotNull
+    private UserDto student;
 }
