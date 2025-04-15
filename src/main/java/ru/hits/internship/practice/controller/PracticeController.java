@@ -128,8 +128,8 @@ public class PracticeController {
     }
 
     @Operation(
-            summary = "Удаление практики студента",
-            description = "Позволяет куратору удалить практику студента"
+            summary = "Заархивирование практики студента",
+            description = "Позволяет куратору заархивировать практику студента"
     )
     @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/archive")

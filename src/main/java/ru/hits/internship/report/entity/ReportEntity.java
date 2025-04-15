@@ -44,10 +44,10 @@ public class ReportEntity {
     private UUID fileId;
     @Column(name = "isApproved", nullable = false)
     private Boolean isApproved = false;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id", nullable = false)
     private UserEntity author;
-    @OneToOne(mappedBy = "report")
+    @OneToOne(mappedBy = "report", cascade = CascadeType.ALL)
     private PracticeEntity practice;
     @OneToMany(mappedBy = "report", cascade = CascadeType.ALL)
     private List<ReportCommentEntity> comments;

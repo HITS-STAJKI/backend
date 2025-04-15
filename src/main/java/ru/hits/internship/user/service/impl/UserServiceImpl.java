@@ -16,8 +16,12 @@ import ru.hits.internship.user.model.dto.user.UserDto;
 import ru.hits.internship.user.model.dto.user.UserEditDto;
 import ru.hits.internship.user.model.dto.user.UserShortDto;
 import ru.hits.internship.user.model.entity.UserEntity;
-import ru.hits.internship.user.model.entity.role.*;
-import ru.hits.internship.user.repository.*;
+import ru.hits.internship.user.model.entity.role.CuratorEntity;
+import ru.hits.internship.user.model.entity.role.DeanEntity;
+import ru.hits.internship.user.model.entity.role.RoleEntity;
+import ru.hits.internship.user.model.entity.role.StudentEntity;
+import ru.hits.internship.user.model.entity.role.TeacherEntity;
+import ru.hits.internship.user.repository.UserRepository;
 import ru.hits.internship.user.service.UserService;
 
 import java.util.Map;

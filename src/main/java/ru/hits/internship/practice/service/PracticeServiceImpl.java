@@ -14,6 +14,7 @@ import ru.hits.internship.practice.models.CreatePracticeDto;
 import ru.hits.internship.practice.models.PracticeDto;
 import ru.hits.internship.practice.models.UpdatePracticeDto;
 import ru.hits.internship.practice.repository.PracticeRepository;
+import ru.hits.internship.report.entity.ReportEntity;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.role.response.RoleDto;
 import ru.hits.internship.user.model.dto.user.AuthUser;
@@ -32,7 +33,7 @@ public class PracticeServiceImpl implements PracticeService {
 
     @Override
     public PracticeDto getStudentCurrentPractice(UUID studentId) {
-        var practice = repository.findById(studentId)
+        var practice = repository.findByStudentId(studentId)
                 .orElseThrow(() -> new NotFoundException(String.format("У студента с id: %s отсутствует практика", studentId)));
 
         return mapper.toDto(practice);
@@ -54,13 +55,17 @@ public class PracticeServiceImpl implements PracticeService {
 
         var company = companyPartnerRepository.findById(companyId)
                 .orElseThrow(() -> new NotFoundException(String.format("Компания с id: %s не найдена", companyId)));
-        var studentEntity = studentRepository.findById(studentDto.id())
+        var student = studentRepository.findById(studentDto.id())
                 .orElseThrow(() -> new NotFoundException(String.format("Не найден студент с id: %s ", studentDto.id())));
-        //TODO(Сделать создание практики)
-        var practice = new PracticeEntity();
+        var practice = new PracticeEntity(student, company);
+        var report = new ReportEntity();
+        report.setAuthor(student.getUser());
+        report.setPractice(practice);
+        practice.setReport(report);
 
+        var savedPractice = repository.save(practice);
 
-        return null;
+        return mapper.toDto(savedPractice);
     }
 
     @Override

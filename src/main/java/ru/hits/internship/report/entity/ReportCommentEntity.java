@@ -1,5 +1,6 @@
 package ru.hits.internship.report.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,10 +38,10 @@ public class ReportCommentEntity {
     @Column(name = "modified_at")
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id", nullable = false)
     private UserEntity author;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "report_id", nullable = false)
     private ReportEntity report;
 }

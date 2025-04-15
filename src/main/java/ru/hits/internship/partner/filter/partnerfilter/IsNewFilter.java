@@ -7,8 +7,8 @@ import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.stereotype.Component;
-import ru.hits.internship.partner.entity.CompanyPartnerEntity;
 import ru.hits.internship.common.filters.Filter;
+import ru.hits.internship.partner.entity.CompanyPartnerEntity;
 import ru.hits.internship.partner.models.PartnerFilter;
 import ru.hits.internship.practice.entity.PracticeEntity;
 

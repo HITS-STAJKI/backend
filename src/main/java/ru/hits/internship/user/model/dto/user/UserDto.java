@@ -2,7 +2,7 @@ package ru.hits.internship.user.model.dto.user;
 
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
-import ru.hits.internship.user.model.dto.role.response.*;
+import ru.hits.internship.user.model.dto.role.response.RoleDto;
 
 import java.util.Set;
 import java.util.UUID;
