@@ -3,24 +3,31 @@ package ru.hits.internship.user.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ru.hits.internship.common.Foundation;
 import ru.hits.internship.common.exceptions.NotFoundException;
+import ru.hits.internship.common.filters.Filter;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
+import ru.hits.internship.partner.entity.CompanyPartnerEntity;
 import ru.hits.internship.user.mapper.UserMapper;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.user.UserDetailsDto;
 import ru.hits.internship.user.model.dto.user.UserDto;
 import ru.hits.internship.user.model.dto.user.UserEditDto;
+import ru.hits.internship.user.model.dto.user.UserFilter;
 import ru.hits.internship.user.model.dto.user.UserShortDto;
 import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.model.entity.role.*;
 import ru.hits.internship.user.repository.*;
 import ru.hits.internship.user.service.UserService;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -30,10 +37,22 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final List<Filter<UserEntity, UserFilter>> filters;
 
     @Override
-    public PagedListDto<UserDto> getAllUsers(UUID userId, Pageable pageable) {
-        Page<UserEntity> userPage = userRepository.findAllByIdNot(userId, pageable);
+    public PagedListDto<UserDto> getAllUsers(UUID userId, UserFilter userFilter, Pageable pageable) {
+        //Page<UserEntity> userPage = userRepository.findAllByIdNot(userId, pageable);
+        // NOTE (Aleks): точно ли нужно исключать текущего пользователя из выборки?
+
+        Specification<UserEntity> specification = Optional.ofNullable(userFilter)
+                .map(filter -> filters.stream()
+                        .map(f -> f.build(filter))
+                        .filter(Objects::nonNull)
+                        .reduce(Specification.where(null), Specification::and))
+                .orElse(Specification.where(null));
+
+        Page<UserEntity> userPage = userRepository.findAll(specification, pageable);
+
         Page<UserDto> userDtoPage = userPage.map(UserMapper.INSTANCE::toDto);
 
         return new PagedListDto<>(userDtoPage);
