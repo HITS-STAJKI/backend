@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
+import ru.hits.internship.interview.models.StatusEnum;
+import ru.hits.internship.interview.repository.InterviewRepository;
 import ru.hits.internship.partner.repository.CompanyPartnerRepository;
 import ru.hits.internship.practice.entity.PracticeEntity;
 import ru.hits.internship.practice.mapper.PracticeMapper;
@@ -31,12 +33,13 @@ import java.util.UUID;
 public class PracticeServiceImpl implements PracticeService {
     private final PracticeRepository repository;
     private final CompanyPartnerRepository companyPartnerRepository;
+    private final InterviewRepository interviewRepository;
     private final StudentRepository studentRepository;
     private final PracticeMapper mapper;
 
     @Override
     public PracticeDto getStudentCurrentPractice(UUID studentId) {
-        var practice = repository.findByStudentId(studentId)
+        var practice = repository.findByStudentIdAndIsArchivedFalse(studentId)
                 .orElseThrow(() -> new NotFoundException(String.format("У студента с id: %s отсутствует практика", studentId)));
 
         return mapper.toDto(practice);
@@ -76,7 +79,16 @@ public class PracticeServiceImpl implements PracticeService {
                 .orElseThrow(() -> new NotFoundException(String.format("Компания с id: %s не найдена", companyId)));
         var student = studentRepository.findById(studentDto.id())
                 .orElseThrow(() -> new NotFoundException(String.format("Не найден студент с id: %s ", studentDto.id())));
+
+        var interview = interviewRepository.findByCompanyAndStudent(company, student)
+                .orElseThrow(() -> new BadRequestException("Студент не проходил отбор в указанную компанию"));
+
+        if (!interview.getStatus().equals(StatusEnum.SUCCEED)) {
+            throw new BadRequestException("Студент не прошел отбор в данную компанию");
+        }
+
         var practice = new PracticeEntity(student, company);
+
         var report = new ReportEntity();
         report.setAuthor(student.getUser());
         report.setPractice(practice);

@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PracticeRepository extends JpaRepository<PracticeEntity, UUID>, JpaSpecificationExecutor<PracticeEntity> {
-    Optional<PracticeEntity> findByStudentId(UUID studentId);
+    Optional<PracticeEntity> findByStudentIdAndIsArchivedFalse(UUID studentId);
 
     Page<PracticeEntity> findAllByStudentId(UUID studentId, Pageable pageable);
 
