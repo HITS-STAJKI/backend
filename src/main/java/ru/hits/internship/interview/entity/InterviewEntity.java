@@ -31,7 +31,7 @@ public class InterviewEntity {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
     @UpdateTimestamp
-    @Column(name = "modified_at", nullable = false)
+    @Column(name = "modified_at", nullable = true, insertable = false)
     private LocalDateTime modifiedAt;
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)

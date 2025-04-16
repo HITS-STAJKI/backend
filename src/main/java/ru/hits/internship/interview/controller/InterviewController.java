@@ -83,7 +83,7 @@ public class InterviewController {
 
     @Operation(summary = "Получить список отборов", description = "Запрос доступен для деканата")
     @SecurityRequirement(name = "bearerAuth")
-    @GetMapping("dean/list")
+    @GetMapping("/dean/list")
     public PagedListDto<InterviewDto> getInterviewList(
             @AuthenticationPrincipal AuthUser user,
             @Valid @ParameterObject InterviewFilter interviewFilter,
