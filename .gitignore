@@ -1,5 +1,5 @@
 HELP.md
-deploy.bat
+deploy.ps1
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
