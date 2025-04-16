@@ -14,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Schema(description = "Фильтр для получения страницы отборов")
 public class InterviewFilter {
-    @Schema(description = "ФИ студента (разрешается частичное совпадение)", example = "Иванов Иван")
+    @Schema(description = "ФИО студента (разрешается частичное совпадение)", example = "Иванов Иван")
     private String studentName;
 
     @Schema(description = "Идентификатор компании-партнера", example = "123e4567-e89b-12d3-a456-426614174000")
