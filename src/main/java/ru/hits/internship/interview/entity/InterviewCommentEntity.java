@@ -1,5 +1,6 @@
 package ru.hits.internship.interview.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,10 +38,10 @@ public class InterviewCommentEntity {
     private LocalDateTime modifiedAt;
     @Column(name = "content", nullable = false)
     private String content;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id", nullable = false)
     private UserEntity author;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "interview_id", nullable = false)
     private InterviewEntity interview;
 }

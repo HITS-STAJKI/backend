@@ -23,7 +23,7 @@ import java.util.List;
 @Entity
 @Table(name = "students")
 public class StudentEntity extends RoleEntity {
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "group_id", nullable = false)
     private GroupEntity group;
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)

@@ -7,10 +7,11 @@ import ru.hits.internship.user.model.entity.UserEntity;
 
 public class RoleChecker {
 
-    private RoleChecker() {}
+    private RoleChecker() {
+    }
 
     public static Boolean isUserHasRole(AuthUser user, UserRole userRole) {
-        return user.roles().stream().anyMatch((role -> role.userRole().equals(userRole)));
+        return user.roles().containsKey(userRole);
     }
 
     public static void verifyRoleAvailable(UserEntity user, UserRole userRole) {
