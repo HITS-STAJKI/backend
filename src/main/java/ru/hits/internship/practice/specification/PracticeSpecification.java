@@ -12,21 +12,8 @@ public class PracticeSpecification {
             if (studentName == null || studentName.isEmpty()) {
                 return criteriaBuilder.conjunction();
             }
-            String[] nameParts = studentName.split(" ");
-            if (nameParts.length == 1) {
-                // Поиск по имени ИЛИ фамилии
-                return criteriaBuilder.or(
-                        criteriaBuilder.like(root.get("student").get("user").get("firstName"), "%" + nameParts[0] + "%"),
-                        criteriaBuilder.like(root.get("student").get("user").get("lastName"), "%" + nameParts[0] + "%")
-                );
-            } else if (nameParts.length >= 2) {
-                // Поиск по имени И фамилии
-                return criteriaBuilder.and(
-                        criteriaBuilder.like(root.get("student").get("user").get("firstName"), "%" + nameParts[0] + "%"),
-                        criteriaBuilder.like(root.get("student").get("user").get("lastName"), "%" + nameParts[1] + "%")
-                );
-            }
-            return criteriaBuilder.conjunction();
+
+            return criteriaBuilder.like(root.get("student").get("user").get("fullName"), "%" + studentName + "%");
         };
     }
 
