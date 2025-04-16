@@ -11,5 +11,5 @@ import java.util.UUID;
 public interface StudentService {
     StudentDto updateStudent(UUID studentId, StudentEditDto editDto);
     StudentDto createStudent(UUID userId, StudentCreateDto createDto);
-    PagedListDto<StudentDto> getAllStudents(UUID userId, Pageable pageable);
+    PagedListDto<StudentDto> getAllStudents(UUID userId, String fullName, Pageable pageable);
 }

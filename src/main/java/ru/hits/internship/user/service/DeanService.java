@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface DeanService {
     DeanDto createDean(DeanCreateDto createDto);
-    PagedListDto<DeanDto> getAllDeans(UUID userId, Pageable pageable);
+    PagedListDto<DeanDto> getAllDeans(UUID userId, String fullName, Pageable pageable);
 }

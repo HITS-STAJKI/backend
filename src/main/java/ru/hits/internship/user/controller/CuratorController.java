@@ -60,8 +60,8 @@ public class CuratorController {
     public PagedListDto<CuratorDto> getAllCurators(
             @AuthenticationPrincipal AuthUser authUser,
             @ParameterObject Pageable pageable,
-            @RequestParam(required = false) UUID companyId
+            @RequestParam(required = false) String fullName
     ) {
-        return curatorService.getAllCurators(authUser.id(), pageable);
+        return curatorService.getAllCurators(authUser.id(), fullName, pageable);
     }
 }

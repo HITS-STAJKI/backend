@@ -11,5 +11,5 @@ import java.util.UUID;
 public interface CuratorService {
     CuratorDto updateCurator(UUID curatorId, CuratorEditDto editDto);
     CuratorDto createCurator(CuratorCreateDto createDto);
-    PagedListDto<CuratorDto> getAllCurators(UUID userId, Pageable pageable);
+    PagedListDto<CuratorDto> getAllCurators(UUID userId, String fullName, Pageable pageable);
 }

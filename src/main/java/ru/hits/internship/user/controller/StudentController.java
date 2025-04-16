@@ -73,8 +73,8 @@ public class StudentController {
     public PagedListDto<StudentDto> getAllStudents(
             @AuthenticationPrincipal AuthUser authUser,
             @ParameterObject Pageable pageable,
-            @RequestParam(required = false) UUID groupId
+            @RequestParam(required = false) String fullName
     ) {
-        return studentService.getAllStudents(authUser.id(), pageable);
+        return studentService.getAllStudents(authUser.id(), fullName, pageable);
     }
 }
