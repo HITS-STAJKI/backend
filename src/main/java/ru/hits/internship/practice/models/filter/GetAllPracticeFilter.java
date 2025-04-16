@@ -13,11 +13,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @Schema(description = "Фильтры для получения всех практик")
 public class GetAllPracticeFilter {
-    @Schema(description = "Имя студента", example = "Васильев")
+    @Schema(description = "Имя студента")
     private String studentName;
     @Schema(description = "Список идентификаторов групп")
     private List<UUID> groupIds;
-    @Schema(description = "Идентификатор компании-партнера", example = "f39b02d1-8bff-4055-90aa-09819522b1d9")
+    @Schema(description = "Идентификатор компании-партнера")
     private UUID companyId;
     @Schema(description = "Флаг выбора практик с прикрепленным отчетом или без. null - если все", example = "null")
     private Boolean hasReport;
