@@ -30,8 +30,8 @@ public class CuratorServiceImpl implements CuratorService {
     private final CompanyPartnerRepository companyPartnerRepository;
 
     @Override
-    public PagedListDto<CuratorDto> getAllCurators(UUID userId, Pageable pageable) {
-        return curatorRepository.findAll(userId, pageable, CuratorMapper.INSTANCE::toDto);
+    public PagedListDto<CuratorDto> getAllCurators(UUID userId, String fullName, Pageable pageable) {
+        return curatorRepository.findAll(userId, fullName, pageable, CuratorMapper.INSTANCE::toDto);
     }
 
     @Override

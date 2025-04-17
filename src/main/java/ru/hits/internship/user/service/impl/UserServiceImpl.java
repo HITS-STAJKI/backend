@@ -45,9 +45,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PagedListDto<UserDto> getAllUsers(UUID userId, UserFilter userFilter, Pageable pageable) {
-        //Page<UserEntity> userPage = userRepository.findAllByIdNot(userId, pageable);
-        // NOTE (Aleks): точно ли нужно исключать текущего пользователя из выборки?
-
         Specification<UserEntity> specification = Optional.ofNullable(userFilter)
                 .map(filter -> filters.stream()
                         .map(f -> f.build(filter))
@@ -56,7 +53,6 @@ public class UserServiceImpl implements UserService {
                 .orElse(Specification.where(null));
 
         Page<UserEntity> userPage = userRepository.findAll(specification, pageable);
-
         Page<UserDto> userDtoPage = userPage.map(UserMapper.INSTANCE::toDto);
 
         return new PagedListDto<>(userDtoPage);

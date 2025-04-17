@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface TeacherService {
     TeacherDto createTeacher(TeacherCreateDto createDto);
-    PagedListDto<TeacherDto> getAllTeachers(UUID userId, Pageable pageable);
+    PagedListDto<TeacherDto> getAllTeachers(UUID userId, String fullName, Pageable pageable);
 }

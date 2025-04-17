@@ -25,8 +25,8 @@ public class DeanServiceImpl implements DeanService {
     private final DeanRepository deanRepository;
 
     @Override
-    public PagedListDto<DeanDto> getAllDeans(UUID userId, Pageable pageable) {
-        return deanRepository.findAll(userId, pageable, DeanMapper.INSTANCE::toDto);
+    public PagedListDto<DeanDto> getAllDeans(UUID userId, String fullName, Pageable pageable) {
+        return deanRepository.findAll(userId, fullName, pageable, DeanMapper.INSTANCE::toDto);
     }
 
     @Override

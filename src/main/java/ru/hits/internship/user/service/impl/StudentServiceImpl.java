@@ -30,8 +30,8 @@ public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
 
     @Override
-    public PagedListDto<StudentDto> getAllStudents(UUID userId, Pageable pageable) {
-        return studentRepository.findAll(userId, pageable, StudentMapper.INSTANCE::toDto);
+    public PagedListDto<StudentDto> getAllStudents(UUID userId, String fullName, Pageable pageable) {
+        return studentRepository.findAll(userId, fullName, pageable, StudentMapper.INSTANCE::toDto);
     }
 
     @Override

@@ -9,11 +9,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.user.model.dto.role.request.create.DeanCreateDto;
 import ru.hits.internship.user.model.dto.role.response.DeanDto;
@@ -34,9 +30,10 @@ public class DeanController {
     @GetMapping("/list")
     public PagedListDto<DeanDto> getAllDeans(
             @AuthenticationPrincipal AuthUser authUser,
-            @ParameterObject Pageable pageable
+            @ParameterObject Pageable pageable,
+            @RequestParam(required = false) String fullName
     ) {
-        return deanService.getAllDeans(authUser.id(), pageable);
+        return deanService.getAllDeans(authUser.id(), fullName, pageable);
     }
 
     @Operation(summary = "Создание представителя деканата")

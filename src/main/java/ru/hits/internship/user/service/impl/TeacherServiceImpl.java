@@ -25,8 +25,8 @@ public class TeacherServiceImpl implements TeacherService {
     private final TeacherRepository teacherRepository;
 
     @Override
-    public PagedListDto<TeacherDto> getAllTeachers(UUID userId, Pageable pageable) {
-        return teacherRepository.findAll(userId, pageable, TeacherMapper.INSTANCE::toDto);
+    public PagedListDto<TeacherDto> getAllTeachers(UUID userId, String fullName, Pageable pageable) {
+        return teacherRepository.findAll(userId, fullName, pageable, TeacherMapper.INSTANCE::toDto);
     }
 
     @Override
