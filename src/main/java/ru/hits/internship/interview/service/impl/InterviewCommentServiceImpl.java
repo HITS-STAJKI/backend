@@ -23,6 +23,7 @@ import ru.hits.internship.user.model.dto.user.AuthUser;
 import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.repository.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -52,10 +53,10 @@ public class InterviewCommentServiceImpl implements InterviewCommentService {
         UserEntity author = userRepository.getReferenceById(user.id());
         entity.setAuthor(author);
 
-        if (!interviewRepository.existsById(interviewId)) {
-            throw new NotFoundException("Отбор с id %s не найден".formatted(interviewId));
-        }
-        InterviewEntity interview = interviewRepository.getReferenceById(interviewId);
+        InterviewEntity interview = interviewRepository.findById(interviewId)
+                .orElseThrow(() -> new NotFoundException("Отбор с id %s не найден".formatted(interviewId)));
+        interview.setModifiedAt(LocalDateTime.now());
+        interviewRepository.save(interview);
         entity.setInterview(interview);
 
         InterviewCommentEntity savedEntity = commentRepository.saveAndFlush(entity);
@@ -72,6 +73,12 @@ public class InterviewCommentServiceImpl implements InterviewCommentService {
             throw new ForbiddenException();
         }
 
+        UUID interviewId = comment.getInterview().getId();
+        InterviewEntity interview = interviewRepository.findById(interviewId)
+                .orElseThrow(() -> new NotFoundException("Отбор с id %s не найден".formatted(interviewId)));
+        interview.setModifiedAt(LocalDateTime.now());
+        interviewRepository.save(interview);
+
         commentMapper.update(comment, updateInterviewCommentDto);
         InterviewCommentEntity savedComment = commentRepository.saveAndFlush(comment);
 
@@ -87,6 +94,12 @@ public class InterviewCommentServiceImpl implements InterviewCommentService {
         if (!isUserAuthor(user, comment)) {
             throw new ForbiddenException();
         }
+
+        UUID interviewId = comment.getInterview().getId();
+        InterviewEntity interview = interviewRepository.findById(interviewId)
+                .orElseThrow(() -> new NotFoundException("Отбор с id %s не найден".formatted(interviewId)));
+        interview.setModifiedAt(LocalDateTime.now());
+        interviewRepository.save(interview);
 
         commentRepository.delete(comment);
     }

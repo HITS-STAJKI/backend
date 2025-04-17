@@ -4,6 +4,7 @@ import org.springframework.data.domain.Pageable;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.interview.models.CreateInterviewDto;
 import ru.hits.internship.interview.models.InterviewDto;
+import ru.hits.internship.interview.models.InterviewFilter;
 import ru.hits.internship.interview.models.UpdateInterviewDto;
 import ru.hits.internship.user.model.dto.user.AuthUser;
 
@@ -19,7 +20,7 @@ public interface InterviewService {
 
     InterviewDto getInterview(AuthUser user, UUID interviewId);
 
-    PagedListDto<InterviewDto> getInterviewList(AuthUser user, UUID studentId, Pageable pageable);
+    PagedListDto<InterviewDto> getInterviewList(AuthUser user, InterviewFilter interviewFilter, Pageable pageable);
 
     PagedListDto<InterviewDto> getInterviewList(AuthUser user, Pageable pageable);
 }

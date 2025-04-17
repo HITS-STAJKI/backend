@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import ru.hits.internship.language.models.LanguageDto;
 import ru.hits.internship.partner.models.ShortCompanyPartnerDto;
 import ru.hits.internship.stack.models.StackDto;
+import ru.hits.internship.user.model.dto.user.UserDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +22,12 @@ public class InterviewDto {
     @Schema(description = "Идентификатор отбора", example = "3ea42ea8-5258-4086-a43f-113ff89577a1")
     @NotNull(message = "Идентификатор должен быть заполнен")
     private UUID id;
+    @Schema(description = "Время создания отбора", example = "2023-10-01T12:00:00Z")
+    @NotNull(message = "Время создания должно быть заполнено")
+    private LocalDateTime createdAt;
+    @Schema(description = "Время обновления отбора", example = "2023-10-01T12:00:00Z")
+    @NotNull(message = "Время обновления должно быть заполнено")
+    private LocalDateTime modifiedAt;
     @Schema(description = "Статус отбора", example = "PENDING")
     @NotNull(message = "Статус должен быть заполнен")
     private StatusEnum status;
@@ -29,4 +37,6 @@ public class InterviewDto {
     private List<LanguageDto> languages;
     @NotNull
     private ShortCompanyPartnerDto companyPartner;
+    @NotNull
+    private UserDto student;
 }
