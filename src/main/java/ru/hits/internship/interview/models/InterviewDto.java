@@ -26,7 +26,6 @@ public class InterviewDto {
     @NotNull(message = "Время создания должно быть заполнено")
     private LocalDateTime createdAt;
     @Schema(description = "Время обновления отбора", example = "2023-10-01T12:00:00Z")
-    @NotNull(message = "Время обновления должно быть заполнено")
     private LocalDateTime modifiedAt;
     @Schema(description = "Статус отбора", example = "PENDING")
     @NotNull(message = "Статус должен быть заполнен")
