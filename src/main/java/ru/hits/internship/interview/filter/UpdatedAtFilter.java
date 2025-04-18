@@ -20,8 +20,14 @@ public class UpdatedAtFilter implements Filter<InterviewEntity, InterviewFilter>
     @Override
     public Predicate toPredicate(Root<InterviewEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder, InterviewFilter filter) {
         return criteriaBuilder.and(
-                filter.getModifiedAtFrom() != null ? criteriaBuilder.greaterThanOrEqualTo(root.get("modifiedAt"), filter.getModifiedAtFrom()) : criteriaBuilder.conjunction(),
-                filter.getModifiedAtTo() != null ? criteriaBuilder.lessThanOrEqualTo(root.get("modifiedAt"), filter.getModifiedAtTo()) : criteriaBuilder.conjunction()
+                filter.getModifiedAtFrom() != null ? criteriaBuilder.and(
+                        criteriaBuilder.isNotNull(root.get("modifiedAt")),
+                        criteriaBuilder.greaterThanOrEqualTo(root.get("modifiedAt"), filter.getModifiedAtFrom())
+                ): criteriaBuilder.conjunction(),
+                filter.getModifiedAtTo() != null ? criteriaBuilder.and(
+                        criteriaBuilder.isNotNull(root.get("modifiedAt")),
+                        criteriaBuilder.lessThanOrEqualTo(root.get("modifiedAt"), filter.getModifiedAtTo())
+                ): criteriaBuilder.conjunction()
         );
     }
 }
