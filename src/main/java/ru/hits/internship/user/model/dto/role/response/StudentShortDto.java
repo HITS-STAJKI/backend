@@ -13,5 +13,11 @@ public record StudentShortDto(
         UUID id,
 
         @NotNull
+        Boolean isAcadem,
+
+        @NotNull
+        Boolean isGraduated,
+
+        @NotNull
         GroupShortDto group
 ) {}
