@@ -14,6 +14,12 @@ public record StudentDto(
         UUID id,
 
         @NotNull
+        Boolean isAcadem,
+
+        @NotNull
+        Boolean isGraduated,
+
+        @NotNull
         UserShortDto user,
 
         @NotNull

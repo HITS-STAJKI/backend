@@ -1,11 +1,6 @@
 package ru.hits.internship.user.model.entity.role;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +21,15 @@ public class StudentEntity extends RoleEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "group_id", nullable = false)
     private GroupEntity group;
+
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<InterviewEntity> interviews;
+
+    @Column(name = "is_academ", nullable = false, columnDefinition = "boolean default false")
+    private Boolean isAcadem;
+
+    @Column(name = "is_graduated", nullable = false, columnDefinition = "boolean default false")
+    private Boolean isGraduated;
 
     @Override
     public UserRole getUserRole() {
