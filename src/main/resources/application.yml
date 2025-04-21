@@ -5,7 +5,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/internship
     username: postgres
-    password: postgres
+    password: password123
   liquibase:
     enabled: true
     change-log: classpath:/db/changelog/changelog-master.yml
@@ -16,9 +16,28 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2MB
+      max-file-size: 200MB
+      max-request-size: 250MB
+
 jwt:
   lifetime: 1h
   secret: 7cc5f72d8500f4f68addccaa218998a2b855134bc0a04bdd13c06cb467c5293a
+
 logging:
   level:
     org.springframework.security: DEBUG
+    io.minio: WARN
+
+
+minio:
+  endpoint: http://176.124.205.213:9000
+  access-key: aOq9W0A75LggDcqCGuJm
+  secret-key: 83v1sJIEZsnSJwaDm4NB3rnqyxFLWrbTKTa5jlJw
+  bucket-name: report-files
+  connect-timeout: 5000
+  write-timeout: 15000
+  read-timeout: 15000
