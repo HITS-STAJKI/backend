@@ -28,10 +28,16 @@ public class FileEntity {
 
     @CreatedDate
     @Column(name = "created_at", nullable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "object_key", nullable = false)
+    private String objectKey;
+
+    @Column(name = "content_type", nullable = false)
+    private String contentType;
 
     @Column(name = "size", nullable = false)
     private Long size;
