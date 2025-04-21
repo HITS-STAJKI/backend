@@ -63,7 +63,7 @@ public class FileServiceImpl implements FileService {
 
             return minioStorageService.downloadFile(fileEntity.getObjectKey());
         } catch (Exception e) {
-            throw new BadRequestException("Ошибка загрузки файла: " + e.getMessage());
+            throw new BadRequestException("Ошибка скачивания файла: " + e.getMessage());
         }
     }
 
