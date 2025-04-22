@@ -20,8 +20,9 @@ spring:
     multipart:
       enabled: true
       file-size-threshold: 2MB
-      max-file-size: 200MB
-      max-request-size: 250MB
+      max-file-size: 25MB
+      max-request-size: 30MB
+      resolve-lazily: true
 
 jwt:
   lifetime: 1h

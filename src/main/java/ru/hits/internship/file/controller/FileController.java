@@ -4,6 +4,7 @@ package ru.hits.internship.file.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
@@ -57,8 +58,9 @@ public class FileController {
     @Operation(summary = "Скачать файл отчета",
             description = "Позволяет скачать файл отчета")
     @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("@acf.hasAccess(#authUser.id(), #id)")
-    public ResponseEntity<Resource> downloadFile(@AuthenticationPrincipal AuthUser authUser, @PathVariable UUID id) {
+    @PreAuthorize("@acf.isOwner(#authUser.id(), #id) or hasAnyRole('DEAN', 'CURATOR')")
+    public ResponseEntity<Resource> downloadFile(@AuthenticationPrincipal AuthUser authUser,
+                                                 @PathVariable @Parameter(description = "id файла") UUID id) {
         Resource resource = fileService.downloadFile(authUser.id(), id);
         FileDto fileDto = fileService.getFileMetadata(id);
 
@@ -72,8 +74,9 @@ public class FileController {
     @Operation(summary = "Получить метаданные файла отчета",
             description = "Позволяет получить метаданные файла отчета")
     @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("@acf.hasAccess(#authUser.id(), #id)")
-    public FileDto getFileMetadata(@AuthenticationPrincipal AuthUser authUser, @PathVariable UUID id) {
+    @PreAuthorize("@acf.isOwner(#authUser.id(), #id) or hasAnyRole('DEAN', 'CURATOR')")
+    public FileDto getFileMetadata(@AuthenticationPrincipal AuthUser authUser,
+                                   @PathVariable @Parameter(description = "id файла") UUID id) {
         return fileService.getFileMetadata(id);
     }
 
@@ -81,8 +84,9 @@ public class FileController {
     @Operation(summary = "Удалить файл отчета",
             description = "Позволяет удалить файл отчета")
     @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("@acf.hasAccess(#authUser.id(), #id)")
-    public Response deleteFile(@AuthenticationPrincipal AuthUser authUser, @PathVariable UUID id) {
+    @PreAuthorize("@acf.isOwner(#authUser.id(), #id) or hasAnyRole('DEAN', 'CURATOR')")
+    public Response deleteFile(@AuthenticationPrincipal AuthUser authUser,
+                               @PathVariable @Parameter(description = "id файла") UUID id) {
         fileService.deleteFile(id);
         return new Response("Файл был успешно удален", HttpStatus.OK.value());
     }

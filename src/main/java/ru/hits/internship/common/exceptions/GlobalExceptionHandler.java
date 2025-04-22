@@ -13,9 +13,9 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import ru.hits.internship.common.exceptions.models.ErrorResponse;
 import ru.hits.internship.common.exceptions.models.ValidationErrorResponse;
-
 import java.util.List;
 
 @RestControllerAdvice
@@ -52,6 +52,16 @@ public class GlobalExceptionHandler {
         log.error(e.getMessage(), e);
 
         var errorResponse = new ErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorResponse> handle(MaxUploadSizeExceededException e) {
+        log.error(e.getMessage(), e);
+
+        var errorResponse =
+                new ErrorResponse("Размер файла превышает допустимый предел", HttpStatus.BAD_REQUEST.value());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 

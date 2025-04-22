@@ -11,7 +11,7 @@ import java.util.UUID;
 public class AccessControlFacade {
     private final FileRepository fileRepository;
 
-    public boolean hasAccess(UUID userId, UUID fileId) {
+    public boolean isOwner(UUID userId, UUID fileId) {
         return fileRepository.existsByIdAndUserId(fileId, userId);
     }
 }
