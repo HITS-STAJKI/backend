@@ -1,6 +1,7 @@
 package ru.hits.internship.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.user.model.dto.role.request.create.StudentCreateDto;
+import ru.hits.internship.user.model.dto.role.request.edit.ReturnFromAcademDto;
 import ru.hits.internship.user.model.dto.role.request.edit.StudentEditDto;
 import ru.hits.internship.user.model.dto.role.response.StudentDto;
 import ru.hits.internship.user.model.dto.user.AuthUser;
@@ -49,6 +51,7 @@ public class StudentController {
     @PreAuthorize("hasRole('DEAN')")
     @PostMapping("user/{userId}")
     public StudentDto createStudent(
+            @Schema(description = "ID пользователя")
             @PathVariable UUID userId,
             @RequestBody @Valid StudentCreateDto createDto
     ) {
@@ -60,6 +63,7 @@ public class StudentController {
     @PreAuthorize("hasRole('DEAN')")
     @PutMapping("/{id}")
     public StudentDto updateStudent(
+            @Schema(description = "ID студента")
             @PathVariable UUID id,
             @RequestBody @Valid StudentEditDto editDto
     ) {
@@ -76,5 +80,28 @@ public class StudentController {
             @RequestParam(required = false) String fullName
     ) {
         return studentService.getAllStudents(authUser.id(), fullName, pageable);
+    }
+
+    @Operation(summary = "Отправка студента в академ")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('DEAN')")
+    @PutMapping("/{studentId}/to-academ")
+    public StudentDto sendStudentToAcadem(
+            @Schema(description = "ID студента")
+            @PathVariable UUID studentId
+    ) {
+        return studentService.sendStudentToAcadem(studentId);
+    }
+
+    @Operation(summary = "Возвращение студента из академа")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('DEAN')")
+    @PutMapping("/{studentId}/from-academ")
+    public StudentDto returnStudentFromAcadem(
+            @Schema(description = "ID студента")
+            @PathVariable UUID studentId,
+            @RequestBody @Valid ReturnFromAcademDto returnDto
+    ) {
+        return studentService.returnStudentFromAcadem(studentId, returnDto);
     }
 }
