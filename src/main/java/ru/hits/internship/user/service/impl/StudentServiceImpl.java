@@ -3,6 +3,7 @@ package ru.hits.internship.user.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.group.entity.GroupEntity;
@@ -10,6 +11,7 @@ import ru.hits.internship.group.repository.GroupRepository;
 import ru.hits.internship.user.mapper.StudentMapper;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.role.request.create.StudentCreateDto;
+import ru.hits.internship.user.model.dto.role.request.edit.ReturnFromAcademDto;
 import ru.hits.internship.user.model.dto.role.request.edit.StudentEditDto;
 import ru.hits.internship.user.model.dto.role.response.StudentDto;
 import ru.hits.internship.user.model.entity.UserEntity;
@@ -49,12 +51,43 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public StudentDto sendStudentToAcadem(UUID studentId) {
+        StudentEntity student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new NotFoundException(StudentEntity.class, studentId));
+
+        student.setIsAcadem(true);
+        student.setGroup(null);
+        studentRepository.save(student);
+
+        return StudentMapper.INSTANCE.toDto(student);
+    }
+
+    @Override
+    public StudentDto returnStudentFromAcadem(UUID studentId, ReturnFromAcademDto returnDto) {
+        StudentEntity student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new NotFoundException(StudentEntity.class, studentId));
+
+        GroupEntity group = groupRepository.findById(returnDto.groupId())
+                .orElseThrow(() -> new NotFoundException(GroupEntity.class, returnDto.groupId()));
+
+        student.setIsAcadem(false);
+        StudentEntity updatedStudent = StudentMapper.INSTANCE.updateStudent(student, group);
+        studentRepository.save(updatedStudent);
+
+        return StudentMapper.INSTANCE.toDto(updatedStudent);
+    }
+
+    @Override
     public StudentDto updateStudent(UUID studentId, StudentEditDto editDto) {
         StudentEntity student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new NotFoundException(StudentEntity.class, studentId));
 
         GroupEntity group = groupRepository.findById(editDto.groupId())
                 .orElseThrow(() -> new NotFoundException(GroupEntity.class, editDto.groupId()));
+
+        if (Boolean.TRUE.equals(student.getIsAcadem())) {
+            throw new BadRequestException("Cannot change group while student is on academic leave.");
+        }
 
         StudentEntity updatedStudent = StudentMapper.INSTANCE.updateStudent(student, group);
         studentRepository.save(updatedStudent);

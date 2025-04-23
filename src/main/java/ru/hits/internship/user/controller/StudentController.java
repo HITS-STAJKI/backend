@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.user.model.dto.role.request.create.StudentCreateDto;
+import ru.hits.internship.user.model.dto.role.request.edit.ReturnFromAcademDto;
 import ru.hits.internship.user.model.dto.role.request.edit.StudentEditDto;
 import ru.hits.internship.user.model.dto.role.response.StudentDto;
 import ru.hits.internship.user.model.dto.user.AuthUser;
@@ -76,5 +77,26 @@ public class StudentController {
             @RequestParam(required = false) String fullName
     ) {
         return studentService.getAllStudents(authUser.id(), fullName, pageable);
+    }
+
+    @Operation(summary = "Отправка студента в академ")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('DEAN')")
+    @PutMapping("/{id}/to-academ")
+    public StudentDto sendStudentToAcadem(
+            @PathVariable UUID id
+    ) {
+        return studentService.sendStudentToAcadem(id);
+    }
+
+    @Operation(summary = "Возвращение студента из академа")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('DEAN')")
+    @PutMapping("/{id}/from-academ")
+    public StudentDto returnStudentFromAcadem(
+            @PathVariable UUID id,
+            @RequestBody @Valid ReturnFromAcademDto returnDto
+    ) {
+        return studentService.returnStudentFromAcadem(id, returnDto);
     }
 }
