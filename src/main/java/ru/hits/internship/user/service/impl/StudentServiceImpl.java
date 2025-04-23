@@ -1,5 +1,6 @@
 package ru.hits.internship.user.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional
     public StudentDto sendStudentToAcadem(UUID studentId) {
         StudentEntity student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new NotFoundException(StudentEntity.class, studentId));
@@ -63,6 +65,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional
     public StudentDto returnStudentFromAcadem(UUID studentId, ReturnFromAcademDto returnDto) {
         StudentEntity student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new NotFoundException(StudentEntity.class, studentId));
@@ -78,6 +81,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional
     public StudentDto updateStudent(UUID studentId, StudentEditDto editDto) {
         StudentEntity student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new NotFoundException(StudentEntity.class, studentId));

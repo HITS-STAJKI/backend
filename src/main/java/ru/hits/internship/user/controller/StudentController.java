@@ -1,6 +1,7 @@
 package ru.hits.internship.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -50,6 +51,7 @@ public class StudentController {
     @PreAuthorize("hasRole('DEAN')")
     @PostMapping("user/{userId}")
     public StudentDto createStudent(
+            @Schema(description = "ID пользователя")
             @PathVariable UUID userId,
             @RequestBody @Valid StudentCreateDto createDto
     ) {
@@ -61,6 +63,7 @@ public class StudentController {
     @PreAuthorize("hasRole('DEAN')")
     @PutMapping("/{id}")
     public StudentDto updateStudent(
+            @Schema(description = "ID студента")
             @PathVariable UUID id,
             @RequestBody @Valid StudentEditDto editDto
     ) {
@@ -82,21 +85,23 @@ public class StudentController {
     @Operation(summary = "Отправка студента в академ")
     @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('DEAN')")
-    @PutMapping("/{id}/to-academ")
+    @PutMapping("/{studentId}/to-academ")
     public StudentDto sendStudentToAcadem(
-            @PathVariable UUID id
+            @Schema(description = "ID студента")
+            @PathVariable UUID studentId
     ) {
-        return studentService.sendStudentToAcadem(id);
+        return studentService.sendStudentToAcadem(studentId);
     }
 
     @Operation(summary = "Возвращение студента из академа")
     @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('DEAN')")
-    @PutMapping("/{id}/from-academ")
+    @PutMapping("/{studentId}/from-academ")
     public StudentDto returnStudentFromAcadem(
-            @PathVariable UUID id,
+            @Schema(description = "ID студента")
+            @PathVariable UUID studentId,
             @RequestBody @Valid ReturnFromAcademDto returnDto
     ) {
-        return studentService.returnStudentFromAcadem(id, returnDto);
+        return studentService.returnStudentFromAcadem(studentId, returnDto);
     }
 }
