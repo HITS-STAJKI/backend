@@ -1,5 +1,7 @@
 package ru.hits.internship.partner.models;
 
+import java.util.List;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,5 +28,5 @@ public class CompanyPartnerDto {
     @NotBlank(message = "Описание должно быть заполнено")
     private String description;
     @Schema(description = "Куратор, закрепленный за компанией")
-    private UserShortDto curator;
+    private List<UserShortDto> curators;
 }
