@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
@@ -25,6 +26,7 @@ import ru.hits.internship.user.model.dto.role.response.RoleDto;
 import ru.hits.internship.user.model.dto.user.AuthUser;
 import ru.hits.internship.user.repository.StudentRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -117,6 +119,36 @@ public class PracticeServiceImpl implements PracticeService {
         var savedPractice = repository.save(practice);
 
         return mapper.toDto(savedPractice);
+    }
+
+    @Override
+    @Transactional
+    public void approveAllStudentPracticesForCompany(UUID companyId) {
+        var practices = repository.findAllByCompanyIdAndIsApprovedFalse(companyId);
+        practices.forEach(practice -> {
+            practice.setIsApproved(true);
+
+            var report = new ReportEntity();
+            report.setAuthor(practice.getStudent().getUser());
+            report.setPractice(practice);
+            practice.setReport(report);
+        });
+        repository.saveAll(practices);
+    }
+
+    @Override
+    @Transactional
+    public void approveStudentPractices(List<UUID> practiceIds) {
+        var practices = repository.findAllByIdInAndIsApprovedFalse(practiceIds);
+        practices.forEach(practice -> {
+            practice.setIsApproved(true);
+
+            var report = new ReportEntity();
+            report.setAuthor(practice.getStudent().getUser());
+            report.setPractice(practice);
+            practice.setReport(report);
+        });
+        repository.saveAll(practices);
     }
 
     @Override

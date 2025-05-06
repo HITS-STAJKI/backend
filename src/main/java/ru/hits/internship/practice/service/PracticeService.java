@@ -8,6 +8,7 @@ import ru.hits.internship.practice.models.UpdatePracticeDto;
 import ru.hits.internship.practice.models.filter.GetAllPracticeFilter;
 import ru.hits.internship.user.model.dto.user.AuthUser;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface PracticeService {
@@ -20,6 +21,10 @@ public interface PracticeService {
     PracticeDto createStudentPractice(AuthUser user, CreatePracticeDto createPracticeDto);
 
     PracticeDto approveStudentPractice(UUID studentId);
+
+    void approveAllStudentPracticesForCompany(UUID companyId);
+
+    void approveStudentPractices(List<UUID> practiceIds);
 
     PagedListDto<PracticeDto> getPracticeRequests(Pageable pageable);
 

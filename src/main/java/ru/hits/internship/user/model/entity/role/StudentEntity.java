@@ -26,10 +26,10 @@ public class StudentEntity extends RoleEntity {
     private List<InterviewEntity> interviews;
 
     @Column(name = "is_academ", nullable = false, columnDefinition = "boolean default false")
-    private Boolean isAcadem;
+    private Boolean isAcadem = false;
 
     @Column(name = "is_graduated", nullable = false, columnDefinition = "boolean default false")
-    private Boolean isGraduated;
+    private Boolean isGraduated = false;
 
     @Override
     public UserRole getUserRole() {
