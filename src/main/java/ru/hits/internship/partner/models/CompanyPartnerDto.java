@@ -27,6 +27,6 @@ public class CompanyPartnerDto {
     @NotNull(message = "Описание должно быть заполнено")
     @NotBlank(message = "Описание должно быть заполнено")
     private String description;
-    @Schema(description = "Куратор, закрепленный за компанией")
+    @Schema(description = "Кураторы, закрепленные за компанией")
     private List<UserShortDto> curators;
 }
