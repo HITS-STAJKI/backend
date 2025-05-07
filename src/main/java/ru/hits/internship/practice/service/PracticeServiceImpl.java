@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
+import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.interview.models.StatusEnum;
 import ru.hits.internship.interview.repository.InterviewRepository;
 import ru.hits.internship.partner.repository.CompanyPartnerRepository;
@@ -123,7 +125,7 @@ public class PracticeServiceImpl implements PracticeService {
 
     @Override
     @Transactional
-    public void approveAllStudentPracticesForCompany(UUID companyId) {
+    public Response approveAllStudentPracticesForCompany(UUID companyId) {
         var practices = repository.findAllByCompanyIdAndIsApprovedFalse(companyId);
         practices.forEach(practice -> {
             practice.setIsApproved(true);
@@ -134,11 +136,16 @@ public class PracticeServiceImpl implements PracticeService {
             practice.setReport(report);
         });
         repository.saveAll(practices);
+
+        return new Response(
+                String.format("Все неподтвержденные практики студентов компании c id %s были подтверждены", companyId.toString()),
+                HttpStatus.OK.value()
+        );
     }
 
     @Override
     @Transactional
-    public void approveStudentPractices(List<UUID> practiceIds) {
+    public Response approveStudentPractices(List<UUID> practiceIds) {
         var practices = repository.findAllByIdInAndIsApprovedFalse(practiceIds);
         practices.forEach(practice -> {
             practice.setIsApproved(true);
@@ -149,6 +156,11 @@ public class PracticeServiceImpl implements PracticeService {
             practice.setReport(report);
         });
         repository.saveAll(practices);
+
+        return new Response(
+                "Практики были подтверждены",
+                HttpStatus.OK.value()
+        );
     }
 
     @Override

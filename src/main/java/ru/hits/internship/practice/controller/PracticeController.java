@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
+import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.practice.models.CreatePracticeDto;
 import ru.hits.internship.practice.models.PracticeDto;
 import ru.hits.internship.practice.models.UpdatePracticeDto;
@@ -130,10 +131,10 @@ public class PracticeController {
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/approveMany")
     @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
-    public void approveStudentPractices(
+    public Response approveStudentPractices(
             @RequestParam("id") @Parameter(description = "Id практик") List<UUID> practiceIds
     ) {
-        practiceService.approveStudentPractices(practiceIds);
+        return practiceService.approveStudentPractices(practiceIds);
     }
 
     @Operation(
@@ -143,10 +144,10 @@ public class PracticeController {
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/approveAll")
     @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
-    public void approveStudentPractices(
+    public Response approveStudentPractices(
             @RequestParam("companyId") @Parameter(description = "Id компании-партнера") UUID companyId
     ) {
-        practiceService.approveAllStudentPracticesForCompany(companyId);
+        return practiceService.approveAllStudentPracticesForCompany(companyId);
     }
 
     @Operation(

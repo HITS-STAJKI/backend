@@ -2,6 +2,7 @@ package ru.hits.internship.practice.service;
 
 import org.springframework.data.domain.Pageable;
 import ru.hits.internship.common.models.pagination.PagedListDto;
+import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.practice.models.CreatePracticeDto;
 import ru.hits.internship.practice.models.PracticeDto;
 import ru.hits.internship.practice.models.UpdatePracticeDto;
@@ -22,9 +23,9 @@ public interface PracticeService {
 
     PracticeDto approveStudentPractice(UUID studentId);
 
-    void approveAllStudentPracticesForCompany(UUID companyId);
+    Response approveAllStudentPracticesForCompany(UUID companyId);
 
-    void approveStudentPractices(List<UUID> practiceIds);
+    Response approveStudentPractices(List<UUID> practiceIds);
 
     PagedListDto<PracticeDto> getPracticeRequests(Pageable pageable);
 
