@@ -7,7 +7,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,8 +35,8 @@ public class CompanyPartnerEntity {
     private String description;
     @Column(name = "logo_filename")
     private String logoFilename;
-    @OneToOne(mappedBy = "companyPartner", cascade = CascadeType.ALL)
-    private CuratorEntity curator;
+    @OneToMany(mappedBy = "companyPartner", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CuratorEntity> curators;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PracticeEntity> practices = new ArrayList<>();
