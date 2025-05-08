@@ -17,6 +17,7 @@ import ru.hits.internship.chat.service.MessageService;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.user.model.entity.UserEntity;
+import ru.hits.internship.user.repository.StudentRepository;
 import ru.hits.internship.user.repository.UserRepository;
 import java.util.UUID;
 
@@ -26,6 +27,7 @@ public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
     private final ChatRepository chatRepository;
     private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
     private final MessageMapper messageMapper;
 
     @Override
@@ -68,8 +70,11 @@ public class MessageServiceImpl implements MessageService {
             throw new NotFoundException(ChatEntity.class, chatId);
         }
 
-        messageRepository.markAsRead(chatId, userId); // TODO: надо подумать, хотим ли мы отображать пользователю уже как прочитанные
-        // или же оставлять их непрочитанными (то есть возвращать page, а только потом помечать как прочитанные ?)
+        if (!studentRepository.existsByUserId(userId)) { // если студент открыл чат, то помечаем все сообщения как прочитанные студентом
+            messageRepository.markAsRead(chatId,
+                    userId); // TODO: надо подумать, хотим ли мы отображать пользователю уже как прочитанные
+            // или же оставлять их непрочитанными (то есть возвращать page, а только потом помечать как прочитанные ?)
+        }
 
         Page<MessageEntity> page = messageRepository.findAllByChat_Id(chatId, pageable);
         // TODO: подумать, реально ли нам нужна именно offset-пагинация для чата?...
