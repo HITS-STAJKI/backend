@@ -23,5 +23,8 @@ public record StudentDto(
         UserShortDto user,
 
         @NotNull
-        GroupShortDto group
+        GroupShortDto group,
+
+        @NotNull
+        UUID chatId
 ) {}

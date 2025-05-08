@@ -19,4 +19,10 @@ public class RoleChecker {
             throw new BadRequestException("User is already has " + userRole + " role");
         }
     }
+
+    public static boolean isUserEntityHasRole(UserEntity user, UserRole userRole) {
+        return user.getRoles()
+                .stream()
+                .anyMatch(r -> r.getUserRole() == userRole);
+    }
 }

@@ -14,6 +14,7 @@ import ru.hits.internship.user.model.entity.role.StudentEntity;
 public interface StudentMapper {
     StudentMapper INSTANCE = Mappers.getMapper(StudentMapper.class);
 
+    @Mapping(target = "chatId", source = "chat.id")
     StudentDto toDto(StudentEntity student);
 
     @Mapping(target = "id", ignore = true)

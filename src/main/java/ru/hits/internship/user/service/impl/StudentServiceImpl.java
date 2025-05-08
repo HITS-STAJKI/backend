@@ -4,6 +4,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.hits.internship.chat.model.chat.ChatDto;
+import ru.hits.internship.chat.service.ChatService;
 import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
@@ -31,6 +33,7 @@ public class StudentServiceImpl implements StudentService {
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
     private final StudentRepository studentRepository;
+    private final ChatService chatService;
 
     @Override
     public PagedListDto<StudentDto> getAllStudents(UUID userId, String fullName, Pageable pageable) {
@@ -38,6 +41,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional
     public StudentDto createStudent(UUID userId, StudentCreateDto createDto) {
         GroupEntity group = groupRepository.findById(createDto.groupId())
                 .orElseThrow(() -> new NotFoundException(GroupEntity.class, createDto.groupId()));
@@ -47,6 +51,8 @@ public class StudentServiceImpl implements StudentService {
 
         StudentEntity student = StudentMapper.INSTANCE.toEntity(user, group);
         studentRepository.save(student);
+
+        chatService.createChat(student.getId());
 
         return StudentMapper.INSTANCE.toDto(student);
     }
