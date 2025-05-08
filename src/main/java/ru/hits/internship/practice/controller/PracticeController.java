@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
+import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.practice.models.CreatePracticeDto;
 import ru.hits.internship.practice.models.PracticeDto;
 import ru.hits.internship.practice.models.UpdatePracticeDto;
@@ -30,6 +31,7 @@ import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.role.response.RoleDto;
 import ru.hits.internship.user.model.dto.user.AuthUser;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -120,6 +122,32 @@ public class PracticeController {
             @RequestParam("id") @Parameter(description = "Id студента") UUID studentId
     ) {
         return practiceService.approveStudentPractice(studentId);
+    }
+
+    @Operation(
+            summary = "Подтверждение практик студентов",
+            description = "Позволяет куратору подтвердить практики студентов"
+    )
+    @SecurityRequirement(name = "bearerAuth")
+    @PostMapping("/approveMany")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
+    public Response approveStudentPractices(
+            @RequestParam("id") @Parameter(description = "Id практик") List<UUID> practiceIds
+    ) {
+        return practiceService.approveStudentPractices(practiceIds);
+    }
+
+    @Operation(
+            summary = "Подтверждение практики студентов в компании",
+            description = "Позволяет куратору подтвердить практики студентов в конкретной компании"
+    )
+    @SecurityRequirement(name = "bearerAuth")
+    @PostMapping("/approveAll")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
+    public Response approveStudentPractices(
+            @RequestParam("companyId") @Parameter(description = "Id компании-партнера") UUID companyId
+    ) {
+        return practiceService.approveAllStudentPracticesForCompany(companyId);
     }
 
     @Operation(
