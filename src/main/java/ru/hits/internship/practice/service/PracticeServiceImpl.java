@@ -90,11 +90,10 @@ public class PracticeServiceImpl implements PracticeService {
         var student = studentRepository.findById(studentDto.id())
                 .orElseThrow(() -> new NotFoundException(String.format("Не найден студент с id: %s ", studentDto.id())));
 
-        var interview = interviewRepository.findByCompanyAndStudent(company, student)
-                .orElseThrow(() -> new BadRequestException("Студент не проходил отбор в указанную компанию"));
+        var isStudentPassedInterview = interviewRepository.existsByCompanyAndStudentAndStatus(company, student, StatusEnum.SUCCEED);
 
-        if (!interview.getStatus().equals(StatusEnum.SUCCEED)) {
-            throw new BadRequestException("Студент не прошел отбор в данную компанию");
+        if (!isStudentPassedInterview) {
+            throw new BadRequestException("Студент не прошел отбор в указанную компанию");
         }
 
         var practice = new PracticeEntity(student, company);
