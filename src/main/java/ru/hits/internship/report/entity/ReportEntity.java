@@ -49,6 +49,4 @@ public class ReportEntity {
     private UserEntity author;
     @OneToOne(mappedBy = "report", cascade = CascadeType.ALL)
     private PracticeEntity practice;
-    @OneToMany(mappedBy = "report", cascade = CascadeType.ALL)
-    private List<ReportCommentEntity> comments;
 }

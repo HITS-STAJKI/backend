@@ -27,8 +27,6 @@ import ru.hits.internship.chat.model.message.SendMessageRequest;
 import ru.hits.internship.chat.service.MessageService;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
-import ru.hits.internship.interview.models.InterviewCommentDto;
-import ru.hits.internship.interview.service.InterviewCommentService;
 import ru.hits.internship.user.model.dto.user.AuthUser;
 import java.util.UUID;
 
