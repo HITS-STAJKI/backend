@@ -5,7 +5,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/internship
     username: postgres
-    password: postgres
+    password: password123
   liquibase:
     enabled: true
     change-log: classpath:/db/changelog/changelog-master.yml
@@ -35,10 +35,10 @@ logging:
 
 
 minio:
-  endpoint: http://176.124.205.213:9000
-  access-key: aOq9W0A75LggDcqCGuJm
-  secret-key: 83v1sJIEZsnSJwaDm4NB3rnqyxFLWrbTKTa5jlJw
-  bucket-name: report-files
+  endpoint: http://77.110.109.183:9000
+  access-key: StoTE3XvrvY5dmHnjmtT
+  secret-key: DpItdtwdQC7WqeyHwDyHm8BHFWLc7t5Xa3f2TsGl
+  bucket-name: files
   connect-timeout: 5000
   write-timeout: 15000
   read-timeout: 15000

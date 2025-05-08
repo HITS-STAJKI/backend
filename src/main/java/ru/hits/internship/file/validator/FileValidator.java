@@ -13,13 +13,22 @@ public class FileValidator {
     private final Set<String> allowedMimeTypes = new HashSet<>(Arrays.asList(
             "application/pdf",
             "application/msword",
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "image/png",
+            "image/jpeg",
+            "image/svg+xml",
+            "image/gif"
     ));
 
     private final Set<String> allowedExtensions = new HashSet<>(Arrays.asList(
             "pdf",
             "doc",
-            "docx"
+            "docx",
+            "png",
+            "jpg",
+            "jpeg",
+            "svg",
+            "gif"
     ));
 
     private final Set<String> dangerousExtensions = new HashSet<>(Arrays.asList(

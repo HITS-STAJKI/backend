@@ -3,6 +3,7 @@ package ru.hits.internship.file.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.hits.internship.file.enumeration.FileType;
 import ru.hits.internship.file.repository.FileRepository;
 import java.util.UUID;
 
@@ -11,7 +12,14 @@ import java.util.UUID;
 public class AccessControlFacade {
     private final FileRepository fileRepository;
 
-    public boolean isOwner(UUID userId, UUID fileId) {
-        return fileRepository.existsByIdAndUserId(fileId, userId);
+    public boolean hasAccess(UUID userId, UUID fileId) {
+        return fileRepository.findById(fileId).
+                map(f -> f.getType() == FileType.LOGO ||
+                        isOwner(userId, f.getUserId()))
+                .orElse(false);
+    }
+
+    private boolean isOwner(UUID userId, UUID ownerId) {
+        return userId.equals(ownerId);
     }
 }

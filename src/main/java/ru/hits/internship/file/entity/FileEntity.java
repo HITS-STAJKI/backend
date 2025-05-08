@@ -2,6 +2,8 @@ package ru.hits.internship.file.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
+import ru.hits.internship.file.enumeration.FileType;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -45,4 +48,8 @@ public class FileEntity {
 
     @Column(name = "user_id", nullable = false)
     private UUID userId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private FileType type;
 }

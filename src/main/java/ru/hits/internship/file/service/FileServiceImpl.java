@@ -15,6 +15,7 @@ import ru.hits.internship.file.dto.FileDeleteEvent;
 import ru.hits.internship.file.dto.FileDto;
 import ru.hits.internship.file.dto.FileUploadedEvent;
 import ru.hits.internship.file.entity.FileEntity;
+import ru.hits.internship.file.enumeration.FileType;
 import ru.hits.internship.file.mapper.FileMapper;
 import ru.hits.internship.file.repository.FileRepository;
 import ru.hits.internship.file.util.FileUtils;
@@ -30,6 +31,7 @@ public class FileServiceImpl implements FileService {
     private final FileMapper fileMapper;
     private final FileValidator fileValidator;
     private final ApplicationEventPublisher eventPublisher;
+    private final FileTypeDetector typeDetector;
 
     @Override
     @Transactional
@@ -44,7 +46,8 @@ public class FileServiceImpl implements FileService {
 
             eventPublisher.publishEvent(new FileUploadedEvent(fileName));
 
-            FileEntity fileEntity = fileMapper.toEntity(file, storedFileName, userId);
+            FileType type = typeDetector.detect(file);
+            FileEntity fileEntity = fileMapper.toEntity(file, storedFileName, userId, type);
 
             FileEntity savedFile = fileRepository.saveAndFlush(fileEntity);
 
