@@ -5,6 +5,7 @@ import org.apache.tika.Tika;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hits.internship.file.enumeration.FileType;
+
 import java.util.Set;
 
 @Component

@@ -30,7 +30,11 @@ import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
 import ru.hits.internship.user.repository.UserRepository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 import static ru.hits.internship.interview.service.common.InterviewUtils.getStudentIdIfExists;
 import static ru.hits.internship.interview.service.common.InterviewUtils.isUserAuthor;

@@ -1,7 +1,5 @@
 package ru.hits.internship.partner.mapper;
 
-import java.util.List;
-
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -19,12 +17,14 @@ import ru.hits.internship.user.mapper.UserMapper;
 import ru.hits.internship.user.model.dto.user.UserShortDto;
 import ru.hits.internship.user.model.entity.role.CuratorEntity;
 
+import java.util.Collections;
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = { UserMapper.class })
 public interface CompanyPartnerMapper {
 
     UserMapper userMapper = Mappers.getMapper(UserMapper.class);
 
-    @Mapping(target = "logoFilename", constant = "ссылка на файл") // TODO
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "curators", ignore = true)
     @Mapping(target = "practices", ignore = true)
@@ -35,8 +35,14 @@ public interface CompanyPartnerMapper {
 
     @Named("mapCurators")
     default List<UserShortDto> mapCurators(List<CuratorEntity> curators) {
-        return curators.stream().map(CuratorEntity::getUser).map(userMapper::toShortDto).toList();
-    }
+        if (curators == null) {
+            return Collections.emptyList();
+        }
+
+        return curators.stream()
+                .map(CuratorEntity::getUser)
+                .map(userMapper::toShortDto)
+                .toList();}
 
     ShortCompanyPartnerDto toShortDto(CompanyPartnerEntity companyPartnerEntity);
 

@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.file.dto.FileDto;
 import ru.hits.internship.user.model.dto.user.AuthUser;
+
 import java.util.UUID;
 
 public interface FileService {
