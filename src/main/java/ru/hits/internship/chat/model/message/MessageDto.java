@@ -17,7 +17,7 @@ public class MessageDto {
     private String content;
     @Schema(description = "Идентификатор отправителя")
     private UUID senderId;
-    @Schema(description = "Прочитано ли студентом (!)")
+    @Schema(description = "Прочитано текущим пользователем ?")
     private Boolean isRead;
     @Schema(description = "Изменено ли ?")
     private Boolean isEdited;

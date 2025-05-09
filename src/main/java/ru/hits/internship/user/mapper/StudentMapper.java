@@ -22,4 +22,18 @@ public interface StudentMapper {
 
     @Mapping(target = "id", ignore = true)
     StudentEntity updateStudent(@MappingTarget StudentEntity student, GroupEntity group);
+
+    default StudentDto toDtoWithUnreadCount(StudentEntity student, Long unreadCount) {
+        StudentDto studentDto = toDto(student);
+        studentDto = new StudentDto(
+                studentDto.id(),
+                studentDto.isAcadem(),
+                studentDto.isGraduated(),
+                studentDto.user(),
+                studentDto.group(),
+                studentDto.chatId(),
+                unreadCount
+        );
+        return studentDto;
+    }
 }

@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface StudentRepository extends RoleRepository<StudentEntity, UUID> {
@@ -13,4 +14,6 @@ public interface StudentRepository extends RoleRepository<StudentEntity, UUID> {
 
     @Query("SELECT CASE WHEN COUNT(s) > 0 THEN true ELSE false END FROM StudentEntity s WHERE s.user.id = :userId")
     boolean existsByUserId(@Param("userId") UUID userId);
+
+    Optional<StudentEntity> findByUser_Id(UUID userId);
 }

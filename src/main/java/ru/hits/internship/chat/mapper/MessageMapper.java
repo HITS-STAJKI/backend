@@ -15,18 +15,19 @@ import ru.hits.internship.chat.model.message.SendMessageRequest;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.utils.RoleChecker;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public interface MessageMapper {
     @Mapping(target = "sender", source = "user")
     @Mapping(target = "modifiedAt", ignore = true)
-    @Mapping(target = "isRead", source = "user", qualifiedByName = "isRead")
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "id", ignore = true)
     MessageEntity toEntity(SendMessageRequest sendMessageRequest, UserEntity user, ChatEntity chat);
 
 
+    @Mapping(target = "isRead", ignore = true)
     @Mapping(target = "sentAt", source = "createdAt")
     @Mapping(target = "senderId", source = "sender.id")
     @Mapping(target = "isEdited", expression = "java(messageEntity.getModifiedAt() != null)")
@@ -35,9 +36,4 @@ public interface MessageMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
             unmappedTargetPolicy = ReportingPolicy.IGNORE)
     void update(@MappingTarget MessageEntity message, EditMessageRequest editMessageRequest);
-
-    @Named("isRead")
-    default boolean isRead(UserEntity user) {
-        return RoleChecker.isUserEntityHasRole(user, UserRole.STUDENT); // если студент отправил сообщение, то он его прочитал;
-    }
 }

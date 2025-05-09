@@ -26,7 +26,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "messages", indexes = {
-        @Index(name = "idx_message_chat_id_is_read", columnList = "chat_id, is_read"),
+        @Index(name = "idx_message_chat_created_sender", columnList = "chat_id, created_at, sender_id"),
         @Index(name = "idx_message_sender_id", columnList = "sender_id")
 })
 public class MessageEntity {
@@ -47,6 +47,4 @@ public class MessageEntity {
     @ManyToOne
     @JoinColumn(name = "sender_id", nullable = false)
     private UserEntity sender;
-    @Column(name = "is_read", nullable = false)
-    private Boolean isRead = false;
 }
