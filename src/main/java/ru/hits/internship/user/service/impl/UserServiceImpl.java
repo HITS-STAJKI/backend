@@ -11,7 +11,6 @@ import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.filters.Filter;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
-import ru.hits.internship.partner.entity.CompanyPartnerEntity;
 import ru.hits.internship.user.mapper.UserMapper;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.user.UserDetailsDto;

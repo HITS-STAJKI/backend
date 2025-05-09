@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.practice.entity.PracticeEntity;
 import ru.hits.internship.practice.repository.PracticeRepository;
-import ru.hits.internship.report.entity.ReportEntity;
 
 import java.util.UUID;
 

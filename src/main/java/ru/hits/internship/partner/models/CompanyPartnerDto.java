@@ -1,7 +1,5 @@
 package ru.hits.internship.partner.models;
 
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.hits.internship.user.model.dto.user.UserShortDto;
+
+import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -29,4 +30,6 @@ public class CompanyPartnerDto {
     private String description;
     @Schema(description = "Кураторы, закрепленные за компанией")
     private List<UserShortDto> curators;
+    @Schema(description = "Идентификатор файла-логотипа")
+    private UUID fileId;
 }
