@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.hits.internship.chat.entity.ChatEntity;
 import ru.hits.internship.group.entity.GroupEntity;
 import ru.hits.internship.interview.entity.InterviewEntity;
 import ru.hits.internship.user.model.common.UserRole;
@@ -21,6 +22,9 @@ public class StudentEntity extends RoleEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "group_id", nullable = true)
     private GroupEntity group;
+
+    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ChatEntity chat;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<InterviewEntity> interviews;

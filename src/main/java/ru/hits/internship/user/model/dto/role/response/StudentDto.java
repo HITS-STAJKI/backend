@@ -23,5 +23,11 @@ public record StudentDto(
         UserShortDto user,
 
         @NotNull
-        GroupShortDto group
+        GroupShortDto group,
+
+        @NotNull
+        UUID chatId,
+
+        @Schema(description = "Число непрочитанных сообщений для текущего пользователя в чате с этим студентом")
+        Long unreadMessagesCount
 ) {}

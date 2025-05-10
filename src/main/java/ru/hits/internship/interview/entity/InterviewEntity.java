@@ -65,6 +65,4 @@ public class InterviewEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "company_id", nullable = false)
     private CompanyPartnerEntity company;
-    @OneToMany(mappedBy = "interview", cascade = CascadeType.ALL)
-    private List<InterviewCommentEntity> comments;
 }
