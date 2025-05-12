@@ -8,11 +8,7 @@ import org.mapstruct.factory.Mappers;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.auth.RegistrationRequestDto;
 import ru.hits.internship.user.model.dto.role.response.RoleDto;
-import ru.hits.internship.user.model.dto.user.AuthUser;
-import ru.hits.internship.user.model.dto.user.UserDetailsDto;
-import ru.hits.internship.user.model.dto.user.UserDto;
-import ru.hits.internship.user.model.dto.user.UserEditDto;
-import ru.hits.internship.user.model.dto.user.UserShortDto;
+import ru.hits.internship.user.model.dto.user.*;
 import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.model.entity.role.CuratorEntity;
 import ru.hits.internship.user.model.entity.role.DeanEntity;
@@ -37,6 +33,8 @@ public interface UserMapper {
     UserEntity toEntity(RegistrationRequestDto registrationDto);
 
     UserEntity updateUser(@MappingTarget UserEntity user, UserEditDto editDto);
+
+    UserEntity updateUserEmail(@MappingTarget UserEntity user, UserEmailEditDto editDto);
 
     @Mapping(target = "id", source = "user.id")
     UserDetailsDto toDetailsDto(
