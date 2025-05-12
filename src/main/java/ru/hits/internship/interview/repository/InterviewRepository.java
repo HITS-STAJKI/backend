@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import ru.hits.internship.interview.entity.InterviewEntity;
 import ru.hits.internship.partner.entity.CompanyPartnerEntity;
+import ru.hits.internship.stack.entity.StackEntity;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
 
 import java.util.Optional;
@@ -14,7 +15,7 @@ import java.util.UUID;
 
 @Repository
 public interface InterviewRepository extends JpaRepository<InterviewEntity, UUID>, JpaSpecificationExecutor<InterviewEntity> {
-    Optional<InterviewEntity> findByCompanyAndStudent(CompanyPartnerEntity company, StudentEntity student);
+    Optional<InterviewEntity> findByCompanyAndStudentAndStack(CompanyPartnerEntity company, StudentEntity student, StackEntity stack);
 
     Page<InterviewEntity> findAllByStudentId(UUID studentId, Pageable pageable);
 }

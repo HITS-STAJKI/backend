@@ -18,6 +18,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import ru.hits.internship.partner.entity.CompanyPartnerEntity;
 import ru.hits.internship.report.entity.ReportEntity;
+import ru.hits.internship.stack.entity.StackEntity;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
 
 import java.time.LocalDateTime;
@@ -54,9 +55,13 @@ public class PracticeEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "company_id", nullable = false)
     private CompanyPartnerEntity company;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "stack_id", nullable = false)
+    private StackEntity stack;
 
-    public PracticeEntity(StudentEntity student, CompanyPartnerEntity company) {
+    public PracticeEntity(StudentEntity student, CompanyPartnerEntity company, StackEntity stack) {
         this.student = student;
         this.company = company;
+        this.stack = stack;
     }
 }
