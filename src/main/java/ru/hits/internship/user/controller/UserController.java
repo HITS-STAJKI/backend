@@ -59,6 +59,7 @@ public class UserController {
 
     @Operation(summary = "Изменение информации текущего пользователя")
     @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("!hasRole('STUDENT')")
     @PutMapping
     public UserShortDto updateCurrentUser(
             @AuthenticationPrincipal AuthUser authUser,
