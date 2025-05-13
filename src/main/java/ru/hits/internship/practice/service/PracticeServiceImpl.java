@@ -11,6 +11,7 @@ import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
+import ru.hits.internship.interview.entity.InterviewEntity;
 import ru.hits.internship.interview.models.StatusEnum;
 import ru.hits.internship.interview.repository.InterviewRepository;
 import ru.hits.internship.partner.repository.CompanyPartnerRepository;
@@ -94,12 +95,16 @@ public class PracticeServiceImpl implements PracticeService {
         var student = studentRepository.findById(studentDto.id())
                 .orElseThrow(() -> new NotFoundException(String.format("Не найден студент с id: %s ", studentDto.id())));
 
-        var interview = interviewRepository.findByCompanyAndStudentAndStack(company, student, stack)
-                .orElseThrow(() -> new BadRequestException("Студент не проходил отбор в указанную компанию по данному стеку"));
+        List<InterviewEntity> interviews = interviewRepository
+                .findAllByCompanyAndStudentAndStack(company, student, stack);
 
+        if (interviews.isEmpty()) {
+            throw new BadRequestException("Студент не проходил отбор в указанную компанию по данному стеку");
+        }
 
-        if (!interview.getStatus().equals(StatusEnum.SUCCEED)) {
-            throw new BadRequestException("Студент не прошел отбор в данную компанию");
+        if (interviews.stream()
+                .noneMatch(i -> i.getStatus() == StatusEnum.SUCCEED)) {
+            throw new BadRequestException("Студент не прошел отбор в данную компанию по данному стеку");
         }
 
         var practice = new PracticeEntity(student, company, stack);
