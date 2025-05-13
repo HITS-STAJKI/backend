@@ -24,6 +24,6 @@ public class ReportDto {
     private LocalDateTime modifiedAt;
     @Schema(description = "Идентификатор файла с отчетом")
     private UUID fileId;
-    @Schema(description = "Статус одобрения отчета", example = "true")
-    private Boolean isApproved;
+    @Schema(description = "Оценка отчета", example = "5")
+    private Integer grade;
 }

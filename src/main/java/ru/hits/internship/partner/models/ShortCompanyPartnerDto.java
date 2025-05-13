@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,4 +22,6 @@ public class ShortCompanyPartnerDto {
     @NotNull(message = "Имя должно быть заполнено")
     @NotBlank(message = "Имя должно быть заполнено")
     private String name;
+    @Schema(description = "Идентификатор файла-логотипа")
+    private UUID fileId;
 }
