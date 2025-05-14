@@ -9,7 +9,8 @@ INSERT INTO languages (id, name) VALUES
                                      (gen_random_uuid(), 'PHP'),
                                      (gen_random_uuid(), 'Swift'),
                                      (gen_random_uuid(), 'Kotlin'),
-                                     (gen_random_uuid(), 'Rust');
+                                     (gen_random_uuid(), 'Rust')
+ON CONFLICT (name) DO NOTHING;
 
 INSERT INTO stacks (id, name) VALUES
                                   (gen_random_uuid(), 'Backend'),
@@ -17,4 +18,5 @@ INSERT INTO stacks (id, name) VALUES
                                   (gen_random_uuid(), 'Android'),
                                   (gen_random_uuid(), 'IOS'),
                                   (gen_random_uuid(), 'Analyst'),
-                                  (gen_random_uuid(), 'ML');
+                                  (gen_random_uuid(), 'ML')
+ON CONFLICT (name) DO NOTHING;
