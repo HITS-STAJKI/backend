@@ -5,5 +5,6 @@ public enum UserRole {
     DEAN,
     CURATOR,
     STUDENT,
-    TEACHER
+    TEACHER,
+    EDUCATIONAL_PROGRAM_LEAD
 }

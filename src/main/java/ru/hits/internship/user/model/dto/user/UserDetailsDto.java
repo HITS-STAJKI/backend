@@ -3,10 +3,7 @@ package ru.hits.internship.user.model.dto.user;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
-import ru.hits.internship.user.model.dto.role.response.CuratorShortDto;
-import ru.hits.internship.user.model.dto.role.response.DeanShortDto;
-import ru.hits.internship.user.model.dto.role.response.StudentShortDto;
-import ru.hits.internship.user.model.dto.role.response.TeacherShortDto;
+import ru.hits.internship.user.model.dto.role.response.*;
 
 import java.util.UUID;
 
@@ -34,5 +31,8 @@ public record UserDetailsDto (
         CuratorShortDto curator,
 
         @Nullable
-        TeacherShortDto teacher
+        TeacherShortDto teacher,
+
+        @Nullable
+        EducationalProgramLeadShortDto educationalProgramLead
 ) {}
