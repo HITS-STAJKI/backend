@@ -10,6 +10,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -81,9 +82,10 @@ public class InterviewController {
         return interviewService.getInterview(user, interviewId);
     }
 
-    @Operation(summary = "Получить список отборов", description = "Запрос доступен для деканата")
+    @Operation(summary = "Получить список отборов", description = "Запрос доступен только для руководителя обр. программы")
     @SecurityRequirement(name = "bearerAuth")
-    @GetMapping("/dean/list")
+    @GetMapping("/program-lead/list")
+    @PreAuthorize("hasRole('EDUCATIONAL_PROGRAM_LEAD')")
     public PagedListDto<InterviewDto> getInterviewList(
             @AuthenticationPrincipal AuthUser user,
             @Valid @ParameterObject InterviewFilter interviewFilter,
