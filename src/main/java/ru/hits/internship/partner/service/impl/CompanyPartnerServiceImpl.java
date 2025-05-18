@@ -19,6 +19,7 @@ import ru.hits.internship.partner.models.UpdateCompanyPartnerDto;
 import ru.hits.internship.partner.repository.CompanyPartnerRepository;
 import ru.hits.internship.partner.service.CompanyPartnerService;
 import ru.hits.internship.partner.validator.CompanyPartnerValidator;
+import ru.hits.internship.partner.validator.LogoValidator;
 
 import java.util.List;
 import java.util.Objects;
@@ -27,17 +28,18 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-// TODO: не забыть logo компании
 public class CompanyPartnerServiceImpl implements CompanyPartnerService {
     private final CompanyPartnerRepository companyPartnerRepository;
     private final CompanyPartnerValidator companyPartnerValidator;
     private final CompanyPartnerMapper companyPartnerMapper;
+    private final LogoValidator logoValidator;
     private final List<Filter<CompanyPartnerEntity, PartnerFilter>> filters;
 
     @Override
     @Transactional
     public CompanyPartnerDto createCompanyPartner(CreateCompanyPartnerDto createCompanyPartnerDto) {
         companyPartnerValidator.checkCompanyPartnerAlreadyExists(createCompanyPartnerDto.getName());
+        logoValidator.checkFileOrThrow(createCompanyPartnerDto.getFileId());
 
         CompanyPartnerEntity companyPartner = companyPartnerMapper.toEntity(createCompanyPartnerDto);
         CompanyPartnerEntity savedCompanyPartner = companyPartnerRepository.save(companyPartner);
@@ -76,6 +78,7 @@ public class CompanyPartnerServiceImpl implements CompanyPartnerService {
                 .orElseThrow(() -> new NotFoundException("Компания-партнер с id %s не найдена".formatted(partnerId)));
 
         companyPartnerValidator.checkCompanyPartnerAlreadyExistsNotSame(updateCompanyPartnerDto.getName(), partnerId);
+        logoValidator.checkFileOrThrow(updateCompanyPartnerDto.getFileId());
 
         companyPartnerMapper.updateCompanyPartnerEntity(companyPartner, updateCompanyPartnerDto);
         CompanyPartnerEntity savedCompanyPartner = companyPartnerRepository.save(companyPartner);

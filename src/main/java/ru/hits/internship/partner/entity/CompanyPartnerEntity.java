@@ -33,8 +33,8 @@ public class CompanyPartnerEntity {
     private String name;
     @Column(name = "description", nullable = false)
     private String description;
-    @Column(name = "logo_filename")
-    private String logoFilename;
+    @Column(name = "file_id")
+    private UUID fileId;
     @OneToMany(mappedBy = "companyPartner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CuratorEntity> curators;
 

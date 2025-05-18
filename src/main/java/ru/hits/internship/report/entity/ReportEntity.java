@@ -42,8 +42,8 @@ public class ReportEntity {
     private LocalDateTime updatedAt;
     @Column(name = "file_id")
     private UUID fileId;
-    @Column(name = "isApproved", nullable = false)
-    private Boolean isApproved = false;
+    @Column(name = "grade")
+    private Integer grade;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id", nullable = false)
     private UserEntity author;

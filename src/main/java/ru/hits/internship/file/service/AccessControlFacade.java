@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hits.internship.file.enumeration.FileType;
 import ru.hits.internship.file.repository.FileRepository;
+
 import java.util.UUID;
 
 @Service("acf")
@@ -19,7 +20,7 @@ public class AccessControlFacade {
                 .orElse(false);
     }
 
-    private boolean isOwner(UUID userId, UUID ownerId) {
+    public boolean isOwner(UUID userId, UUID ownerId) {
         return userId.equals(ownerId);
     }
 }
