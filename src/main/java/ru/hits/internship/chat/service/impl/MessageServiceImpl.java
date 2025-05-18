@@ -19,8 +19,8 @@ import ru.hits.internship.chat.service.MessageService;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.user.model.entity.UserEntity;
-import ru.hits.internship.user.repository.StudentRepository;
 import ru.hits.internship.user.repository.UserRepository;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -30,7 +30,6 @@ public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
     private final ChatRepository chatRepository;
     private final UserRepository userRepository;
-    private final StudentRepository studentRepository;
     private final MessageMapper messageMapper;
     private final ChatReadStateRepository chatReadStateRepository;
 

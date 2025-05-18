@@ -3,19 +3,21 @@ package ru.hits.internship.user.service.impl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.hits.internship.chat.entity.ChatReadStateEntity;
-import ru.hits.internship.chat.model.chat.ChatDto;
 import ru.hits.internship.chat.repository.ChatReadStateRepository;
 import ru.hits.internship.chat.repository.MessageRepository;
 import ru.hits.internship.chat.service.ChatService;
 import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.exceptions.NotFoundException;
+import ru.hits.internship.common.filters.Filter;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.group.entity.GroupEntity;
 import ru.hits.internship.group.repository.GroupRepository;
 import ru.hits.internship.user.mapper.StudentMapper;
 import ru.hits.internship.user.model.common.UserRole;
+import ru.hits.internship.user.model.dto.role.filter.StudentFilter;
 import ru.hits.internship.user.model.dto.role.request.create.StudentCreateDto;
 import ru.hits.internship.user.model.dto.role.request.edit.ReturnFromAcademDto;
 import ru.hits.internship.user.model.dto.role.request.edit.StudentEditDto;
@@ -28,6 +30,9 @@ import ru.hits.internship.user.service.StudentService;
 import ru.hits.internship.user.utils.RoleChecker;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -40,12 +45,21 @@ public class StudentServiceImpl implements StudentService {
     private final ChatService chatService;
     private final ChatReadStateRepository chatReadStateRepository;
     private final MessageRepository messageRepository;
+    private final List<Filter<StudentEntity, StudentFilter>> filters;
 
     @Override
-    public PagedListDto<StudentDto> getAllStudents(UUID userId, String fullName, Pageable pageable) {
-        //return studentRepository.findAll(userId, fullName, pageable, StudentMapper.INSTANCE::toDto);
-        return studentRepository.findAll(null, fullName, pageable, studentEntity -> {
-            StudentDto studentDto = StudentMapper.INSTANCE.toDto(studentEntity);
+    public PagedListDto<StudentDto> getAllStudents(UUID userId, StudentFilter studentFilter, Pageable pageable) {
+        Specification<StudentEntity> specification = Optional.ofNullable(studentFilter)
+                .map(filter ->
+                        filters.stream()
+                                .map(f -> f.build(filter))
+                                .filter(Objects::nonNull)
+                                .reduce(Specification.where(null), Specification::and)
+                )
+                .orElse(Specification.where(null));
+
+        return studentRepository.findAll(specification, pageable, studentEntity -> {
+            StudentDto studentDto;
 
             if (studentEntity.getChat() != null) {
                 UUID chatId = studentEntity.getChat().getId();

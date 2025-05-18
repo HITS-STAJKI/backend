@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.pagination.PagedListDto;
+import ru.hits.internship.user.model.dto.role.filter.StudentFilter;
 import ru.hits.internship.user.model.dto.role.request.create.StudentCreateDto;
 import ru.hits.internship.user.model.dto.role.request.edit.ReturnFromAcademDto;
 import ru.hits.internship.user.model.dto.role.request.edit.StudentEditDto;
@@ -77,9 +77,9 @@ public class StudentController {
     public PagedListDto<StudentDto> getAllStudents(
             @AuthenticationPrincipal AuthUser authUser,
             @ParameterObject Pageable pageable,
-            @RequestParam(required = false) String fullName
+            @ParameterObject StudentFilter studentFilter
     ) {
-        return studentService.getAllStudents(authUser.id(), fullName, pageable);
+        return studentService.getAllStudents(authUser.id(), studentFilter, pageable);
     }
 
     @Operation(summary = "Отправка студента в академ")

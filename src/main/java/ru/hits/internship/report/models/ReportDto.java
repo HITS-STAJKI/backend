@@ -21,7 +21,7 @@ public class ReportDto {
     @Schema(description = "Время отправки комментария")
     private LocalDateTime createdAt;
     @Schema(description = "Время обновления комментария")
-    private LocalDateTime modifiedAt;
+    private LocalDateTime updatedAt;
     @Schema(description = "Идентификатор файла с отчетом")
     private UUID fileId;
     @Schema(description = "Оценка отчета", example = "5")

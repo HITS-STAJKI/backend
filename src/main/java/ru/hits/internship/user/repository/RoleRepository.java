@@ -21,4 +21,12 @@ public interface RoleRepository<R extends RoleEntity, ID> extends JpaRepository<
 
         return new PagedListDto<>(roleDtoPage);
     }
+
+    default <D> PagedListDto<D> findAll(Specification<R> specification, Pageable pageable, Function<R, D> mapper) {
+
+        Page<R> rolePage = findAll(specification, pageable);
+        Page<D> roleDtoPage = rolePage.map(mapper);
+
+        return new PagedListDto<>(roleDtoPage);
+    }
 }

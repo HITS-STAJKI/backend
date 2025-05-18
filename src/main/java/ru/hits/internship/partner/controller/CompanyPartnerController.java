@@ -35,7 +35,6 @@ import java.util.UUID;
 @Tag(name = "Компании-партнеры", description = "Отвечает за работу с компаниями-партнерами")
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/partner")
-// TODO: не забыть про логотип и куратора
 public class CompanyPartnerController {
     private final CompanyPartnerService companyPartnerService;
 
@@ -68,7 +67,7 @@ public class CompanyPartnerController {
             description = "Позволяет получить обновить информацию о партнере"
     )
     @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("hasRole('DEAN')")
+    @PreAuthorize("hasAnyRole('DEAN', 'EDUCATIONAL_PROGRAM_LEAD')")
     @PutMapping("/{partnerId}")
     public CompanyPartnerDto updatePartnerInfo(
             @Parameter(description = "Идентификатор партнера") @PathVariable UUID partnerId,

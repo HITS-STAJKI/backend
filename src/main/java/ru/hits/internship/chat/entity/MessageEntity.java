@@ -1,6 +1,5 @@
 package ru.hits.internship.chat.entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,6 +16,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import ru.hits.internship.user.model.entity.UserEntity;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -38,8 +38,8 @@ public class MessageEntity {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
-    @Column(name = "modified_at")
     @UpdateTimestamp
+    @Column(name = "modified_at", insertable = false)
     private LocalDateTime modifiedAt;
     @ManyToOne
     @JoinColumn(name = "chat_id", nullable = false)

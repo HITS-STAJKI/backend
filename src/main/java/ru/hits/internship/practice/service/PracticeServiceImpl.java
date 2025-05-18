@@ -96,7 +96,7 @@ public class PracticeServiceImpl implements PracticeService {
             throw new BadRequestException("Студент не прошел отбор в указанную компанию");
         }
 
-        var practice = new PracticeEntity(student, company);
+        var practice = new PracticeEntity(student, company, createPracticeDto.getIsPaid());
 
         var savedPractice = repository.save(practice);
 

@@ -55,8 +55,9 @@ public class PracticeEntity {
     @JoinColumn(name = "company_id", nullable = false)
     private CompanyPartnerEntity company;
 
-    public PracticeEntity(StudentEntity student, CompanyPartnerEntity company) {
+    public PracticeEntity(StudentEntity student, CompanyPartnerEntity company, Boolean isPaid) {
         this.student = student;
         this.company = company;
+        this.isPaid = isPaid;
     }
 }

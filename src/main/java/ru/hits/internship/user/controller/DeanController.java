@@ -31,7 +31,7 @@ public class DeanController {
 
     @Operation(summary = "Получение всех представителей деканата")
     @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("hasRole('DEAN')")
+    @PreAuthorize("hasAnyRole('DEAN', 'EDUCATIONAL_PROGRAM_LEAD')")
     @GetMapping("/list")
     public PagedListDto<DeanDto> getAllDeans(
             @AuthenticationPrincipal AuthUser authUser,
