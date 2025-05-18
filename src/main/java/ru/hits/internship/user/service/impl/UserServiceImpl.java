@@ -11,7 +11,6 @@ import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.filters.Filter;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
-import ru.hits.internship.partner.entity.CompanyPartnerEntity;
 import ru.hits.internship.user.mapper.UserMapper;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.user.UserDetailsDto;
@@ -20,11 +19,7 @@ import ru.hits.internship.user.model.dto.user.UserEditDto;
 import ru.hits.internship.user.model.dto.user.UserFilter;
 import ru.hits.internship.user.model.dto.user.UserShortDto;
 import ru.hits.internship.user.model.entity.UserEntity;
-import ru.hits.internship.user.model.entity.role.CuratorEntity;
-import ru.hits.internship.user.model.entity.role.DeanEntity;
-import ru.hits.internship.user.model.entity.role.RoleEntity;
-import ru.hits.internship.user.model.entity.role.StudentEntity;
-import ru.hits.internship.user.model.entity.role.TeacherEntity;
+import ru.hits.internship.user.model.entity.role.*;
 import ru.hits.internship.user.repository.UserRepository;
 import ru.hits.internship.user.service.UserService;
 
@@ -93,7 +88,11 @@ public class UserServiceImpl implements UserService {
         TeacherEntity teacher = Foundation.safeCast(rolesByType.get(UserRole.TEACHER), TeacherEntity.class);
         CuratorEntity curator = Foundation.safeCast(rolesByType.get(UserRole.CURATOR), CuratorEntity.class);
         StudentEntity student = Foundation.safeCast(rolesByType.get(UserRole.STUDENT), StudentEntity.class);
+        EducationalProgramLeadEntity programLead = Foundation.safeCast(
+                rolesByType.get(UserRole.EDUCATIONAL_PROGRAM_LEAD),
+                EducationalProgramLeadEntity.class
+        );
 
-        return UserMapper.INSTANCE.toDetailsDto(user, dean, teacher, curator, student);
+        return UserMapper.INSTANCE.toDetailsDto(user, dean, teacher, curator, student, programLead);
     }
 }

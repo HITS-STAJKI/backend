@@ -100,6 +100,10 @@ public class PracticeServiceImpl implements PracticeService {
 
         if (interviews.isEmpty()) {
             throw new BadRequestException("Студент не проходил отбор в указанную компанию по данному стеку");
+        var isStudentPassedInterview = interviewRepository.existsByCompanyAndStudentAndStatus(company, student, StatusEnum.SUCCEED);
+
+        if (!isStudentPassedInterview) {
+            throw new BadRequestException("Студент не прошел отбор в указанную компанию");
         }
 
         if (interviews.stream()

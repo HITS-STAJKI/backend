@@ -14,11 +14,7 @@ import ru.hits.internship.user.model.dto.user.UserDto;
 import ru.hits.internship.user.model.dto.user.UserEditDto;
 import ru.hits.internship.user.model.dto.user.UserShortDto;
 import ru.hits.internship.user.model.entity.UserEntity;
-import ru.hits.internship.user.model.entity.role.CuratorEntity;
-import ru.hits.internship.user.model.entity.role.DeanEntity;
-import ru.hits.internship.user.model.entity.role.RoleEntity;
-import ru.hits.internship.user.model.entity.role.StudentEntity;
-import ru.hits.internship.user.model.entity.role.TeacherEntity;
+import ru.hits.internship.user.model.entity.role.*;
 
 import java.util.Map;
 import java.util.Set;
@@ -44,7 +40,8 @@ public interface UserMapper {
             DeanEntity dean,
             TeacherEntity teacher,
             CuratorEntity curator,
-            StudentEntity student
+            StudentEntity student,
+            EducationalProgramLeadEntity educationalProgramLead
     );
 
     @Mapping(target = "id", source = "user.id")

@@ -30,7 +30,11 @@ import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
 import ru.hits.internship.user.repository.UserRepository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 import static ru.hits.internship.interview.service.common.InterviewUtils.getStudentIdIfExists;
 import static ru.hits.internship.interview.service.common.InterviewUtils.isUserAuthor;
@@ -82,7 +86,7 @@ public class InterviewServiceImpl implements InterviewService {
         InterviewEntity interview = interviewRepository.findById(interviewId)
                 .orElseThrow(() -> new NotFoundException("Интервью с id %s не найдено".formatted(interviewId)));
 
-        if (!isUserAuthor(user, interview) && !isUserHasRole(user, UserRole.DEAN)) {
+        if (!isUserAuthor(user, interview) && !isUserHasRole(user, UserRole.EDUCATIONAL_PROGRAM_LEAD)) {
             throw new ForbiddenException();
         }
 
@@ -105,7 +109,7 @@ public class InterviewServiceImpl implements InterviewService {
         InterviewEntity interview = interviewRepository.findById(interviewId)
                 .orElseThrow(() -> new NotFoundException("Интервью с id %s не найдено".formatted(interviewId)));
 
-        if (!isUserAuthor(user, interview) && !isUserHasRole(user, UserRole.DEAN)) {
+        if (!isUserAuthor(user, interview) && !isUserHasRole(user, UserRole.EDUCATIONAL_PROGRAM_LEAD)) {
             throw new ForbiddenException();
         }
 
@@ -118,7 +122,7 @@ public class InterviewServiceImpl implements InterviewService {
         InterviewEntity interview = interviewRepository.findById(interviewId)
                 .orElseThrow(() -> new NotFoundException("Интервью с id %s не найдено".formatted(interviewId)));
 
-        if (!isUserAuthor(user, interview) && !isUserHasRole(user, UserRole.DEAN) && !isUserHasRole(user, UserRole.CURATOR)) {
+        if (!isUserAuthor(user, interview) && !isUserHasRole(user, UserRole.EDUCATIONAL_PROGRAM_LEAD)) {
             throw new ForbiddenException();
         }
 
@@ -128,10 +132,6 @@ public class InterviewServiceImpl implements InterviewService {
     @Override
     @Transactional(readOnly = true)
     public PagedListDto<InterviewDto> getInterviewList(AuthUser user, InterviewFilter interviewFilter, Pageable pageable) {
-        if (!isUserHasRole(user, UserRole.DEAN) && !isUserHasRole(user, UserRole.CURATOR)) {
-            throw new ForbiddenException();
-        }
-
         Specification<InterviewEntity> specification = Optional.ofNullable(interviewFilter)
                 .map(filter -> filters.stream()
                         .map(f -> f.build(filter))
