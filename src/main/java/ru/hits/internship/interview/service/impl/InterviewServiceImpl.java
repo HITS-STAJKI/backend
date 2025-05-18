@@ -82,7 +82,7 @@ public class InterviewServiceImpl implements InterviewService {
         InterviewEntity interview = interviewRepository.findById(interviewId)
                 .orElseThrow(() -> new NotFoundException("Интервью с id %s не найдено".formatted(interviewId)));
 
-        if (!isUserAuthor(user, interview) && !isUserHasRole(user, UserRole.DEAN)) {
+        if (!isUserAuthor(user, interview) && !isUserHasRole(user, UserRole.EDUCATIONAL_PROGRAM_LEAD)) {
             throw new ForbiddenException();
         }
 
@@ -105,7 +105,7 @@ public class InterviewServiceImpl implements InterviewService {
         InterviewEntity interview = interviewRepository.findById(interviewId)
                 .orElseThrow(() -> new NotFoundException("Интервью с id %s не найдено".formatted(interviewId)));
 
-        if (!isUserAuthor(user, interview) && !isUserHasRole(user, UserRole.DEAN)) {
+        if (!isUserAuthor(user, interview) && !isUserHasRole(user, UserRole.EDUCATIONAL_PROGRAM_LEAD)) {
             throw new ForbiddenException();
         }
 
@@ -118,7 +118,7 @@ public class InterviewServiceImpl implements InterviewService {
         InterviewEntity interview = interviewRepository.findById(interviewId)
                 .orElseThrow(() -> new NotFoundException("Интервью с id %s не найдено".formatted(interviewId)));
 
-        if (!isUserAuthor(user, interview) && !isUserHasRole(user, UserRole.DEAN) && !isUserHasRole(user, UserRole.CURATOR)) {
+        if (!isUserAuthor(user, interview) && !isUserHasRole(user, UserRole.EDUCATIONAL_PROGRAM_LEAD)) {
             throw new ForbiddenException();
         }
 
@@ -128,10 +128,6 @@ public class InterviewServiceImpl implements InterviewService {
     @Override
     @Transactional(readOnly = true)
     public PagedListDto<InterviewDto> getInterviewList(AuthUser user, InterviewFilter interviewFilter, Pageable pageable) {
-        if (!isUserHasRole(user, UserRole.DEAN) && !isUserHasRole(user, UserRole.CURATOR)) {
-            throw new ForbiddenException();
-        }
-
         Specification<InterviewEntity> specification = Optional.ofNullable(interviewFilter)
                 .map(filter -> filters.stream()
                         .map(f -> f.build(filter))
