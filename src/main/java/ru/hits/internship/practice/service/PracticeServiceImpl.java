@@ -78,45 +78,40 @@ public class PracticeServiceImpl implements PracticeService {
 
     @Override
     public PracticeDto createStudentPractice(AuthUser authUser, CreatePracticeDto createPracticeDto) {
-        UUID companyId = createPracticeDto.getCompanyId();
+        UUID interviewId = createPracticeDto.getInterviewId();
+
         RoleDto studentDto = Optional.of(authUser.roles().get(UserRole.STUDENT))
                 .orElseThrow(() -> new BadRequestException("Пользователь не является студентом"));
 
         repository.findByStudentIdAndIsArchivedFalse(studentDto.id())
-                .ifPresent(practiceEntity -> {
-                            throw new BadRequestException("Студент уже находится на практике");
-                        }
-                );
+                .ifPresent(p -> {
+                    throw new BadRequestException("Студент уже находится на практике");
+                });
 
-        var company = companyPartnerRepository.findById(companyId)
-                .orElseThrow(() -> new NotFoundException(String.format("Компания с id: %s не найдена", companyId)));
-        var stack = stackRepository.findById(createPracticeDto.getStackId())
-                .orElseThrow(() -> new NotFoundException(String.format("Не найден стек с id: %s ", createPracticeDto.getStackId())));
-        var student = studentRepository.findById(studentDto.id())
-                .orElseThrow(() -> new NotFoundException(String.format("Не найден студент с id: %s ", studentDto.id())));
+        var interview = interviewRepository.findById(interviewId)
+                .orElseThrow(() -> new NotFoundException("Собеседование не найдено"));
 
-        List<InterviewEntity> interviews = interviewRepository
-                .findAllByCompanyAndStudentAndStack(company, student, stack);
-
-        if (interviews.isEmpty()) {
-            throw new BadRequestException("Студент не проходил отбор в указанную компанию по данному стеку");
-        var isStudentPassedInterview = interviewRepository.existsByCompanyAndStudentAndStatus(company, student, StatusEnum.SUCCEED);
-
-        if (!isStudentPassedInterview) {
-            throw new BadRequestException("Студент не прошел отбор в указанную компанию");
+        if (!interview.getStudent().getId().equals(studentDto.id())) {
+            throw new BadRequestException("Студент не связан с этим собеседованием");
         }
 
-        if (interviews.stream()
-                .noneMatch(i -> i.getStatus() == StatusEnum.SUCCEED)) {
-            throw new BadRequestException("Студент не прошел отбор в данную компанию по данному стеку");
+        if (!interview.getStatus().equals(StatusEnum.SUCCEED)) {
+            throw new BadRequestException("Собеседование не было успешно пройдено");
         }
 
-        var practice = new PracticeEntity(student, company, stack);
+        var practice = new PracticeEntity(
+                interview.getStudent(),
+                interview.getCompany(),
+                interview.getStack()
+        );
+
+        practice.setIsPaid(createPracticeDto.getIsPaid());
 
         var savedPractice = repository.save(practice);
 
         return mapper.toDto(savedPractice);
     }
+
 
     @Override
     public PracticeDto approveStudentPractice(UUID studentId) {
