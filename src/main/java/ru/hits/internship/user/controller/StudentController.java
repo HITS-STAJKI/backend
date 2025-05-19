@@ -31,6 +31,7 @@ import ru.hits.internship.user.model.dto.role.response.StudentDto;
 import ru.hits.internship.user.model.dto.user.AuthUser;
 import ru.hits.internship.user.service.StudentService;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -127,8 +128,10 @@ public class StudentController {
     @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('DEAN')")
     @GetMapping("/export")
-    public ResponseEntity<ByteArrayResource> exportStudents() {
-        ByteArrayResource resource = studentService.exportStudentsToExcel();
+    public ResponseEntity<ByteArrayResource> exportStudents(
+            @RequestParam(required = false) List<UUID> userIds
+    ) {
+        ByteArrayResource resource = studentService.exportStudentsToExcel(userIds);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=students.xlsx")

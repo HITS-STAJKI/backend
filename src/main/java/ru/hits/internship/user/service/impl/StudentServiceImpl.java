@@ -6,7 +6,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -55,6 +58,9 @@ public class StudentServiceImpl implements StudentService {
     private final MessageRepository messageRepository;
     private final PracticeRepository practiceRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Value("${export.student-batch-size:100}")
+    private int batchSize;
 
     @Override
     public PagedListDto<StudentDto> getAllStudents(UUID userId, String fullName, Pageable pageable) {
@@ -155,10 +161,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
-    @Override
-    public ByteArrayResource exportStudentsToExcel() {
-        List<StudentEntity> students = studentRepository.findAll();
-
+    public ByteArrayResource exportStudentsToExcel(List<UUID> userIds) {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Студенты");
 
@@ -168,19 +171,29 @@ public class StudentServiceImpl implements StudentService {
         header.createCell(2).setCellValue("Компания");
 
         int rowIndex = 1;
-        for (StudentEntity student : students) {
-            Row row = sheet.createRow(rowIndex++);
-            UserEntity user = student.getUser();
+        int page = 0;
 
-            String groupNumber = student.getGroup() != null ? student.getGroup().getNumber() : "";
-            String companyName = practiceRepository.findByStudentIdAndIsArchivedFalse(student.getId())
-                    .map(p -> p.getCompany().getName())
-                    .orElse("");
+        Page<StudentEntity> batch;
+        do {
+            Pageable pageable = PageRequest.of(page++, batchSize);
+            batch = userIds == null || userIds.isEmpty()
+                    ? studentRepository.findAll(pageable)
+                    : studentRepository.findAllByUserIdIn(userIds, pageable);
 
-            row.createCell(0).setCellValue(user.getFullName());
-            row.createCell(1).setCellValue(groupNumber);
-            row.createCell(2).setCellValue(companyName);
-        }
+            for (StudentEntity student : batch.getContent()) {
+                Row row = sheet.createRow(rowIndex++);
+                UserEntity user = student.getUser();
+
+                String groupNumber = student.getGroup() != null ? student.getGroup().getNumber() : "";
+                String companyName = practiceRepository.findByStudentIdAndIsArchivedFalse(student.getId())
+                        .map(p -> p.getCompany().getName())
+                        .orElse("");
+
+                row.createCell(0).setCellValue(user.getFullName());
+                row.createCell(1).setCellValue(groupNumber);
+                row.createCell(2).setCellValue(companyName);
+            }
+        } while (batch.hasNext());
 
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -190,6 +203,7 @@ public class StudentServiceImpl implements StudentService {
             throw new RuntimeException("Ошибка при создании Excel", e);
         }
     }
+
 
     @Override
     @Transactional
