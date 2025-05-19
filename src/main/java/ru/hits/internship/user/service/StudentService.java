@@ -10,6 +10,7 @@ import ru.hits.internship.user.model.dto.role.request.edit.StudentEditDto;
 import ru.hits.internship.user.model.dto.role.response.StudentDto;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public interface StudentService {
@@ -19,5 +20,5 @@ public interface StudentService {
     StudentDto returnStudentFromAcadem(UUID studentId, ReturnFromAcademDto returnDto);
     PagedListDto<StudentDto> getAllStudents(UUID userId, String fullName, Pageable pageable);
     ByteArrayResource importStudentsFromExcel(MultipartFile file);
-    ByteArrayResource exportStudentsToExcel(List<UUID> userIds);
+    ByteArrayResource exportStudentsToExcel(Set<UUID> userIds);
 }

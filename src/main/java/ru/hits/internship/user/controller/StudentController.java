@@ -32,6 +32,7 @@ import ru.hits.internship.user.model.dto.user.AuthUser;
 import ru.hits.internship.user.service.StudentService;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -129,7 +130,7 @@ public class StudentController {
     @PreAuthorize("hasRole('DEAN')")
     @GetMapping("/export")
     public ResponseEntity<ByteArrayResource> exportStudents(
-            @RequestParam(required = false) List<UUID> userIds
+            @RequestParam(required = false) Set<UUID> userIds
     ) {
         ByteArrayResource resource = studentService.exportStudentsToExcel(userIds);
 

@@ -42,9 +42,8 @@ import ru.hits.internship.user.utils.RoleChecker;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -161,7 +160,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
-    public ByteArrayResource exportStudentsToExcel(List<UUID> userIds) {
+    public ByteArrayResource exportStudentsToExcel(Set<UUID> userIds) {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Студенты");
 
@@ -180,14 +179,23 @@ public class StudentServiceImpl implements StudentService {
                     ? studentRepository.findAll(pageable)
                     : studentRepository.findAllByUserIdIn(userIds, pageable);
 
-            for (StudentEntity student : batch.getContent()) {
+            List<StudentEntity> studentsInBatch = batch.getContent();
+            List<UUID> studentIds = studentsInBatch.stream()
+                    .map(StudentEntity::getId)
+                    .collect(Collectors.toList());
+            Map<UUID, String> companyMap = practiceRepository.findByStudentIdsAndIsArchivedFalse(studentIds).stream()
+                    .collect(Collectors.toMap(
+                            p -> p.getStudent().getId(),
+                            p -> p.getCompany().getName(),
+                            (first, second) -> first
+                    ));
+
+            for (StudentEntity student : studentsInBatch) {
                 Row row = sheet.createRow(rowIndex++);
                 UserEntity user = student.getUser();
 
                 String groupNumber = student.getGroup() != null ? student.getGroup().getNumber() : "";
-                String companyName = practiceRepository.findByStudentIdAndIsArchivedFalse(student.getId())
-                        .map(p -> p.getCompany().getName())
-                        .orElse("");
+                String companyName = companyMap.getOrDefault(student.getId(), "");
 
                 row.createCell(0).setCellValue(user.getFullName());
                 row.createCell(1).setCellValue(groupNumber);

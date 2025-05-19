@@ -9,6 +9,7 @@ import ru.hits.internship.user.model.entity.role.StudentEntity;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 public interface StudentRepository extends RoleRepository<StudentEntity, UUID> {
@@ -21,5 +22,5 @@ public interface StudentRepository extends RoleRepository<StudentEntity, UUID> {
 
     Optional<StudentEntity> findByUser_Id(UUID userId);
 
-    Page<StudentEntity> findAllByUserIdIn(List<UUID> userIds, Pageable pageable);
+    Page<StudentEntity> findAllByUserIdIn(Set<UUID> userIds, Pageable pageable);
 }
