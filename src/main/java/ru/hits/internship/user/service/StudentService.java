@@ -1,6 +1,8 @@
 package ru.hits.internship.user.service;
 
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.user.model.dto.role.request.create.StudentCreateDto;
 import ru.hits.internship.user.model.dto.role.request.edit.ReturnFromAcademDto;
@@ -15,4 +17,6 @@ public interface StudentService {
     StudentDto sendStudentToAcadem(UUID studentId);
     StudentDto returnStudentFromAcadem(UUID studentId, ReturnFromAcademDto returnDto);
     PagedListDto<StudentDto> getAllStudents(UUID userId, String fullName, Pageable pageable);
+    ByteArrayResource importStudentsFromExcel(MultipartFile file);
+    ByteArrayResource exportStudentsToExcel();
 }
