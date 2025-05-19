@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import ru.hits.internship.group.dto.GroupShortDto;
 import ru.hits.internship.partner.models.CompanyPartnerDto;
+import ru.hits.internship.stack.models.StackDto;
 import ru.hits.internship.user.model.dto.user.UserDto;
 
 import java.time.LocalDateTime;
@@ -22,6 +23,8 @@ public class PracticeDto {
     private GroupShortDto group;
     @Schema(description = "Место прохождения практики")
     private CompanyPartnerDto company;
+    @Schema(description = "Стек практики")
+    private StackDto stack;
     @Schema(description = "Время создания практики")
     private LocalDateTime createdAt;
     @Schema(description = "Статус оплачиваемости", example = "true")
