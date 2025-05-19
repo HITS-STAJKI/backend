@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Validated
 @RequestMapping("/api/v1/statistics")
-@Tag(name = "Статистика", description = "Отвечает за работу со статистикой")
+@Tag(name = "Statistics", description = "Отвечает за работу со статистикой")
 public class StatisticsController {
 }

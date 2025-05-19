@@ -35,7 +35,7 @@ import java.util.UUID;
 @Validated
 @RequestMapping("/api/v1/groups")
 @RequiredArgsConstructor
-@Tag(name = "Группы", description = "Отвечает за работу с группами")
+@Tag(name = "Group", description = "Отвечает за работу с группами")
 public class GroupController {
     private final GroupService groupService;
 

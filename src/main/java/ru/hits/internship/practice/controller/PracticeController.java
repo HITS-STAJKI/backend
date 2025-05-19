@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Tag(name = "Практики", description = "Отвечает за работу с практиками студентов")
+@Tag(name = "Practice", description = "Отвечает за работу с практиками студентов")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/practice")

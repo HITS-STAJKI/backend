@@ -17,7 +17,7 @@ import ru.hits.internship.user.service.UserService;
 import java.util.UUID;
 
 @RestController
-@Tag(name = "Роль", description = "Отвечает за работу с ролями пользователей")
+@Tag(name = "Role", description = "Отвечает за работу с ролями пользователей")
 @RequestMapping(value = "/api/v1/role")
 @RequiredArgsConstructor
 public class RoleController {

@@ -29,7 +29,7 @@ import ru.hits.internship.user.service.StudentService;
 import java.util.UUID;
 
 @RestController
-@Tag(name = "Студент", description = "Отвечает за работу со студентами")
+@Tag(name = "Student", description = "Отвечает за работу со студентами")
 @RequestMapping(value = "/api/v1/student")
 @RequiredArgsConstructor
 public class StudentController {

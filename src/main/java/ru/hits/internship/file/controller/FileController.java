@@ -39,7 +39,7 @@ import ru.hits.internship.user.model.dto.user.AuthUser;
 import java.util.UUID;
 
 @RestController
-@Tag(name = "Файлы", description = "Отвечает за работу с файлами")
+@Tag(name = "Files", description = "Отвечает за работу с файлами")
 @RequestMapping(value = "/api/v1/files")
 @RequiredArgsConstructor
 public class FileController {

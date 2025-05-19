@@ -32,7 +32,7 @@ import ru.hits.internship.user.model.dto.user.AuthUser;
 import java.util.UUID;
 
 @RestController
-@Tag(name = "Отборы", description = "Отвечает за работу с отборами")
+@Tag(name = "Interviews", description = "Отвечает за работу с отборами")
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/interview")
 public class InterviewController {

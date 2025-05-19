@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@Tag(name = "Стек", description = "Отвечает за работу со стеками")
+@Tag(name = "Stack", description = "Отвечает за работу со стеками")
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/stack")
 public class StackController {
