@@ -13,11 +13,7 @@ import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.user.mapper.UserMapper;
 import ru.hits.internship.user.model.common.UserRole;
-import ru.hits.internship.user.model.dto.user.UserDetailsDto;
-import ru.hits.internship.user.model.dto.user.UserDto;
-import ru.hits.internship.user.model.dto.user.UserEditDto;
-import ru.hits.internship.user.model.dto.user.UserFilter;
-import ru.hits.internship.user.model.dto.user.UserShortDto;
+import ru.hits.internship.user.model.dto.user.*;
 import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.model.entity.role.*;
 import ru.hits.internship.user.repository.UserRepository;
@@ -58,6 +54,16 @@ public class UserServiceImpl implements UserService {
         UserEntity user = userRepository.findByIdOrThrow(userId);
 
         UserEntity updatedUser = UserMapper.INSTANCE.updateUser(user, editDto);
+        userRepository.save(updatedUser);
+
+        return UserMapper.INSTANCE.toShortDto(updatedUser);
+    }
+
+    @Override
+    public UserShortDto updateUserEmail(UUID userId, UserEmailEditDto editDto) {
+        UserEntity user = userRepository.findByIdOrThrow(userId);
+
+        UserEntity updatedUser = UserMapper.INSTANCE.updateUserEmail(user, editDto);
         userRepository.save(updatedUser);
 
         return UserMapper.INSTANCE.toShortDto(updatedUser);
