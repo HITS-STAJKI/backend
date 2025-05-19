@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import ru.hits.internship.group.entity.GroupEntity;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -12,4 +13,6 @@ public interface GroupRepository extends JpaRepository<GroupEntity, UUID>, JpaSp
     boolean existsByNumberIgnoreCase(String number);
 
     boolean existsByNumberIgnoreCaseAndIdNot(String number, UUID id);
+
+    Optional<GroupEntity> findByNumberIgnoreCase(String number);
 }

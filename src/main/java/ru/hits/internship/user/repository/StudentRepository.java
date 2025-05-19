@@ -1,10 +1,15 @@
 package ru.hits.internship.user.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 public interface StudentRepository extends RoleRepository<StudentEntity, UUID> {
@@ -16,4 +21,6 @@ public interface StudentRepository extends RoleRepository<StudentEntity, UUID> {
     boolean existsByUserId(@Param("userId") UUID userId);
 
     Optional<StudentEntity> findByUser_Id(UUID userId);
+
+    Page<StudentEntity> findAllByUserIdIn(Set<UUID> userIds, Pageable pageable);
 }

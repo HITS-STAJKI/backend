@@ -42,3 +42,6 @@ minio:
   connect-timeout: 5000
   write-timeout: 15000
   read-timeout: 15000
+
+export:
+  student-batch-size: 100
