@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -22,5 +21,5 @@ public interface StudentRepository extends RoleRepository<StudentEntity, UUID> {
 
     Optional<StudentEntity> findByUser_Id(UUID userId);
 
-    Page<StudentEntity> findAllByUserIdIn(Set<UUID> userIds, Pageable pageable);
+    Page<StudentEntity> findAllByIdIn(Set<UUID> userIds, Pageable pageable);
 }

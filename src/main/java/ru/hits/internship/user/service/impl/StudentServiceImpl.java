@@ -15,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hits.internship.chat.entity.ChatReadStateEntity;
-import ru.hits.internship.chat.model.chat.ChatDto;
 import ru.hits.internship.chat.repository.ChatReadStateRepository;
 import ru.hits.internship.chat.repository.MessageRepository;
 import ru.hits.internship.chat.service.ChatService;
@@ -42,7 +41,11 @@ import ru.hits.internship.user.utils.RoleChecker;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -90,6 +93,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional
     public ByteArrayResource importStudentsFromExcel(MultipartFile file) {
         List<String[]> resultRows = new ArrayList<>();
 
@@ -102,7 +106,7 @@ public class StudentServiceImpl implements StudentService {
                 if (row == null) continue;
 
                 String fullName = row.getCell(0).getStringCellValue().trim();
-                String groupNumber = row.getCell(1).getStringCellValue().trim();
+                String groupNumber = String.valueOf((int) row.getCell(1).getNumericCellValue());
                 String email = row.getCell(2).getStringCellValue().trim();
 
                 String rawPassword = PasswordGenerator.generateBasedOn(email);
@@ -129,6 +133,8 @@ public class StudentServiceImpl implements StudentService {
                     student.setUser(user);
                     student.setGroup(group);
                     studentRepository.save(student);
+                } else {
+                    throw new BadRequestException("Пользователь с почтой: " + email + " уже является студентом");
                 }
 
                 resultRows.add(new String[]{fullName, email, rawPassword});
@@ -160,7 +166,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
-    public ByteArrayResource exportStudentsToExcel(Set<UUID> userIds) {
+    public ByteArrayResource exportStudentsToExcel(Set<UUID> studentIds) {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Студенты");
 
@@ -175,15 +181,16 @@ public class StudentServiceImpl implements StudentService {
         Page<StudentEntity> batch;
         do {
             Pageable pageable = PageRequest.of(page++, batchSize);
-            batch = userIds == null || userIds.isEmpty()
+            batch = studentIds == null || studentIds.isEmpty()
                     ? studentRepository.findAll(pageable)
-                    : studentRepository.findAllByUserIdIn(userIds, pageable);
+                    : studentRepository.findAllByIdIn(studentIds, pageable);
 
             List<StudentEntity> studentsInBatch = batch.getContent();
-            List<UUID> studentIds = studentsInBatch.stream()
+            List<UUID> studentIdsInBatch = studentsInBatch
+                    .stream()
                     .map(StudentEntity::getId)
-                    .collect(Collectors.toList());
-            Map<UUID, String> companyMap = practiceRepository.findByStudentIdsAndIsArchivedFalse(studentIds).stream()
+                    .toList();
+            Map<UUID, String> companyMap = practiceRepository.findByStudentIdsAndIsArchivedFalse(studentIdsInBatch).stream()
                     .collect(Collectors.toMap(
                             p -> p.getStudent().getId(),
                             p -> p.getCompany().getName(),

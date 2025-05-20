@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.hits.internship.user.model.entity.role.RoleEntity;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -35,5 +36,5 @@ public class UserEntity {
     @Column(name = "password", nullable = false)
     private String password;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private Set<RoleEntity> roles;
+    private Set<RoleEntity> roles = new HashSet<>();
 }

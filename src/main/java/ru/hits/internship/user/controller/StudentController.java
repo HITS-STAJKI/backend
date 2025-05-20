@@ -31,7 +31,6 @@ import ru.hits.internship.user.model.dto.role.response.StudentDto;
 import ru.hits.internship.user.model.dto.user.AuthUser;
 import ru.hits.internship.user.service.StudentService;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -112,10 +111,10 @@ public class StudentController {
         return studentService.returnStudentFromAcadem(studentId, returnDto);
     }
 
-    @Operation(summary = "Импорт студентов из Excel-файла")
+    @Operation(summary = "Импорт студентов из Excel-файла", description = "Формат таблицы: Полное имя - номер потока - электронная почта")
     @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('DEAN')")
-    @PostMapping("/import")
+    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ByteArrayResource> importStudents(@RequestParam("file") MultipartFile file) {
         ByteArrayResource resource = studentService.importStudentsFromExcel(file);
 
@@ -130,9 +129,9 @@ public class StudentController {
     @PreAuthorize("hasRole('DEAN')")
     @GetMapping("/export")
     public ResponseEntity<ByteArrayResource> exportStudents(
-            @RequestParam(required = false) Set<UUID> userIds
+            @RequestParam(required = false) Set<UUID> studentIds
     ) {
-        ByteArrayResource resource = studentService.exportStudentsToExcel(userIds);
+        ByteArrayResource resource = studentService.exportStudentsToExcel(studentIds);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=students.xlsx")
