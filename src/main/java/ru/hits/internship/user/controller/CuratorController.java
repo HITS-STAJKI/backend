@@ -27,7 +27,7 @@ import ru.hits.internship.user.service.CuratorService;
 import java.util.UUID;
 
 @RestController
-@Tag(name = "Куратор", description = "Отвечает за работу с кураторами")
+@Tag(name = "Curator", description = "Отвечает за работу с кураторами")
 @RequestMapping(value = "/api/v1/curator")
 @RequiredArgsConstructor
 public class CuratorController {

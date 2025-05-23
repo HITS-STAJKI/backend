@@ -37,6 +37,9 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-api:0.12.6")
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
 
+    // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+    implementation("org.apache.poi:poi-ooxml:3.9")
+
     implementation "io.minio:minio:${minioVersion}"
     implementation "org.apache.tika:tika-core:${tikaVersion}"
 

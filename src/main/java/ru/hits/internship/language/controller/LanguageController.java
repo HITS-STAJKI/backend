@@ -25,7 +25,7 @@ import ru.hits.internship.language.service.LanguageService;
 import java.util.List;
 import java.util.UUID;
 
-@Tag(name = "Язык программирования", description = "Отвечает за работу с языками для отборов")
+@Tag(name = "Programming language", description = "Отвечает за работу с языками для отборов")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api/v1/language")

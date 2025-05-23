@@ -25,7 +25,7 @@ import ru.hits.internship.user.model.dto.user.AuthUser;
 import java.util.UUID;
 
 @RestController
-@Tag(name = "Отчеты", description = "Отвечает за работу с отчетами")
+@Tag(name = "Practice reports", description = "Отвечает за работу с отчетами")
 @RequestMapping(value = "/api/v1/report")
 @RequiredArgsConstructor
 public class ReportController {

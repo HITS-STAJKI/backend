@@ -15,7 +15,7 @@ import ru.hits.internship.user.model.dto.role.response.EducationalProgramLeadDto
 import ru.hits.internship.user.service.EducationalProgramLeadService;
 
 @RestController
-@Tag(name = "Руководитель образовательной программы")
+@Tag(name = "Educational program lead")
 @RequestMapping(value = "/api/v1/educational-program-lead")
 @RequiredArgsConstructor
 public class EducationalProgramLeadController {

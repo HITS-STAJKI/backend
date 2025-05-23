@@ -21,7 +21,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/graduation")
 @RequiredArgsConstructor
-@Tag(name = "Выпуск потоков студентов", description = "Отвечает за работу с выпуском потоков")
+@Tag(name = "Graduation", description = "Отвечает за работу с выпуском потоков")
 public class GraduationController {
     private final GraduationService graduationService;
 

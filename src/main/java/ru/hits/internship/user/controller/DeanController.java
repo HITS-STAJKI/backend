@@ -22,7 +22,7 @@ import ru.hits.internship.user.model.dto.user.AuthUser;
 import ru.hits.internship.user.service.DeanService;
 
 @RestController
-@Tag(name = "Деканат", description = "Отвечает за работу с представителями деканата")
+@Tag(name = "Dean", description = "Отвечает за работу с представителями деканата")
 @RequestMapping(value = "/api/v1/dean")
 @RequiredArgsConstructor
 public class DeanController {

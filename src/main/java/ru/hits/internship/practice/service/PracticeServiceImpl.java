@@ -11,6 +11,7 @@ import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
+import ru.hits.internship.interview.entity.InterviewEntity;
 import ru.hits.internship.interview.models.StatusEnum;
 import ru.hits.internship.interview.repository.InterviewRepository;
 import ru.hits.internship.partner.repository.CompanyPartnerRepository;
@@ -23,6 +24,7 @@ import ru.hits.internship.practice.models.filter.GetAllPracticeFilter;
 import ru.hits.internship.practice.repository.PracticeRepository;
 import ru.hits.internship.practice.specification.PracticeSpecification;
 import ru.hits.internship.report.entity.ReportEntity;
+import ru.hits.internship.stack.repository.StackRepository;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.role.response.RoleDto;
 import ru.hits.internship.user.model.dto.user.AuthUser;
@@ -39,6 +41,7 @@ public class PracticeServiceImpl implements PracticeService {
     private final CompanyPartnerRepository companyPartnerRepository;
     private final InterviewRepository interviewRepository;
     private final StudentRepository studentRepository;
+    private final StackRepository stackRepository;
     private final PracticeMapper mapper;
 
     @Override
@@ -75,28 +78,33 @@ public class PracticeServiceImpl implements PracticeService {
 
     @Override
     public PracticeDto createStudentPractice(AuthUser authUser, CreatePracticeDto createPracticeDto) {
-        UUID companyId = createPracticeDto.getCompanyId();
+        UUID interviewId = createPracticeDto.getInterviewId();
+
         RoleDto studentDto = Optional.of(authUser.roles().get(UserRole.STUDENT))
                 .orElseThrow(() -> new BadRequestException("Пользователь не является студентом"));
 
         repository.findByStudentIdAndIsArchivedFalse(studentDto.id())
-                .ifPresent(practiceEntity -> {
-                            throw new BadRequestException("Студент уже находится на практике");
-                        }
-                );
+                .ifPresent(p -> {
+                    throw new BadRequestException("Студент уже находится на практике");
+                });
 
-        var company = companyPartnerRepository.findById(companyId)
-                .orElseThrow(() -> new NotFoundException(String.format("Компания с id: %s не найдена", companyId)));
-        var student = studentRepository.findById(studentDto.id())
-                .orElseThrow(() -> new NotFoundException(String.format("Не найден студент с id: %s ", studentDto.id())));
+        var interview = interviewRepository.findById(interviewId)
+                .orElseThrow(() -> new NotFoundException("Собеседование не найдено"));
 
-        var isStudentPassedInterview = interviewRepository.existsByCompanyAndStudentAndStatus(company, student, StatusEnum.SUCCEED);
-
-        if (!isStudentPassedInterview) {
-            throw new BadRequestException("Студент не прошел отбор в указанную компанию");
+        if (!interview.getStudent().getId().equals(studentDto.id())) {
+            throw new BadRequestException("Студент не связан с этим собеседованием");
         }
 
-        var practice = new PracticeEntity(student, company, createPracticeDto.getIsPaid());
+        if (!interview.getStatus().equals(StatusEnum.SUCCEED)) {
+            throw new BadRequestException("Собеседование не было успешно пройдено");
+        }
+
+        var practice = new PracticeEntity(
+                interview.getStudent(),
+                interview.getCompany(),
+                interview.getStack(),
+                createPracticeDto.getIsPaid()
+        );
 
         var savedPractice = repository.save(practice);
 

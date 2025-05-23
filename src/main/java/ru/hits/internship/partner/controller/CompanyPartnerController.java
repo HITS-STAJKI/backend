@@ -32,7 +32,7 @@ import ru.hits.internship.partner.service.CompanyPartnerService;
 import java.util.UUID;
 
 @RestController
-@Tag(name = "Компании-партнеры", description = "Отвечает за работу с компаниями-партнерами")
+@Tag(name = "Company-partners", description = "Отвечает за работу с компаниями-партнерами")
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/partner")
 public class CompanyPartnerController {

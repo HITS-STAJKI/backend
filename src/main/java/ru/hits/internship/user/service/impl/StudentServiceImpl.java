@@ -2,9 +2,19 @@ package ru.hits.internship.user.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ru.hits.internship.chat.entity.ChatReadStateEntity;
 import ru.hits.internship.chat.repository.ChatReadStateRepository;
 import ru.hits.internship.chat.repository.MessageRepository;
@@ -15,6 +25,7 @@ import ru.hits.internship.common.filters.Filter;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.group.entity.GroupEntity;
 import ru.hits.internship.group.repository.GroupRepository;
+import ru.hits.internship.practice.repository.PracticeRepository;
 import ru.hits.internship.user.mapper.StudentMapper;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.role.filter.StudentFilter;
@@ -27,13 +38,21 @@ import ru.hits.internship.user.model.entity.role.StudentEntity;
 import ru.hits.internship.user.repository.StudentRepository;
 import ru.hits.internship.user.repository.UserRepository;
 import ru.hits.internship.user.service.StudentService;
+import ru.hits.internship.user.utils.PasswordGenerator;
 import ru.hits.internship.user.utils.RoleChecker;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,6 +64,11 @@ public class StudentServiceImpl implements StudentService {
     private final ChatService chatService;
     private final ChatReadStateRepository chatReadStateRepository;
     private final MessageRepository messageRepository;
+    private final PracticeRepository practiceRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @Value("${export.student-batch-size:100}")
+    private int batchSize;
     private final List<Filter<StudentEntity, StudentFilter>> filters;
 
     @Override
@@ -82,6 +106,134 @@ public class StudentServiceImpl implements StudentService {
             return studentDto;
         });
     }
+
+    @Override
+    @Transactional
+    public ByteArrayResource importStudentsFromExcel(MultipartFile file) {
+        List<String[]> resultRows = new ArrayList<>();
+
+        try {
+            Workbook workbook = new XSSFWorkbook(file.getInputStream());
+            Sheet sheet = workbook.getSheetAt(0);
+
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
+                if (row == null) continue;
+
+                String fullName = row.getCell(0).getStringCellValue().trim();
+                String groupNumber = String.valueOf((int) row.getCell(1).getNumericCellValue());
+                String email = row.getCell(2).getStringCellValue().trim();
+
+                String rawPassword = PasswordGenerator.generateBasedOn(email);
+                String encodedPassword = passwordEncoder.encode(rawPassword);
+
+                UserEntity user = userRepository.findByEmail(email).orElse(null);
+
+                if (user == null) {
+                    user = new UserEntity();
+                    user.setFullName(fullName);
+                    user.setEmail(email);
+                    user.setPassword(encodedPassword);
+                    user = userRepository.save(user);
+                }
+
+                boolean alreadyStudent = user.getRoles().stream()
+                        .anyMatch(role -> role instanceof StudentEntity);
+
+                if (!alreadyStudent) {
+                    GroupEntity group = groupRepository.findByNumberIgnoreCase(groupNumber)
+                            .orElseThrow(() -> new NotFoundException("Группа не найдена: " + groupNumber));
+
+                    StudentEntity student = new StudentEntity();
+                    student.setUser(user);
+                    student.setGroup(group);
+                    studentRepository.save(student);
+                } else {
+                    throw new BadRequestException("Пользователь с почтой: " + email + " уже является студентом");
+                }
+
+                resultRows.add(new String[]{fullName, email, rawPassword});
+            }
+
+            Workbook resultWorkbook = new XSSFWorkbook();
+            Sheet resultSheet = resultWorkbook.createSheet("Результат импорта");
+
+            Row header = resultSheet.createRow(0);
+            header.createCell(0).setCellValue("ФИО");
+            header.createCell(1).setCellValue("Почта");
+            header.createCell(2).setCellValue("Сгенерированный пароль");
+
+            for (int i = 0; i < resultRows.size(); i++) {
+                Row row = resultSheet.createRow(i + 1);
+                String[] data = resultRows.get(i);
+                row.createCell(0).setCellValue(data[0]);
+                row.createCell(1).setCellValue(data[1]);
+                row.createCell(2).setCellValue(data[2]);
+            }
+
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            resultWorkbook.write(out);
+            return new ByteArrayResource(out.toByteArray());
+
+        } catch (IOException e) {
+            throw new RuntimeException("Ошибка при обработке Excel", e);
+        }
+    }
+
+
+    public ByteArrayResource exportStudentsToExcel(Set<UUID> studentIds) {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Студенты");
+
+        Row header = sheet.createRow(0);
+        header.createCell(0).setCellValue("ФИО");
+        header.createCell(1).setCellValue("Поток");
+        header.createCell(2).setCellValue("Компания");
+
+        int rowIndex = 1;
+        int page = 0;
+
+        Page<StudentEntity> batch;
+        do {
+            Pageable pageable = PageRequest.of(page++, batchSize);
+            batch = studentIds == null || studentIds.isEmpty()
+                    ? studentRepository.findAll(pageable)
+                    : studentRepository.findAllByIdIn(studentIds, pageable);
+
+            List<StudentEntity> studentsInBatch = batch.getContent();
+            List<UUID> studentIdsInBatch = studentsInBatch
+                    .stream()
+                    .map(StudentEntity::getId)
+                    .toList();
+            Map<UUID, String> companyMap = practiceRepository.findByStudentIdsAndIsArchivedFalse(studentIdsInBatch).stream()
+                    .collect(Collectors.toMap(
+                            p -> p.getStudent().getId(),
+                            p -> p.getCompany().getName(),
+                            (first, second) -> first
+                    ));
+
+            for (StudentEntity student : studentsInBatch) {
+                Row row = sheet.createRow(rowIndex++);
+                UserEntity user = student.getUser();
+
+                String groupNumber = student.getGroup() != null ? student.getGroup().getNumber() : "";
+                String companyName = companyMap.getOrDefault(student.getId(), "");
+
+                row.createCell(0).setCellValue(user.getFullName());
+                row.createCell(1).setCellValue(groupNumber);
+                row.createCell(2).setCellValue(companyName);
+            }
+        } while (batch.hasNext());
+
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            workbook.write(out);
+            return new ByteArrayResource(out.toByteArray());
+        } catch (IOException e) {
+            throw new RuntimeException("Ошибка при создании Excel", e);
+        }
+    }
+
 
     @Override
     @Transactional

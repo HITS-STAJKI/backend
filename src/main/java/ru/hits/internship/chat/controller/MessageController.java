@@ -32,7 +32,7 @@ import ru.hits.internship.user.model.dto.user.AuthUser;
 import java.util.UUID;
 
 @RestController
-@Tag(name = "Сообщения в пользовательском чате", description = "Отвечает за работу с сообщениями в чате")
+@Tag(name = "Messages in chat", description = "Отвечает за работу с сообщениями в чате")
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/chats/{chatId}/messages")
 public class MessageController {
