@@ -26,7 +26,7 @@ public class StatisticsController {
 
     @Operation(summary = "Получить количество студентов по фильтру", description = "Получить число студентов, удовлетворяющих заданным условиям")
     @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("hasAnyRole('DEAN')")
+    @PreAuthorize("hasAnyRole('DEAN', 'EDUCATIONAL_PROGRAM_LEAD')")
     @GetMapping("/students/count")
     public StatisticsResponse countStudentsByFilter(
             @Valid @ParameterObject @Parameter(description = "Фильтр для студентов")
