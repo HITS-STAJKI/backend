@@ -5,12 +5,13 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import org.springframework.stereotype.Component;
 import ru.hits.internship.common.filters.Filter;
 import ru.hits.internship.practice.entity.PracticeEntity;
 import ru.hits.internship.user.model.dto.role.filter.StudentFilter;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
 
-@ComponentН
+@Component
 public class StudentOnPracticeWithStackFilter implements Filter<StudentEntity, StudentFilter> {
     @Override
     public boolean isApplicable(StudentFilter filter) {
