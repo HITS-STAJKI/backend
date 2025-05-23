@@ -10,7 +10,7 @@ import ru.hits.internship.practice.entity.PracticeEntity;
 import ru.hits.internship.user.model.dto.role.filter.StudentFilter;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
 
-//TODO(Проверить после выполнения задачи на привязку практики к стеку + добавить @Component)
+@ComponentН
 public class StudentOnPracticeWithStackFilter implements Filter<StudentEntity, StudentFilter> {
     @Override
     public boolean isApplicable(StudentFilter filter) {

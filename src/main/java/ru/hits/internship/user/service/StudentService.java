@@ -15,10 +15,13 @@ import java.util.UUID;
 
 public interface StudentService {
     StudentDto updateStudent(UUID studentId, StudentEditDto editDto);
+
     StudentDto createStudent(UUID userId, StudentCreateDto createDto);
+
     StudentDto sendStudentToAcadem(UUID studentId);
+
     StudentDto returnStudentFromAcadem(UUID studentId, ReturnFromAcademDto returnDto);
-    PagedListDto<StudentDto> getAllStudents(UUID userId, String fullName, Pageable pageable);
+
     ByteArrayResource importStudentsFromExcel(MultipartFile file);
 
     ByteArrayResource exportStudentsToExcel(Set<UUID> studentIds);
