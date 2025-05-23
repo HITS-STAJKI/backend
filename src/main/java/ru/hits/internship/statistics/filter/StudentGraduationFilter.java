@@ -9,7 +9,7 @@ import ru.hits.internship.common.filters.Filter;
 import ru.hits.internship.statistics.dto.StudentFilter;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
 
-@Component
+@Component("statsStudentGraduationFilter")
 public class StudentGraduationFilter implements Filter<StudentEntity, StudentFilter> {
     @Override
     public boolean isApplicable(StudentFilter filter) {

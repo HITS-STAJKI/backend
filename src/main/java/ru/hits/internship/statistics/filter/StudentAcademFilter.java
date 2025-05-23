@@ -9,7 +9,7 @@ import ru.hits.internship.common.filters.Filter;
 import ru.hits.internship.statistics.dto.StudentFilter;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
 
-@Component
+@Component("statsStudentAcademFilter")
 public class StudentAcademFilter implements Filter<StudentEntity, StudentFilter> {
     @Override
     public Predicate toPredicate(Root<StudentEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder, StudentFilter filter) {

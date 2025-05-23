@@ -11,7 +11,7 @@ import ru.hits.internship.practice.entity.PracticeEntity;
 import ru.hits.internship.statistics.dto.StudentFilter;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
 
-@Component
+@Component("statsStudentInCompanyFilter")
 public class StudentInCompanyFilter implements Filter<StudentEntity, StudentFilter> {
     @Override
     public boolean isApplicable(StudentFilter filter) {
