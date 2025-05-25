@@ -3,11 +3,13 @@ package ru.hits.internship.chat.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.hits.internship.chat.entity.ChatEntity;
 import ru.hits.internship.chat.entity.ChatReadStateEntity;
 import ru.hits.internship.chat.entity.MessageEntity;
+import ru.hits.internship.chat.mapper.ChatMapper;
 import ru.hits.internship.chat.mapper.MessageMapper;
 import ru.hits.internship.chat.model.message.EditMessageRequest;
 import ru.hits.internship.chat.model.message.MessageDto;
@@ -18,10 +20,13 @@ import ru.hits.internship.chat.repository.MessageRepository;
 import ru.hits.internship.chat.service.MessageService;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
+import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.user.model.entity.UserEntity;
+import ru.hits.internship.user.model.entity.role.StudentEntity;
 import ru.hits.internship.user.repository.StudentRepository;
 import ru.hits.internship.user.repository.UserRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -33,6 +38,7 @@ public class MessageServiceImpl implements MessageService {
     private final StudentRepository studentRepository;
     private final MessageMapper messageMapper;
     private final ChatReadStateRepository chatReadStateRepository;
+    private final ChatMapper chatMapper;
 
     @Override
     @Transactional
@@ -40,13 +46,42 @@ public class MessageServiceImpl implements MessageService {
         ChatEntity chat = chatRepository.findById(chatId)
                 .orElseThrow(() -> new NotFoundException(ChatEntity.class, chatId));
 
+        MessageEntity message = sendMessage(sendMessageRequest, userId, chat);
+
+        MessageDto messageDto = messageMapper.toDto(message);
+        messageDto.setIsRead(true);
+
+        return messageDto;
+    }
+
+    @Override
+    @Transactional
+    public Response sendMessageToStudents(List<UUID> studentIds, SendMessageRequest sendMessageRequest) {
+        for (UUID studentId : studentIds) {
+            StudentEntity student = studentRepository.findById(studentId).orElse(null);
+            if (student == null) {
+                throw new NotFoundException(StudentEntity.class, studentId);
+            }
+
+            final ChatEntity chat = chatRepository.findByStudent_Id(studentId).orElseGet(() -> {
+                ChatEntity newChat = chatMapper.toEntity(student);
+                return chatRepository.save(newChat);
+            });
+
+            sendMessage(sendMessageRequest, student.getUser().getId(), chat);
+        }
+
+        return new Response("Сообщения были успешно отправлены студентам", HttpStatus.OK.value());
+    }
+
+    private MessageEntity sendMessage(SendMessageRequest sendMessageRequest, UUID userId, ChatEntity chat) {
         UserEntity user = userRepository.getReferenceById(userId);
 
         MessageEntity message = messageMapper.toEntity(sendMessageRequest, user, chat);
         message = messageRepository.saveAndFlush(message);
 
         ChatReadStateEntity chatReadState = chatReadStateRepository
-                .findByChatIdAndUserId(chatId, userId)
+                .findByChatIdAndUserId(chat.getId(), userId)
                 .orElseGet(() -> {
                     ChatReadStateEntity newChatReadState = new ChatReadStateEntity();
                     newChatReadState.setChat(chat);
@@ -57,10 +92,7 @@ public class MessageServiceImpl implements MessageService {
         chatReadState.setLastReadAt(message.getCreatedAt());
         chatReadStateRepository.save(chatReadState);
 
-        MessageDto messageDto = messageMapper.toDto(message);
-        messageDto.setIsRead(true);
-
-        return messageDto;
+        return message;
     }
 
     @Override

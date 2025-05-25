@@ -11,7 +11,6 @@ import ru.hits.internship.practice.entity.PracticeEntity;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 public interface PracticeRepository extends JpaRepository<PracticeEntity, UUID>, JpaSpecificationExecutor<PracticeEntity> {
@@ -26,8 +25,12 @@ public interface PracticeRepository extends JpaRepository<PracticeEntity, UUID>,
     Page<PracticeEntity> findAllByIsApprovedFalse(Pageable pageable);
 
     @Modifying
-    @Query("UPDATE PracticeEntity p SET p.isArchived = true WHERE p.student.group.id = :groupId AND p.isArchived = false")
+    @Query("UPDATE PracticeEntity p SET p.isApproved = true WHERE p.student.group.id = :groupId AND p.isApproved = false")
     int approvePracticesByGroup(@Param("groupId") UUID groupId);
+
+    @Modifying
+    @Query("UPDATE PracticeEntity p SET p.isArchived = true WHERE p.student.group.id = :groupId AND p.isArchived = false")
+    int archivePracticesByGroup(@Param("groupId") UUID groupId);
 
     @Query("SELECT p FROM PracticeEntity p WHERE p.student.id IN :studentIds AND p.isArchived = false")
     List<PracticeEntity> findByStudentIdsAndIsArchivedFalse(@Param("studentIds") List<UUID> studentIds);

@@ -189,4 +189,17 @@ public class PracticeController {
     ) {
         return practiceService.archiveStudentPractice(practiceId);
     }
+
+    @Operation(
+            summary = "Заархивирование практик студентов конкретной группы",
+            description = "Позволяет куратору заархивировать практики студентов определённой группы"
+    )
+    @SecurityRequirement(name = "bearerAuth")
+    @PutMapping("/archiveAll")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
+    public Response archiveStudentPracticesByGroup(
+            @RequestParam("groupId") @Parameter(description = "Id группы") UUID groupId
+    ) {
+        return practiceService.archiveAllStudentPracticesForGroup(groupId);
+    }
 }
