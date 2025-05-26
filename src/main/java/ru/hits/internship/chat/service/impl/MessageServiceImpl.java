@@ -14,6 +14,7 @@ import ru.hits.internship.chat.mapper.MessageMapper;
 import ru.hits.internship.chat.model.message.EditMessageRequest;
 import ru.hits.internship.chat.model.message.MessageDto;
 import ru.hits.internship.chat.model.message.SendMessageRequest;
+import ru.hits.internship.chat.model.message.SendMessageToStudentsRequest;
 import ru.hits.internship.chat.repository.ChatReadStateRepository;
 import ru.hits.internship.chat.repository.ChatRepository;
 import ru.hits.internship.chat.repository.MessageRepository;
@@ -27,7 +28,10 @@ import ru.hits.internship.user.repository.StudentRepository;
 import ru.hits.internship.user.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -56,17 +60,27 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     @Transactional
-    public Response sendMessageToStudents(List<UUID> studentIds, SendMessageRequest sendMessageRequest) {
-        for (UUID studentId : studentIds) {
-            StudentEntity student = studentRepository.findById(studentId).orElse(null);
-            if (student == null) {
-                throw new NotFoundException(StudentEntity.class, studentId);
-            }
+    public Response sendMessageToStudents(SendMessageToStudentsRequest sendRequest) {
+        SendMessageRequest sendMessageRequest = new SendMessageRequest(sendRequest.getContent());
 
-            final ChatEntity chat = chatRepository.findByStudent_Id(studentId).orElseGet(() -> {
-                ChatEntity newChat = chatMapper.toEntity(student);
-                return chatRepository.save(newChat);
-            });
+        List<StudentEntity> students = studentRepository.findAllByIdIn(sendRequest.getStudentIds());
+        if (students.size() < sendRequest.getStudentIds().size()) {
+            throw new NotFoundException("В запросе присутствуют ID несуществующих студентов");
+        }
+
+        List<ChatEntity> chats = chatRepository.findAllByStudent_IdIn(sendRequest.getStudentIds());
+
+        Map<UUID, StudentEntity> studentMap = students.stream()
+                .collect(Collectors.toMap(StudentEntity::getId, Function.identity()));
+        Map<UUID, ChatEntity> chatMap = chats.stream()
+                .collect(Collectors.toMap(chat -> chat.getStudent().getId(), Function.identity()));
+
+        for (StudentEntity student : studentMap.values()) {
+            ChatEntity chat = chatMap.get(student.getId());
+            if (chat == null) {
+                chat = chatMapper.toEntity(student);
+                chat = chatRepository.save(chat);
+            }
 
             sendMessage(sendMessageRequest, student.getUser().getId(), chat);
         }

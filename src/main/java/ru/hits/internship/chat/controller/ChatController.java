@@ -1,23 +1,18 @@
 package ru.hits.internship.chat.controller;
 
-import java.util.List;
-import java.util.UUID;
-
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.chat.model.chat.ChatInfoDto;
-import ru.hits.internship.chat.model.message.SendMessageRequest;
+import ru.hits.internship.chat.model.message.SendMessageToStudentsRequest;
 import ru.hits.internship.chat.service.ChatService;
 import ru.hits.internship.chat.service.MessageService;
 import ru.hits.internship.common.models.response.Response;
@@ -41,12 +36,11 @@ public class ChatController {
     @Operation(summary = "Отправить сообщения определённым студентам")
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/messages/{studentIds}")
-    @PreAuthorize("hasRole('DEAN')")
+    @PreAuthorize("hasAnyRole('DEAN', 'EDUCATIONAL_PROGRAM_LEAD')")
     public Response sendMessages(
             @AuthenticationPrincipal AuthUser user,
-            @PathVariable @Parameter(description = "Id студентов") List<UUID> studentIds,
-            @Valid @RequestBody SendMessageRequest sendMessageRequest
+            @Valid @RequestBody SendMessageToStudentsRequest sendRequest
     ) {
-        return messageService.sendMessageToStudents(studentIds, sendMessageRequest);
+        return messageService.sendMessageToStudents(sendRequest);
     }
 }
