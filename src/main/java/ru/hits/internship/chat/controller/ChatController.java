@@ -35,7 +35,7 @@ public class ChatController {
 
     @Operation(summary = "Отправить сообщения определённым студентам")
     @SecurityRequirement(name = "bearerAuth")
-    @PostMapping("/messages/{studentIds}")
+    @PostMapping("/studentMessages")
     @PreAuthorize("hasAnyRole('DEAN', 'EDUCATIONAL_PROGRAM_LEAD')")
     public Response sendMessages(
             @AuthenticationPrincipal AuthUser user,
