@@ -92,12 +92,6 @@ public class InterviewServiceImpl implements InterviewService {
 
         interviewMapper.update(interview, updateInterviewDto);
 
-        StackEntity stack = getStackReference(updateInterviewDto.getStackId());
-        interview.setStack(stack);
-
-        List<LanguageEntity> languages = getLanguageReferences(updateInterviewDto.getLanguageIds());
-        interview.setLanguages(languages);
-
         InterviewEntity savedInterview = interviewRepository.saveAndFlush(interview);
 
         return interviewMapper.map(savedInterview);

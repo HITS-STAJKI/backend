@@ -11,7 +11,8 @@ import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
-import ru.hits.internship.interview.entity.InterviewEntity;
+import ru.hits.internship.group.entity.GroupEntity;
+import ru.hits.internship.group.repository.GroupRepository;
 import ru.hits.internship.interview.models.StatusEnum;
 import ru.hits.internship.interview.repository.InterviewRepository;
 import ru.hits.internship.partner.repository.CompanyPartnerRepository;
@@ -40,6 +41,7 @@ public class PracticeServiceImpl implements PracticeService {
     private final PracticeRepository repository;
     private final CompanyPartnerRepository companyPartnerRepository;
     private final InterviewRepository interviewRepository;
+    private final GroupRepository groupRepository;
     private final StudentRepository studentRepository;
     private final StackRepository stackRepository;
     private final PracticeMapper mapper;
@@ -200,5 +202,16 @@ public class PracticeServiceImpl implements PracticeService {
         var archivedPractice = repository.save(practice);
 
         return mapper.toDto(archivedPractice);
+    }
+
+    @Override
+    @Transactional
+    public Response archiveAllStudentPracticesForGroup(UUID groupId) {
+        groupRepository.findById(groupId)
+                .orElseThrow(() -> new NotFoundException(GroupEntity.class, groupId));
+
+        int archivedPracticeCount = repository.archivePracticesByGroup(groupId);
+
+        return new Response(String.format("Успешно архивировано %d практик", archivedPracticeCount), HttpStatus.OK.value());
     }
 }

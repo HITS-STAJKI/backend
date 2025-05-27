@@ -32,4 +32,6 @@ public interface PracticeService {
     PracticeDto updatePractice(UUID practiceId, UpdatePracticeDto updatePracticeDto);
 
     PracticeDto archiveStudentPractice(UUID practiceId);
+
+    Response archiveAllStudentPracticesForGroup(UUID groupId);
 }
