@@ -22,6 +22,8 @@ public record StudentFilter(
         @Schema(description = "Приступили/не приступили к собеседованиям", defaultValue = "null")
         Boolean hasInterviews,
         @Schema(description = "Идентификаторы стеков")
-        List<UUID> stackIds
+        List<UUID> stackIds,
+        @Schema(description = "Включать архивные данные", defaultValue = "false")
+        Boolean includeArchived
 ) {
 }
