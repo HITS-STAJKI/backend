@@ -5,7 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.hits.internship.file.entity.FileEntity;
+import ru.hits.internship.file.enumeration.FileType;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -13,4 +15,6 @@ public interface FileRepository extends JpaRepository<FileEntity, UUID> {
     boolean existsByIdAndUserId(UUID fileId, UUID userId);
 
     Page<FileEntity> findAllByUserId(UUID userId, Pageable pageable);
+
+    Page<FileEntity> findAllByType(FileType type, Pageable pageable);
 }

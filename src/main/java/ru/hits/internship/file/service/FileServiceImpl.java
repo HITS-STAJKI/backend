@@ -102,4 +102,13 @@ public class FileServiceImpl implements FileService {
 
         return new PagedListDto<>(fileDtoPage);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PagedListDto<FileDto> getAllFilesByType(FileType type, Pageable pageable) {
+        Page<FileDto> fileDtoPage = fileRepository.findAllByType(type, pageable)
+                .map(fileMapper::toDto);
+
+        return new PagedListDto<>(fileDtoPage);
+    }
 }

@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.file.dto.FileDto;
+import ru.hits.internship.file.enumeration.FileType;
 import ru.hits.internship.file.service.FileService;
 import ru.hits.internship.file.util.FileUtils;
 import ru.hits.internship.file.validation.FileSize;
@@ -100,6 +101,17 @@ public class FileController {
                                             @ParameterObject @PageableDefault(sort = "name",
                                                     direction = Sort.Direction.ASC) Pageable pageable) {
         return fileService.getMyFiles(authUser, pageable);
+    }
+
+    @GetMapping("/all")
+    @Operation(summary = "Получить все файлы по типу",
+            description = "Позволяет получить все файлы по типу")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasAnyRole('DEAN', 'EDUCATIONAL_PROGRAM_LEAD')")
+    public PagedListDto<FileDto> getAllFilesByType(@RequestParam("type") @NotNull FileType type,
+                                                   @ParameterObject @PageableDefault(sort = "name",
+                                                           direction = Sort.Direction.ASC) Pageable pageable) {
+        return fileService.getAllFilesByType(type, pageable);
     }
 
 }
