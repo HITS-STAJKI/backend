@@ -22,7 +22,7 @@ public class UserRoleFilter implements Filter<UserEntity, UserFilter> {
         Join<UserEntity, RoleEntity> rolesJoin = root.join("roles");
         UserRole specifiedRole = filter.getUserRole();
 
-        Class<? extends RoleEntity> specifiedRoleClass = switch (specifiedRole) {
+        Class<? extends RoleEntity> specifiedRoleType = switch (specifiedRole) {
             case STUDENT -> StudentEntity.class;
             case DEAN -> DeanEntity.class;
             case CURATOR -> CuratorEntity.class;
@@ -31,6 +31,6 @@ public class UserRoleFilter implements Filter<UserEntity, UserFilter> {
             default -> throw new BadRequestException("Unknown role: " + specifiedRole);
         };
 
-        return criteriaBuilder.equal(rolesJoin.type(), specifiedRoleClass);
+        return criteriaBuilder.equal(rolesJoin.type(), specifiedRoleType);
     }
 }
