@@ -111,7 +111,6 @@ public class UserController {
     @GetMapping("/list")
     public PagedListDto<UserDto> getUserList(
             @AuthenticationPrincipal AuthUser authUser,
-            @RequestParam(required = false) Optional<UserRole> userRole,
             @ParameterObject UserFilter userFilter,
             @ParameterObject Pageable pageable
     ) {
