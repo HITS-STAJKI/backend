@@ -104,16 +104,14 @@ public class PracticeServiceImpl implements PracticeService {
         var practice = new PracticeEntity(
                 interview.getStudent(),
                 interview.getCompany(),
-                interview.getStack()
+                interview.getStack(),
+                createPracticeDto.getIsPaid()
         );
-
-        practice.setIsPaid(createPracticeDto.getIsPaid());
 
         var savedPractice = repository.save(practice);
 
         return mapper.toDto(savedPractice);
     }
-
 
     @Override
     public PracticeDto approveStudentPractice(UUID studentId) {

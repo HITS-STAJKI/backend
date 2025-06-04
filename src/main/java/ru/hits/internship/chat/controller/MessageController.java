@@ -42,7 +42,7 @@ public class MessageController {
     @Operation(summary = "Отправить сообщение в чат")
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping
-    @PreAuthorize("@macf.isChatOfStudent(#chatId, #user.id) or hasRole('DEAN')")
+    @PreAuthorize("@macf.isChatOfStudent(#chatId, #user) or hasAnyRole('DEAN', 'EDUCATIONAL_PROGRAM_LEAD')")
     public MessageDto sendMessage(
             @AuthenticationPrincipal AuthUser user,
             @PathVariable @Parameter(description = "Id чата") UUID chatId,
@@ -80,7 +80,7 @@ public class MessageController {
     @Operation(summary = "Получить список сообщений чата")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/list")
-    @PreAuthorize("@macf.isChatOfStudent(#chatId, #user.id) or hasRole('DEAN')")
+    @PreAuthorize("@macf.isChatOfStudent(#chatId, #user) or hasRole('DEAN')")
     public PagedListDto<MessageDto> getMessagesList(
             @AuthenticationPrincipal AuthUser user,
             @PathVariable @Parameter(description = "Id чата") UUID chatId,

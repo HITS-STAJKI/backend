@@ -35,8 +35,10 @@ public class GraduationServiceImpl implements GraduationService {
         int updatedPractices = practiceRepository.approvePracticesByGroup(groupId);
 
         return new Response(
-                String.format("Выпущено %d студентов и одобрено %d практик",
-                        updatedStudents, updatedPractices),
+                String.format("Выпущено %d студентов и архивировано %d практик",
+                        updatedStudents,
+                        updatedPractices
+                ),
                 HttpStatus.OK.value()
         );
     }

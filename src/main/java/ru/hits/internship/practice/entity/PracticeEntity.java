@@ -59,9 +59,10 @@ public class PracticeEntity {
     @JoinColumn(name = "stack_id", nullable = false)
     private StackEntity stack;
 
-    public PracticeEntity(StudentEntity student, CompanyPartnerEntity company, StackEntity stack) {
+    public PracticeEntity(StudentEntity student, CompanyPartnerEntity company, StackEntity stack, Boolean isPaid) {
         this.student = student;
         this.company = company;
         this.stack = stack;
+        this.isPaid = isPaid;
     }
 }

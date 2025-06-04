@@ -83,10 +83,10 @@ public class FileController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Удалить файл отчета",
-            description = "Позволяет удалить файл отчета")
+    @Operation(summary = "Удалить файл",
+            description = "Позволяет удалить файл")
     @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("@acf.isOwner(#authUser.id(), #id) or hasAnyRole('DEAN', 'CURATOR')")
+    @PreAuthorize("@acf.hasAccess(#authUser.id(), #id) or hasAnyRole('DEAN', 'CURATOR')")
     public Response deleteFile(@AuthenticationPrincipal AuthUser authUser,
                                @PathVariable @Parameter(description = "id файла") UUID id) {
         fileService.deleteFile(id);
@@ -94,8 +94,8 @@ public class FileController {
     }
 
     @GetMapping("/my")
-    @Operation(summary = "Получить свои отчеты",
-            description = "Позволяет получить свои отчеты")
+    @Operation(summary = "Получить свои файлы",
+            description = "Позволяет получить свои файлы")
     @SecurityRequirement(name = "bearerAuth")
     public PagedListDto<FileDto> getMyFiles(@AuthenticationPrincipal AuthUser authUser,
                                             @ParameterObject @PageableDefault(sort = "name",

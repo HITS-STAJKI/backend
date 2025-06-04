@@ -11,6 +11,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,12 +21,14 @@ import ru.hits.internship.chat.repository.MessageRepository;
 import ru.hits.internship.chat.service.ChatService;
 import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.exceptions.NotFoundException;
+import ru.hits.internship.common.filters.Filter;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.group.entity.GroupEntity;
 import ru.hits.internship.group.repository.GroupRepository;
 import ru.hits.internship.practice.repository.PracticeRepository;
 import ru.hits.internship.user.mapper.StudentMapper;
 import ru.hits.internship.user.model.common.UserRole;
+import ru.hits.internship.user.model.dto.role.filter.StudentFilter;
 import ru.hits.internship.user.model.dto.role.request.create.StudentCreateDto;
 import ru.hits.internship.user.model.dto.role.request.edit.ReturnFromAcademDto;
 import ru.hits.internship.user.model.dto.role.request.edit.StudentEditDto;
@@ -44,6 +47,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -51,7 +56,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
-
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
     private final StudentRepository studentRepository;
@@ -63,12 +67,21 @@ public class StudentServiceImpl implements StudentService {
 
     @Value("${export.student-batch-size:100}")
     private int batchSize;
+    private final List<Filter<StudentEntity, StudentFilter>> filters;
 
     @Override
-    public PagedListDto<StudentDto> getAllStudents(UUID userId, String fullName, Pageable pageable) {
-        //return studentRepository.findAll(userId, fullName, pageable, StudentMapper.INSTANCE::toDto);
-        return studentRepository.findAll(null, fullName, pageable, studentEntity -> {
-            StudentDto studentDto = StudentMapper.INSTANCE.toDto(studentEntity);
+    public PagedListDto<StudentDto> getAllStudents(UUID userId, StudentFilter studentFilter, Pageable pageable) {
+        Specification<StudentEntity> specification = Optional.ofNullable(studentFilter)
+                .map(filter ->
+                        filters.stream()
+                                .map(f -> f.build(filter))
+                                .filter(Objects::nonNull)
+                                .reduce(Specification.where(null), Specification::and)
+                )
+                .orElse(Specification.where(null));
+
+        return studentRepository.findAll(specification, pageable, studentEntity -> {
+            StudentDto studentDto;
 
             if (studentEntity.getChat() != null) {
                 UUID chatId = studentEntity.getChat().getId();
