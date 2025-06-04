@@ -18,7 +18,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import ru.hits.internship.security.JwtFilter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @EnableWebSecurity
 @Configuration
@@ -72,14 +71,7 @@ public class SecurityConfiguration {
     }
 
     private UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration corsConfig = new CorsConfiguration();
-
-        corsConfig.addAllowedOriginPattern("*");
-
-        corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        corsConfig.setAllowedHeaders(List.of("*"));
-        corsConfig.setAllowCredentials(true);
-
+        CorsConfiguration corsConfig = new CorsConfiguration().applyPermitDefaultValues();
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfig);
         return source;
