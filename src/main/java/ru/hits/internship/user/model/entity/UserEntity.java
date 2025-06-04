@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.hits.internship.user.model.entity.role.RoleEntity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,7 +36,7 @@ public class UserEntity {
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
-    @Column(name = "last_login_date", nullable = false)
+    @Column(name = "last_login_date")
     private LocalDateTime lastLoginDate;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<RoleEntity> roles = new HashSet<>();

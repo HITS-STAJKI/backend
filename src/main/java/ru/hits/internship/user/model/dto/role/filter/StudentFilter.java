@@ -25,7 +25,7 @@ public record StudentFilter(
         Boolean hasInterviews,
         @Schema(description = "Идентификаторы стеков")
         List<UUID> stackIds,
-        @Schema(description = "Время последнего захода в систему")
+        @Schema(description = "Время последнего захода в систему", example = "2025-06-04T15:30:00")
         LocalDateTime lastLogin
 ) {
 }
