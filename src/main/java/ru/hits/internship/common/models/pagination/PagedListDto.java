@@ -11,8 +11,9 @@ public record PagedListDto<T>(List<T> items, PageDto pagination) {
                 pagedList.getContent(),
                 new PageDto(
                         pagedList.getContent().size(),
+                        pagedList.getNumber(),
                         pagedList.getTotalPages(),
-                        pagedList.getNumber()
+                        pagedList.getTotalElements()
                 )
         );
     }
