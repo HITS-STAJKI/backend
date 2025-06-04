@@ -1,8 +1,6 @@
-package ru.hits.internship.user.model.dto.role.filter;
+package ru.hits.internship.statistics.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,7 +23,7 @@ public record StudentFilter(
         Boolean hasInterviews,
         @Schema(description = "Идентификаторы стеков")
         List<UUID> stackIds,
-        @Schema(description = "Время последнего захода в систему")
-        LocalDateTime lastLogin
+        @Schema(description = "Включать архивные данные", defaultValue = "false")
+        Boolean includeArchived
 ) {
 }

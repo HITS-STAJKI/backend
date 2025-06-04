@@ -15,7 +15,6 @@ public record UserDto (
         @Schema(description = "Адрес электронной почты", example = "example@example.ru")
         String email,
 
-
         @Schema(description = "ФИО пользователя", example = "Иванов Иван Иванович")
         String fullName,
 
