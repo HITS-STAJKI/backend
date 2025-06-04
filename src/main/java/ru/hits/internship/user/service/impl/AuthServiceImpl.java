@@ -19,6 +19,7 @@ import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.repository.UserRepository;
 import ru.hits.internship.user.service.AuthService;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -45,6 +46,7 @@ public class AuthServiceImpl implements AuthService {
             throw new InvalidCredentialException();
         }
 
+        setLastLoginDateAndSave(userEntity);
         return jwtService.generateAccessToken(userEntity);
     }
 
@@ -58,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
         UserEntity userEntity = UserMapper.INSTANCE.toEntity(registrationDto);
         userEntity.setPassword(passwordEncoder.encode(registrationDto.password()));
 
-        userRepository.save(userEntity);
+        setLastLoginDateAndSave(userEntity);
         return jwtService.generateAccessToken(userEntity);
     }
 
@@ -77,5 +79,10 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
 
         return new Response("Password changed successfully", HttpStatus.OK.value());
+    }
+
+    private void setLastLoginDateAndSave(UserEntity user) {
+        user.setLastLoginDate(LocalDateTime.now());
+        userRepository.save(user);
     }
 }
