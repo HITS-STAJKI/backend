@@ -56,8 +56,9 @@ public class GroupController {
             summary = "Получение страницы групп по фильтру",
             description = "Позволяет получить страницу групп по фильтру (список может иметь разное число элементов)",
             security = {
-                    @SecurityRequirement(name = "bearerAuth", scopes = {"ROLE_DEAN"})
+                    @SecurityRequirement(name = "bearerAuth", scopes = {"ROLE_DEAN", "ROLE_EDUCATIONAL_PROGRAM_LEAD"})
             })
+    @PreAuthorize("hasAnyRole('DEAN', 'EDUCATIONAL_PROGRAM_LEAD')")
     public PagedListDto<GroupDto> getGroups(@Valid @ParameterObject GroupFilter groupFilter,
                                             @ParameterObject @PageableDefault(sort = "number",
                                                     direction = Sort.Direction.ASC) Pageable pageable) {

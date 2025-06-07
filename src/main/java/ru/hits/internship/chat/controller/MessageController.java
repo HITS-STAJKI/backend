@@ -80,7 +80,7 @@ public class MessageController {
     @Operation(summary = "Получить список сообщений чата")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/list")
-    @PreAuthorize("@macf.isChatOfStudent(#chatId, #user) or hasRole('DEAN')")
+    @PreAuthorize("@macf.isChatOfStudent(#chatId, #user) or hasAnyRole('DEAN', 'EDUCATIONAL_PROGRAM_LEAD')")
     public PagedListDto<MessageDto> getMessagesList(
             @AuthenticationPrincipal AuthUser user,
             @PathVariable @Parameter(description = "Id чата") UUID chatId,

@@ -55,7 +55,7 @@ public class CuratorController {
 
     @Operation(summary = "Получение всех кураторов")
     @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("hasRole('DEAN')")
+    @PreAuthorize("hasAnyRole('DEAN', 'EDUCATIONAL_PROGRAM_LEAD')")
     @GetMapping("/list")
     public PagedListDto<CuratorDto> getAllCurators(
             @AuthenticationPrincipal AuthUser authUser,
