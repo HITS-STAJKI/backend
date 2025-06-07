@@ -31,7 +31,7 @@ public class TeacherController {
 
     @Operation(summary = "Получение всех преподавателей")
     @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("hasRole('DEAN')")
+    @PreAuthorize("hasAnyRole('DEAN', 'EDUCATIONAL_PROGRAM_LEAD')")
     @GetMapping("/list")
     public PagedListDto<TeacherDto> getAllTeachers(
             @AuthenticationPrincipal AuthUser authUser,
