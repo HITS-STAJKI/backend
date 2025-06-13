@@ -5,7 +5,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import ru.hits.internship.partner.entity.CompanyPartnerEntity;
@@ -46,8 +45,7 @@ public interface CompanyPartnerMapper {
 
     ShortCompanyPartnerDto toShortDto(CompanyPartnerEntity companyPartnerEntity);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-            unmappedTargetPolicy = ReportingPolicy.IGNORE)
+    @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
     void updateCompanyPartnerEntity(@MappingTarget CompanyPartnerEntity companyPartner,
                                     UpdateCompanyPartnerDto updateCompanyPartnerDto);
 }

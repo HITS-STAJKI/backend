@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import ru.hits.internship.partner.entity.CompanyPartnerEntity;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -13,4 +14,6 @@ public interface CompanyPartnerRepository
     boolean existsByNameIgnoreCase(String name);
 
     boolean existsByNameIgnoreCaseAndIdNot(String name, UUID id);
+
+    Optional<CompanyPartnerEntity> findByFileId(UUID fileId);
 }
