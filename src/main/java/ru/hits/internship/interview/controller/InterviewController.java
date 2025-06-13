@@ -42,6 +42,7 @@ public class InterviewController {
     @Operation(summary = "Создать отбор", description = "Запрос доступен для студентов")
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping
+    @PreAuthorize("hasRole('STUDENT')")
     public InterviewDto createInterview(
             @AuthenticationPrincipal AuthUser user,
             @Valid @RequestBody CreateInterviewDto createInterviewDto
@@ -52,6 +53,7 @@ public class InterviewController {
     @Operation(summary = "Обновить отбор")
     @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/{interviewId}")
+    @PreAuthorize("@interviewUtils.isUserAuthor(#user, #interviewId) or hasRole('EDUCATIONAL_PROGRAM_LEAD')")
     public InterviewDto updateInterview(
             @AuthenticationPrincipal AuthUser user,
             @PathVariable @Parameter(description = "Id отбора") UUID interviewId,
@@ -63,11 +65,12 @@ public class InterviewController {
     @Operation(summary = "Удалить отбор")
     @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/{interviewId}")
+    @PreAuthorize("@interviewUtils.isUserAuthor(#user, #interviewId) or hasRole('EDUCATIONAL_PROGRAM_LEAD')")
     public Response deleteInterview(
             @AuthenticationPrincipal AuthUser user,
             @PathVariable @Parameter(description = "Id отбора") UUID interviewId
     ) {
-        interviewService.deleteInterview(user, interviewId);
+        interviewService.deleteInterview(interviewId);
 
         return new Response("Отбор успешно удален", HttpStatus.OK.value());
     }
@@ -75,6 +78,7 @@ public class InterviewController {
     @Operation(summary = "Получить отбор")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{interviewId}")
+    @PreAuthorize("@interviewUtils.isUserAuthor(#user, #interviewId) or hasRole('EDUCATIONAL_PROGRAM_LEAD')")
     public InterviewDto getInterview(
             @AuthenticationPrincipal AuthUser user,
             @PathVariable @Parameter(description = "Id отбора") UUID interviewId
@@ -97,6 +101,7 @@ public class InterviewController {
     @Operation(summary = "Получить список отборов", description = "Запрос доступен для студентов")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/list")
+    @PreAuthorize("hasRole('STUDENT')")
     public PagedListDto<InterviewDto> getInterviewList(
             @AuthenticationPrincipal AuthUser user,
             @ParameterObject @PageableDefault Pageable pageable

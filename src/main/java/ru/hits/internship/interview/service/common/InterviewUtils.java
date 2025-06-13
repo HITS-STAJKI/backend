@@ -1,13 +1,20 @@
 package ru.hits.internship.interview.service.common;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.hits.internship.interview.entity.InterviewEntity;
+import ru.hits.internship.interview.repository.InterviewRepository;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.user.AuthUser;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@Service("interviewUtils")
+@RequiredArgsConstructor
 public class InterviewUtils {
+
+    private final InterviewRepository interviewRepository;
 
     public static Optional<UUID> getStudentIdIfExists(AuthUser user) {
         return Optional.of(
@@ -17,8 +24,9 @@ public class InterviewUtils {
         );
     }
 
-    public static boolean isUserAuthor(AuthUser user, InterviewEntity interview) {
+    public boolean isUserAuthor(AuthUser user, UUID interviewId) {
         Optional<UUID> studentId = getStudentIdIfExists(user);
-        return studentId.isPresent() && interview.getStudent().getId().equals(studentId.get());
+        InterviewEntity interview = interviewRepository.findById(interviewId).orElse(null);
+        return interview != null && studentId.isPresent() && interview.getStudent().getId().equals(studentId.get());
     }
 }
