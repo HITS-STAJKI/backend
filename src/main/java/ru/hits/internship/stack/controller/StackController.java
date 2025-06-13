@@ -49,7 +49,7 @@ public class StackController {
     @Operation(summary = "Создать стек")
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping
-    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR', 'EDUCATIONAL_PROGRAM_LEAD')")
     public StackDto createStack(
             @Valid @RequestBody CreateStackDto createStackDto
     ) {
@@ -59,7 +59,7 @@ public class StackController {
     @Operation(summary = "Обновить стек")
     @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/{stackId}")
-    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR', 'EDUCATIONAL_PROGRAM_LEAD')")
     public StackDto updateStack(
             @PathVariable @Parameter(description = "Идентификатор стека", required = true) UUID stackId,
             @Valid @RequestBody UpdateStackDto updateStackDto
@@ -70,7 +70,7 @@ public class StackController {
     @Operation(summary = "Удалить стек")
     @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/{stackId}")
-    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR', 'EDUCATIONAL_PROGRAM_LEAD')")
     public Response deleteStack(
             @PathVariable @Parameter(description = "Идентификатор стека", required = true) UUID stackId
     ) {
