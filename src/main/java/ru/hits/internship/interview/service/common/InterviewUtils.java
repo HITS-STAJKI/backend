@@ -2,6 +2,7 @@ package ru.hits.internship.interview.service.common;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.interview.entity.InterviewEntity;
 import ru.hits.internship.interview.repository.InterviewRepository;
 import ru.hits.internship.user.model.common.UserRole;
@@ -26,7 +27,8 @@ public class InterviewUtils {
 
     public boolean isUserAuthor(AuthUser user, UUID interviewId) {
         Optional<UUID> studentId = getStudentIdIfExists(user);
-        InterviewEntity interview = interviewRepository.findById(interviewId).orElse(null);
-        return interview != null && studentId.isPresent() && interview.getStudent().getId().equals(studentId.get());
+        InterviewEntity interview = interviewRepository.findById(interviewId)
+                .orElseThrow(() -> new NotFoundException("Интервью с id %s не найдено".formatted(interviewId)));
+        return studentId.isPresent() && interview.getStudent().getId().equals(studentId.get());
     }
 }
