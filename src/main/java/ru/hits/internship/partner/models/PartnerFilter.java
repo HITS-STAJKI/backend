@@ -19,6 +19,6 @@ public class PartnerFilter {
     @Schema(description = "Название компании (разрешается частичное совпадение)", example = "NTR")
     private String name;
 
-    @Schema(description = "Только новые компании", example = "true")
+    @Schema(description = "Только новые компании (те, в которых никто не проходит практику)", example = "true")
     private Boolean isNew;
 }
