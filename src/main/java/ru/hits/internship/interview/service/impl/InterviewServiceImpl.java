@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.hits.internship.common.exceptions.ForbiddenException;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.filters.Filter;
 import ru.hits.internship.common.models.pagination.PagedListDto;
@@ -37,8 +36,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static ru.hits.internship.interview.service.common.InterviewUtils.getStudentIdIfExists;
-import static ru.hits.internship.interview.service.common.InterviewUtils.isUserAuthor;
-import static ru.hits.internship.user.utils.RoleChecker.isUserHasRole;
 
 @Service
 @RequiredArgsConstructor
@@ -86,10 +83,6 @@ public class InterviewServiceImpl implements InterviewService {
         InterviewEntity interview = interviewRepository.findById(interviewId)
                 .orElseThrow(() -> new NotFoundException("Интервью с id %s не найдено".formatted(interviewId)));
 
-        if (!isUserAuthor(user, interview) && !isUserHasRole(user, UserRole.EDUCATIONAL_PROGRAM_LEAD)) {
-            throw new ForbiddenException();
-        }
-
         interviewMapper.update(interview, updateInterviewDto);
 
         InterviewEntity savedInterview = interviewRepository.saveAndFlush(interview);
@@ -99,15 +92,8 @@ public class InterviewServiceImpl implements InterviewService {
 
     @Override
     @Transactional
-    public void deleteInterview(AuthUser user, UUID interviewId) {
-        InterviewEntity interview = interviewRepository.findById(interviewId)
-                .orElseThrow(() -> new NotFoundException("Интервью с id %s не найдено".formatted(interviewId)));
-
-        if (!isUserAuthor(user, interview) && !isUserHasRole(user, UserRole.EDUCATIONAL_PROGRAM_LEAD)) {
-            throw new ForbiddenException();
-        }
-
-        interviewRepository.delete(interview);
+    public void deleteInterview(UUID interviewId) {
+        interviewRepository.deleteById(interviewId);
     }
 
     @Override
@@ -115,10 +101,6 @@ public class InterviewServiceImpl implements InterviewService {
     public InterviewDto getInterview(AuthUser user, UUID interviewId) {
         InterviewEntity interview = interviewRepository.findById(interviewId)
                 .orElseThrow(() -> new NotFoundException("Интервью с id %s не найдено".formatted(interviewId)));
-
-        if (!isUserAuthor(user, interview) && !isUserHasRole(user, UserRole.EDUCATIONAL_PROGRAM_LEAD)) {
-            throw new ForbiddenException();
-        }
 
         return interviewMapper.map(interview);
     }
@@ -141,13 +123,9 @@ public class InterviewServiceImpl implements InterviewService {
     @Override
     @Transactional(readOnly = true)
     public PagedListDto<InterviewDto> getInterviewList(AuthUser user, Pageable pageable) {
-        Optional<UUID> studentId = getStudentIdIfExists(user);
+        UUID studentId = getStudentIdIfExists(user).get();
 
-        if (studentId.isEmpty()) {
-            throw new NotFoundException("Пользователь не имеет роли студента");
-        }
-
-        Page<InterviewEntity> page = interviewRepository.findAllByStudentId(studentId.get(), pageable);
+        Page<InterviewEntity> page = interviewRepository.findAllByStudentId(studentId, pageable);
 
         return new PagedListDto<>(page.map(interviewMapper::map));
     }
