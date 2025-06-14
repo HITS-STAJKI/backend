@@ -23,7 +23,7 @@ public class StudentOnPracticeFilter implements Filter<StudentEntity, StudentFil
     public Predicate toPredicate(Root<StudentEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder, StudentFilter filter) {
         Join<PracticeEntity, StudentEntity> practiceJoin = root.join("practices", JoinType.LEFT);
 
-        if (filter.isOnPractice()) {
+        if (Boolean.TRUE.equals(filter.isOnPractice())) {
             return criteriaBuilder.isNotNull(practiceJoin.get("id"));
         } else {
             return criteriaBuilder.isNull(practiceJoin.get("id"));

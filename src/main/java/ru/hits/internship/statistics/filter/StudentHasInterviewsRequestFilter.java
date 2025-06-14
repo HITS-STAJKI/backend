@@ -23,7 +23,7 @@ public class StudentHasInterviewsRequestFilter implements Filter<StudentEntity, 
     public Predicate toPredicate(Root<StudentEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder, StudentFilter filter) {
         Join<InterviewEntity, StudentEntity> interviewJoin = root.join("interviews", JoinType.LEFT);
 
-        if (filter.hasInterviews()) {
+        if (Boolean.TRUE.equals(filter.hasInterviews())) {
             return criteriaBuilder.isNotNull(interviewJoin.get("id"));
         } else {
             return criteriaBuilder.isNull(interviewJoin.get("id"));
