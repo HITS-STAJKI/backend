@@ -8,6 +8,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.stereotype.Component;
 import ru.hits.internship.common.filters.Filter;
+import ru.hits.internship.practice.entity.PracticeEntity;
 import ru.hits.internship.statistics.dto.StudentFilter;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
 import java.util.Objects;
@@ -25,8 +26,13 @@ public class PracticeArchiveFilter implements Filter<StudentEntity, StudentFilte
                                  CriteriaQuery<?> query,
                                  CriteriaBuilder cb,
                                  StudentFilter filter) {
+        query.distinct(true);
 
-        Join<Object, Object> practice = root.join("practices", JoinType.LEFT);
-        return cb.isFalse(practice.get("isArchived"));
+        Join<StudentEntity, PracticeEntity> practice = root.join("practices", JoinType.LEFT);
+
+        return cb.or(
+                cb.isFalse(practice.get("isArchived")),
+                cb.isNull(practice.get("id"))
+        );
     }
 }
