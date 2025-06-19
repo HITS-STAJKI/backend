@@ -60,7 +60,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     @Transactional
-    public Response sendMessageToStudents(SendMessageToStudentsRequest sendRequest) {
+    public Response sendMessageToStudents(UUID senderId, SendMessageToStudentsRequest sendRequest) {
         SendMessageRequest sendMessageRequest = new SendMessageRequest(sendRequest.getContent());
 
         List<StudentEntity> students = studentRepository.findAllByIdIn(sendRequest.getStudentIds());
@@ -82,7 +82,7 @@ public class MessageServiceImpl implements MessageService {
                 chat = chatRepository.save(chat);
             }
 
-            sendMessage(sendMessageRequest, student.getUser().getId(), chat);
+            sendMessage(sendMessageRequest, senderId, chat);
         }
 
         return new Response("Сообщения были успешно отправлены студентам", HttpStatus.OK.value());

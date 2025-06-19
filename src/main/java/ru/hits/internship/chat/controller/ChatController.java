@@ -41,6 +41,6 @@ public class ChatController {
             @AuthenticationPrincipal AuthUser user,
             @Valid @RequestBody SendMessageToStudentsRequest sendRequest
     ) {
-        return messageService.sendMessageToStudents(sendRequest);
+        return messageService.sendMessageToStudents(user.id(), sendRequest);
     }
 }

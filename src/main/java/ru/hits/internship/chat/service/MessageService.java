@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public interface MessageService {
     MessageDto sendMessage(UUID chatId, UUID userId, SendMessageRequest sendMessageRequest);
-    Response sendMessageToStudents(SendMessageToStudentsRequest sendRequest);
+    Response sendMessageToStudents(UUID userId, SendMessageToStudentsRequest sendRequest);
     MessageDto editMessage(UUID messageId, EditMessageRequest editMessageRequest);
     void deleteMessage(UUID messageId);
     PagedListDto<MessageDto> getMessagesByChatId(UUID chatId, UUID userId, Pageable pageable);
