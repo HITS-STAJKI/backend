@@ -117,8 +117,8 @@ public class StudentServiceImpl implements StudentService {
 
             for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                 Row row = sheet.getRow(i);
-                if (row == null || row.getPhysicalNumberOfCells() < 3) {
-                    throw new IllegalArgumentException("Неполные или пустые данные в строке");
+                if (row == null) {
+                    continue;
                 }
 
                 try {
