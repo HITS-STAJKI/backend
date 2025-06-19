@@ -176,7 +176,7 @@ public class StudentServiceImpl implements StudentService {
                     }
 
                     GroupEntity group = groupRepository.findByNumberIgnoreCase(groupNumber)
-                            .orElseThrow(() -> new NotFoundException("Группа не найдена: " + groupNumber));
+                            .orElseThrow(() -> new IllegalStateException("Группа не найдена: " + groupNumber));
 
                     StudentEntity student = new StudentEntity();
                     student.setUser(user);
