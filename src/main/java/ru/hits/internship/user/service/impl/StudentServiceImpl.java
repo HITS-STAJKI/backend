@@ -2,6 +2,7 @@ package ru.hits.internship.user.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -116,12 +117,43 @@ public class StudentServiceImpl implements StudentService {
 
             for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                 Row row = sheet.getRow(i);
-                if (row == null) continue;
+                if (row == null || row.getPhysicalNumberOfCells() < 3) {
+                    throw new IllegalArgumentException("Неполные или пустые данные в строке");
+                }
 
                 try {
-                    String fullName = row.getCell(0).getStringCellValue().trim();
-                    String groupNumber = String.valueOf((int) row.getCell(1).getNumericCellValue());
-                    String email = row.getCell(2).getStringCellValue().trim();
+                    Cell nameCell = row.getCell(0);
+                    Cell groupCell = row.getCell(1);
+                    Cell emailCell = row.getCell(2);
+
+                    String fullName = null;
+                    String groupNumber;
+                    String email = null;
+
+                    List<String> errors = new ArrayList<>();
+
+                    if (nameCell == null|| nameCell.getStringCellValue().trim().isEmpty()) {
+                        errors.add("ФИО отсутствует или пустое");
+                    } else {
+                        fullName = nameCell.getStringCellValue().trim();
+                    }
+
+                    if (groupCell == null) {
+                        groupNumber = null;
+                        errors.add("Группа не указана");
+                    } else {
+                        groupNumber = String.valueOf((int) groupCell.getNumericCellValue());
+                    }
+
+                    if (emailCell == null || emailCell.getStringCellValue().trim().isEmpty()) {
+                        errors.add("Email отсутствует или пустой");
+                    } else {
+                        email = emailCell.getStringCellValue().trim();
+                    }
+
+                    if (!errors.isEmpty()) {
+                        throw new IllegalArgumentException(String.join("; ", errors));
+                    }
 
                     String rawPassword = PasswordGenerator.generateBasedOn(email);
                     String encodedPassword = passwordEncoder.encode(rawPassword);
@@ -174,7 +206,7 @@ public class StudentServiceImpl implements StudentService {
                 row.createCell(0).setCellValue(data[0]);
                 row.createCell(1).setCellValue(data[1]);
                 row.createCell(2).setCellValue(data[2]);
-                header.createCell(3).setCellValue(data[3]);
+                row.createCell(3).setCellValue(data[3]);
             }
 
             ByteArrayOutputStream out = new ByteArrayOutputStream();
