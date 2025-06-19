@@ -118,27 +118,31 @@ public class StudentServiceImpl implements StudentService {
                 Row row = sheet.getRow(i);
                 if (row == null) continue;
 
-                String fullName = row.getCell(0).getStringCellValue().trim();
-                String groupNumber = String.valueOf((int) row.getCell(1).getNumericCellValue());
-                String email = row.getCell(2).getStringCellValue().trim();
+                try {
+                    String fullName = row.getCell(0).getStringCellValue().trim();
+                    String groupNumber = String.valueOf((int) row.getCell(1).getNumericCellValue());
+                    String email = row.getCell(2).getStringCellValue().trim();
 
-                String rawPassword = PasswordGenerator.generateBasedOn(email);
-                String encodedPassword = passwordEncoder.encode(rawPassword);
+                    String rawPassword = PasswordGenerator.generateBasedOn(email);
+                    String encodedPassword = passwordEncoder.encode(rawPassword);
 
-                UserEntity user = userRepository.findByEmail(email).orElse(null);
+                    UserEntity user = userRepository.findByEmail(email).orElse(null);
 
-                if (user == null) {
-                    user = new UserEntity();
-                    user.setFullName(fullName);
-                    user.setEmail(email);
-                    user.setPassword(encodedPassword);
-                    user = userRepository.save(user);
-                }
+                    if (user == null) {
+                        user = new UserEntity();
+                        user.setFullName(fullName);
+                        user.setEmail(email);
+                        user.setPassword(encodedPassword);
+                        user = userRepository.save(user);
+                    }
 
-                boolean alreadyStudent = user.getRoles().stream()
-                        .anyMatch(role -> role instanceof StudentEntity);
+                    boolean alreadyStudent = user.getRoles().stream()
+                            .anyMatch(role -> role instanceof StudentEntity);
 
-                if (!alreadyStudent) {
+                    if (alreadyStudent) {
+                        throw new IllegalStateException("Пользователь уже является студентом");
+                    }
+
                     GroupEntity group = groupRepository.findByNumberIgnoreCase(groupNumber)
                             .orElseThrow(() -> new NotFoundException("Группа не найдена: " + groupNumber));
 
@@ -146,11 +150,13 @@ public class StudentServiceImpl implements StudentService {
                     student.setUser(user);
                     student.setGroup(group);
                     studentRepository.save(student);
-                } else {
-                    throw new BadRequestException("Пользователь с почтой: " + email + " уже является студентом");
-                }
 
-                resultRows.add(new String[]{fullName, email, rawPassword});
+                    resultRows.add(new String[]{fullName, email, rawPassword, "Успешно"});
+                } catch (Exception ex) {
+                    String fullName = row.getCell(0) != null ? row.getCell(0).getStringCellValue() : "-";
+                    String email = row.getCell(2) != null ? row.getCell(2).getStringCellValue() : "-";
+                    resultRows.add(new String[]{fullName, email, "", "Ошибка: " + ex.getMessage()});
+                }
             }
 
             Workbook resultWorkbook = new XSSFWorkbook();
@@ -160,6 +166,7 @@ public class StudentServiceImpl implements StudentService {
             header.createCell(0).setCellValue("ФИО");
             header.createCell(1).setCellValue("Почта");
             header.createCell(2).setCellValue("Сгенерированный пароль");
+            header.createCell(3).setCellValue("Статус");
 
             for (int i = 0; i < resultRows.size(); i++) {
                 Row row = resultSheet.createRow(i + 1);
@@ -167,6 +174,7 @@ public class StudentServiceImpl implements StudentService {
                 row.createCell(0).setCellValue(data[0]);
                 row.createCell(1).setCellValue(data[1]);
                 row.createCell(2).setCellValue(data[2]);
+                header.createCell(3).setCellValue(data[3]);
             }
 
             ByteArrayOutputStream out = new ByteArrayOutputStream();
