@@ -2,6 +2,7 @@ package ru.hits.internship.user.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -114,43 +115,80 @@ public class StudentServiceImpl implements StudentService {
             Workbook workbook = new XSSFWorkbook(file.getInputStream());
             Sheet sheet = workbook.getSheetAt(0);
 
-            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+            for (int i = 0; i <= sheet.getLastRowNum(); i++) {
                 Row row = sheet.getRow(i);
-                if (row == null) continue;
-
-                String fullName = row.getCell(0).getStringCellValue().trim();
-                String groupNumber = String.valueOf((int) row.getCell(1).getNumericCellValue());
-                String email = row.getCell(2).getStringCellValue().trim();
-
-                String rawPassword = PasswordGenerator.generateBasedOn(email);
-                String encodedPassword = passwordEncoder.encode(rawPassword);
-
-                UserEntity user = userRepository.findByEmail(email).orElse(null);
-
-                if (user == null) {
-                    user = new UserEntity();
-                    user.setFullName(fullName);
-                    user.setEmail(email);
-                    user.setPassword(encodedPassword);
-                    user = userRepository.save(user);
+                if (row == null) {
+                    continue;
                 }
 
-                boolean alreadyStudent = user.getRoles().stream()
-                        .anyMatch(role -> role instanceof StudentEntity);
+                try {
+                    Cell nameCell = row.getCell(0);
+                    Cell groupCell = row.getCell(1);
+                    Cell emailCell = row.getCell(2);
 
-                if (!alreadyStudent) {
+                    String fullName = null;
+                    String groupNumber;
+                    String email = null;
+
+                    List<String> errors = new ArrayList<>();
+
+                    if (nameCell == null|| nameCell.getStringCellValue().trim().isEmpty()) {
+                        errors.add("ФИО отсутствует или пустое");
+                    } else {
+                        fullName = nameCell.getStringCellValue().trim();
+                    }
+
+                    if (groupCell == null) {
+                        groupNumber = null;
+                        errors.add("Группа не указана");
+                    } else {
+                        groupNumber = String.valueOf((int) groupCell.getNumericCellValue());
+                    }
+
+                    if (emailCell == null || emailCell.getStringCellValue().trim().isEmpty()) {
+                        errors.add("Email отсутствует или пустой");
+                    } else {
+                        email = emailCell.getStringCellValue().trim();
+                    }
+
+                    if (!errors.isEmpty()) {
+                        throw new IllegalArgumentException(String.join("; ", errors));
+                    }
+
+                    String rawPassword = PasswordGenerator.generateBasedOn(email);
+                    String encodedPassword = passwordEncoder.encode(rawPassword);
+
+                    UserEntity user = userRepository.findByEmail(email).orElse(null);
+
+                    if (user == null) {
+                        user = new UserEntity();
+                        user.setFullName(fullName);
+                        user.setEmail(email);
+                        user.setPassword(encodedPassword);
+                        user = userRepository.save(user);
+                    }
+
+                    boolean alreadyStudent = user.getRoles().stream()
+                            .anyMatch(role -> role instanceof StudentEntity);
+
+                    if (alreadyStudent) {
+                        throw new IllegalStateException("Пользователь уже является студентом");
+                    }
+
                     GroupEntity group = groupRepository.findByNumberIgnoreCase(groupNumber)
-                            .orElseThrow(() -> new NotFoundException("Группа не найдена: " + groupNumber));
+                            .orElseThrow(() -> new IllegalStateException("Группа не найдена: " + groupNumber));
 
                     StudentEntity student = new StudentEntity();
                     student.setUser(user);
                     student.setGroup(group);
                     studentRepository.save(student);
-                } else {
-                    throw new BadRequestException("Пользователь с почтой: " + email + " уже является студентом");
-                }
 
-                resultRows.add(new String[]{fullName, email, rawPassword});
+                    resultRows.add(new String[]{fullName, email, rawPassword, "Успешно"});
+                } catch (Exception ex) {
+                    String fullName = row.getCell(0) != null ? row.getCell(0).getStringCellValue() : "-";
+                    String email = row.getCell(2) != null ? row.getCell(2).getStringCellValue() : "-";
+                    resultRows.add(new String[]{fullName, email, "", "Ошибка: " + ex.getMessage()});
+                }
             }
 
             Workbook resultWorkbook = new XSSFWorkbook();
@@ -160,6 +198,7 @@ public class StudentServiceImpl implements StudentService {
             header.createCell(0).setCellValue("ФИО");
             header.createCell(1).setCellValue("Почта");
             header.createCell(2).setCellValue("Сгенерированный пароль");
+            header.createCell(3).setCellValue("Статус");
 
             for (int i = 0; i < resultRows.size(); i++) {
                 Row row = resultSheet.createRow(i + 1);
@@ -167,6 +206,7 @@ public class StudentServiceImpl implements StudentService {
                 row.createCell(0).setCellValue(data[0]);
                 row.createCell(1).setCellValue(data[1]);
                 row.createCell(2).setCellValue(data[2]);
+                row.createCell(3).setCellValue(data[3]);
             }
 
             ByteArrayOutputStream out = new ByteArrayOutputStream();
