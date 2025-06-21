@@ -19,6 +19,7 @@ import ru.hits.internship.partner.repository.CompanyPartnerRepository;
 import ru.hits.internship.practice.entity.PracticeEntity;
 import ru.hits.internship.practice.mapper.PracticeMapper;
 import ru.hits.internship.practice.models.CreatePracticeDto;
+import ru.hits.internship.practice.models.PagedPracticesDto;
 import ru.hits.internship.practice.models.PracticeDto;
 import ru.hits.internship.practice.models.UpdatePracticeDto;
 import ru.hits.internship.practice.models.filter.GetAllPracticeFilter;
@@ -28,8 +29,10 @@ import ru.hits.internship.report.entity.ReportEntity;
 import ru.hits.internship.stack.repository.StackRepository;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.role.response.RoleDto;
+import ru.hits.internship.user.model.dto.role.response.StudentDto;
 import ru.hits.internship.user.model.dto.user.AuthUser;
 import ru.hits.internship.user.repository.StudentRepository;
+import ru.hits.internship.user.service.StudentService;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +46,7 @@ public class PracticeServiceImpl implements PracticeService {
     private final InterviewRepository interviewRepository;
     private final GroupRepository groupRepository;
     private final StudentRepository studentRepository;
+    private final StudentService studentService;
     private final StackRepository stackRepository;
     private final PracticeMapper mapper;
 
@@ -55,11 +59,11 @@ public class PracticeServiceImpl implements PracticeService {
     }
 
     @Override
-    public PagedListDto<PracticeDto> getStudentPractices(UUID studentId, Pageable pageable) {
+    public PagedPracticesDto getStudentPractices(UUID studentId, Pageable pageable) {
+        StudentDto student = studentService.getStudent(studentId);
         Page<PracticeDto> practices = repository.findAllByStudentId(studentId, pageable)
                 .map(mapper::toDto);
-
-        return new PagedListDto<>(practices);
+        return new PagedPracticesDto(student, new PagedListDto<>(practices));
     }
 
     @Override

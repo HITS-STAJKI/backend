@@ -23,6 +23,7 @@ import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
 import ru.hits.internship.practice.models.CreatePracticeDto;
+import ru.hits.internship.practice.models.PagedPracticesDto;
 import ru.hits.internship.practice.models.PracticeDto;
 import ru.hits.internship.practice.models.UpdatePracticeDto;
 import ru.hits.internship.practice.models.filter.GetAllPracticeFilter;
@@ -90,7 +91,7 @@ public class PracticeController {
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/list")
     @PreAuthorize("hasAnyRole('DEAN', 'CURATOR', 'EDUCATIONAL_PROGRAM_LEAD')")
-    public PagedListDto<PracticeDto> getStudentPractices(
+    public PagedPracticesDto getStudentPractices(
             @RequestParam("id") @Parameter(description = "Id студента") UUID studentId,
             @ParameterObject @PageableDefault(sort = "createdAt", direction = Sort.Direction.ASC) Pageable pageable
     ) {
