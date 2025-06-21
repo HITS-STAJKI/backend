@@ -27,4 +27,5 @@ public interface StudentService {
     ByteArrayResource exportStudentsToExcel(Set<UUID> studentIds);
 
     PagedListDto<StudentDto> getAllStudents(UUID userId, StudentFilter studentFilter, Pageable pageable);
+    public StudentDto getStudent(UUID studentId);
 }

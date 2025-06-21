@@ -106,6 +106,12 @@ public class StudentServiceImpl implements StudentService {
         });
     }
 
+    public StudentDto getStudent(UUID studentId) {
+        StudentEntity student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new NotFoundException(String.format("Не найден студент с id: %s ", studentId)));
+        return StudentMapper.INSTANCE.toDto(student);
+    }
+
     @Override
     @Transactional
     public ByteArrayResource importStudentsFromExcel(MultipartFile file) {
