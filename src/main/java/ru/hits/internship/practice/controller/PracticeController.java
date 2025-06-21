@@ -62,7 +62,7 @@ public class PracticeController {
     )
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping
-    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR', 'EDUCATIONAL_PROGRAM_LEAD')")
     public PracticeDto getCurrentStudentPractice(
             @RequestParam("id") @Parameter(description = "Id студента") UUID studentId
     ) {
@@ -75,7 +75,7 @@ public class PracticeController {
     )
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/list/all")
-    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR', 'EDUCATIONAL_PROGRAM_LEAD')")
     public PagedListDto<PracticeDto> getAllPractices(
             @ParameterObject GetAllPracticeFilter filter,
             @ParameterObject @PageableDefault(sort = "createdAt", direction = Sort.Direction.ASC) Pageable pageable
@@ -89,7 +89,7 @@ public class PracticeController {
     )
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/list")
-    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR', 'EDUCATIONAL_PROGRAM_LEAD')")
     public PagedListDto<PracticeDto> getStudentPractices(
             @RequestParam("id") @Parameter(description = "Id студента") UUID studentId,
             @ParameterObject @PageableDefault(sort = "createdAt", direction = Sort.Direction.ASC) Pageable pageable
@@ -117,7 +117,7 @@ public class PracticeController {
     )
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/approve")
-    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR', 'EDUCATIONAL_PROGRAM_LEAD')")
     public PracticeDto approveStudentPractice(
             @RequestParam("id") @Parameter(description = "Id студента") UUID studentId
     ) {
@@ -130,7 +130,7 @@ public class PracticeController {
     )
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/approveMany")
-    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR', 'EDUCATIONAL_PROGRAM_LEAD')")
     public Response approveStudentPractices(
             @RequestParam("id") @Parameter(description = "Id практик") List<UUID> practiceIds
     ) {
@@ -143,7 +143,7 @@ public class PracticeController {
     )
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/approveAll")
-    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR', 'EDUCATIONAL_PROGRAM_LEAD')")
     public Response approveStudentPractices(
             @RequestParam("companyId") @Parameter(description = "Id компании-партнера") UUID companyId
     ) {
@@ -156,7 +156,7 @@ public class PracticeController {
     )
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/list/unapproved")
-    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR', 'EDUCATIONAL_PROGRAM_LEAD')")
     public PagedListDto<PracticeDto> getPracticeRequests(
             @ParameterObject @PageableDefault(sort = "createdAt", direction = Sort.Direction.ASC) Pageable pageable
     ) {

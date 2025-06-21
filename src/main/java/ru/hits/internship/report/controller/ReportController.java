@@ -84,7 +84,7 @@ public class ReportController {
             description = "Позволяет изменить оценку отчета конкретной практики"
     )
     @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR')")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR', 'EDUCATIONAL_PROGRAM_LEAD')")
     public ReportDto setGrade(
             @RequestParam("reportId") @Parameter(description = "Идентификатор отчета") ReportId reportId,
             @RequestParam("grade") @Parameter(description = "Оценка отчета") Integer grade

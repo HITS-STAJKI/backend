@@ -79,7 +79,7 @@ public class StudentController {
 
     @Operation(summary = "Получение всех студентов")
     @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("hasRole('DEAN')")
+    @PreAuthorize("hasAnyRole('DEAN', 'EDUCATIONAL_PROGRAM_LEAD')")
     @GetMapping("/list")
     public PagedListDto<StudentDto> getAllStudents(
             @AuthenticationPrincipal AuthUser authUser,

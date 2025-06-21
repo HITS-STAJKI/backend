@@ -81,7 +81,7 @@ public class CompanyPartnerController {
             description = "Позволяет создать нового партнера"
     )
     @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("hasRole('DEAN')")
+    @PreAuthorize("hasAnyRole('DEAN', 'EDUCATIONAL_PROGRAM_LEAD')")
     @PostMapping
     public CompanyPartnerDto createPartner(
             @RequestBody @Valid CreateCompanyPartnerDto createCompanyPartnerDto
@@ -94,7 +94,7 @@ public class CompanyPartnerController {
             description = "Позволяет удалить партнера"
     )
     @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("hasRole('DEAN')")
+    @PreAuthorize("hasAnyRole('DEAN', 'EDUCATIONAL_PROGRAM_LEAD')")
     @DeleteMapping("/{partnerId}")
     public Response deletePartner(
             @Parameter(description = "Идентификатор партнера") @PathVariable UUID partnerId
