@@ -19,5 +19,8 @@ public record StudentShortDto(
         Boolean isGraduated,
 
         @NotNull
-        GroupShortDto group
+        GroupShortDto group,
+
+        @NotNull
+        UUID chatId
 ) {}
