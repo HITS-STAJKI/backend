@@ -4,7 +4,7 @@ import random
 
 fake = Faker('ru_RU')
 
-def generate_data(num_rows):
+def generate_data(num_rows, group_number):
     names = set()
     emails = set()
 
@@ -18,7 +18,6 @@ def generate_data(num_rows):
 
     names_list = list(names)
     emails_list = list(emails)
-    group_number = 9722
 
     data = {
         'Имя Фамилия Отчество': names_list,
@@ -31,8 +30,9 @@ def generate_data(num_rows):
 
 def main():
     num_rows = int(input("Введите количество строк для генерации: "))
+    group_number = int(input("Введите желаемый номер потока: "))
     
-    df = generate_data(num_rows)
+    df = generate_data(num_rows, group_number)
 
     output_file = 'generated_students.xlsx'
     df.to_excel(output_file, index=False, header=False)
