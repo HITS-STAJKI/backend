@@ -1,6 +1,5 @@
 package ru.hits.internship.user.service.impl;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -15,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hits.internship.chat.entity.ChatReadStateEntity;
 import ru.hits.internship.chat.repository.ChatReadStateRepository;
@@ -113,6 +113,15 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<StudentDto> getStudentsByIds(Set<UUID> studentIds) {
+        return studentRepository.findAllByIdIn(studentIds)
+                .stream()
+                .map(StudentMapper.INSTANCE::toDto)
+                .toList();
+    }
+
+    @Override
     @Transactional
     public ByteArrayResource importStudentsFromExcel(MultipartFile file) {
         List<String[]> resultRows = new ArrayList<>();
@@ -138,7 +147,7 @@ public class StudentServiceImpl implements StudentService {
 
                     List<String> errors = new ArrayList<>();
 
-                    if (nameCell == null|| nameCell.getStringCellValue().trim().isEmpty()) {
+                    if (nameCell == null || nameCell.getStringCellValue().trim().isEmpty()) {
                         errors.add("ФИО отсутствует или пустое");
                     } else {
                         fullName = nameCell.getStringCellValue().trim();

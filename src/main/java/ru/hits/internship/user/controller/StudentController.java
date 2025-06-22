@@ -32,6 +32,7 @@ import ru.hits.internship.user.model.dto.role.response.StudentDto;
 import ru.hits.internship.user.model.dto.user.AuthUser;
 import ru.hits.internship.user.service.StudentService;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -140,5 +141,13 @@ public class StudentController {
                 .body(resource);
     }
 
-
+    @Operation(summary = "Получение информации о студентах по id")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasAnyRole('DEAN', 'EDUCATIONAL_PROGRAM_LEAD')")
+    @PostMapping("/list/ids")
+    public List<StudentDto> getStudentsByIds(
+            @RequestBody Set<UUID> studentIds
+    ) {
+        return studentService.getStudentsByIds(studentIds);
+    }
 }

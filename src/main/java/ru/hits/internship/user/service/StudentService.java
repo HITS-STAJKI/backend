@@ -10,6 +10,7 @@ import ru.hits.internship.user.model.dto.role.request.edit.ReturnFromAcademDto;
 import ru.hits.internship.user.model.dto.role.request.edit.StudentEditDto;
 import ru.hits.internship.user.model.dto.role.response.StudentDto;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,5 +28,8 @@ public interface StudentService {
     ByteArrayResource exportStudentsToExcel(Set<UUID> studentIds);
 
     PagedListDto<StudentDto> getAllStudents(UUID userId, StudentFilter studentFilter, Pageable pageable);
-    public StudentDto getStudent(UUID studentId);
+
+    StudentDto getStudent(UUID studentId);
+
+    List<StudentDto> getStudentsByIds(Set<UUID> studentIds);
 }
