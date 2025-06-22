@@ -6,6 +6,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
@@ -46,6 +48,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -57,6 +61,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
     private final StudentRepository studentRepository;
@@ -125,10 +130,37 @@ public class StudentServiceImpl implements StudentService {
     @Transactional
     public ByteArrayResource importStudentsFromExcel(MultipartFile file) {
         List<String[]> resultRows = new ArrayList<>();
+        List<UserEntity> usersToSave = new ArrayList<>();
+        List<StudentEntity> studentsToSave = new ArrayList<>();
+        Set<String> emails = new HashSet<>();
+        Set<String> groupNumbers = new HashSet<>();
 
         try {
             Workbook workbook = new XSSFWorkbook(file.getInputStream());
             Sheet sheet = workbook.getSheetAt(0);
+
+            for (int i = 0; i <= sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
+                if (row == null) {
+                    continue;
+                }
+
+                Cell emailCell = row.getCell(2);
+                Cell groupCell = row.getCell(1);
+
+                if (emailCell != null && !emailCell.getStringCellValue().trim().isEmpty()) {
+                    emails.add(emailCell.getStringCellValue().trim());
+                }
+
+                if (groupCell != null) {
+                    groupNumbers.add(String.valueOf((int) groupCell.getNumericCellValue()));
+                }
+            }
+
+            Map<String, UserEntity> userMap = findUsersByEmails(emails);
+            Map<String, GroupEntity> groupMap = findGroupsByNumbers(groupNumbers);
+
+            log.info("Получены пользователи и группы для импорта студентов");
 
             for (int i = 0; i <= sheet.getLastRowNum(); i++) {
                 Row row = sheet.getRow(i);
@@ -173,14 +205,15 @@ public class StudentServiceImpl implements StudentService {
                     String rawPassword = PasswordGenerator.generateBasedOn(email);
                     String encodedPassword = passwordEncoder.encode(rawPassword);
 
-                    UserEntity user = userRepository.findByEmail(email).orElse(null);
-
+                    UserEntity user = userMap.get(email);
                     if (user == null) {
                         user = new UserEntity();
                         user.setFullName(fullName);
                         user.setEmail(email);
                         user.setPassword(encodedPassword);
-                        user = userRepository.save(user);
+
+                        usersToSave.add(user);
+                        userMap.put(email, user);
                     }
 
                     boolean alreadyStudent = user.getRoles().stream()
@@ -190,13 +223,15 @@ public class StudentServiceImpl implements StudentService {
                         throw new IllegalStateException("Пользователь уже является студентом");
                     }
 
-                    GroupEntity group = groupRepository.findByNumberIgnoreCase(groupNumber)
-                            .orElseThrow(() -> new IllegalStateException("Группа не найдена: " + groupNumber));
+                    GroupEntity group = groupMap.get(groupNumber);
+                    if (group == null) {
+                        throw new IllegalStateException("Группа не найдена: " + groupNumber);
+                    }
 
                     StudentEntity student = new StudentEntity();
                     student.setUser(user);
                     student.setGroup(group);
-                    studentRepository.save(student);
+                    studentsToSave.add(student);
 
                     resultRows.add(new String[]{fullName, email, rawPassword, "Успешно"});
                 } catch (Exception ex) {
@@ -205,6 +240,9 @@ public class StudentServiceImpl implements StudentService {
                     resultRows.add(new String[]{fullName, email, "", "Ошибка: " + ex.getMessage()});
                 }
             }
+
+            userRepository.saveAll(usersToSave);
+            studentRepository.saveAll(studentsToSave);
 
             Workbook resultWorkbook = new XSSFWorkbook();
             Sheet resultSheet = resultWorkbook.createSheet("Результат импорта");
@@ -233,6 +271,23 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
+    private Map<String, UserEntity> findUsersByEmails(Set<String> emails) {
+        List<UserEntity> users = userRepository.findByEmailIn(emails);
+        Map<String, UserEntity> userMap = new HashMap<>();
+        for (UserEntity user : users) {
+            userMap.put(user.getEmail(), user);
+        }
+        return userMap;
+    }
+
+    private Map<String, GroupEntity> findGroupsByNumbers(Set<String> numbers) {
+        List<GroupEntity> groups = groupRepository.findByNumberIn(numbers);
+        Map<String, GroupEntity> groupMap = new HashMap<>();
+        for (GroupEntity group : groups) {
+            groupMap.put(group.getNumber(), group);
+        }
+        return groupMap;
+    }
 
     public ByteArrayResource exportStudentsToExcel(Set<UUID> studentIds) {
         Workbook workbook = new XSSFWorkbook();
