@@ -24,7 +24,7 @@ public class EducationalProgramLeadController {
 
     @Operation(summary = "Создание руководителя")
     @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("hasAnyRole('ADMIN', 'EDUCATIONAL_PROGRAM_LEAD')")
+    @PreAuthorize("hasAnyRole('DEAN', 'EDUCATIONAL_PROGRAM_LEAD')")
     @PostMapping
     public EducationalProgramLeadDto createProgramLead(@RequestBody @Valid EducationalProgramLeadCreateDto createDto) {
         return programLeadService.createProgramLead(createDto);
