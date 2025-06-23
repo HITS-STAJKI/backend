@@ -157,8 +157,8 @@ public class StudentServiceImpl implements StudentService {
                 }
             }
 
-            Map<String, UserEntity> userMap = findUsersByEmails(emails);
-            Map<String, GroupEntity> groupMap = findGroupsByNumbers(groupNumbers);
+            Map<String, UserEntity> emailToUser = findUsersByEmails(emails);
+            Map<String, GroupEntity> numberToGroup = findGroupsByNumbers(groupNumbers);
 
             log.info("Получены пользователи и группы для импорта студентов");
 
@@ -205,7 +205,7 @@ public class StudentServiceImpl implements StudentService {
                     String rawPassword = PasswordGenerator.generateBasedOn(email);
                     String encodedPassword = passwordEncoder.encode(rawPassword);
 
-                    UserEntity user = userMap.get(email);
+                    UserEntity user = emailToUser.get(email);
                     if (user == null) {
                         user = new UserEntity();
                         user.setFullName(fullName);
@@ -213,7 +213,7 @@ public class StudentServiceImpl implements StudentService {
                         user.setPassword(encodedPassword);
 
                         usersToSave.add(user);
-                        userMap.put(email, user);
+                        emailToUser.put(email, user);
                     }
 
                     boolean alreadyStudent = user.getRoles().stream()
@@ -223,7 +223,7 @@ public class StudentServiceImpl implements StudentService {
                         throw new IllegalStateException("Пользователь уже является студентом");
                     }
 
-                    GroupEntity group = groupMap.get(groupNumber);
+                    GroupEntity group = numberToGroup.get(groupNumber);
                     if (group == null) {
                         throw new IllegalStateException("Группа не найдена: " + groupNumber);
                     }
