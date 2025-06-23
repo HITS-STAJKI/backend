@@ -32,7 +32,7 @@ public class GraduationServiceImpl implements GraduationService {
                 .orElseThrow(() -> new NotFoundException(GroupEntity.class, groupId));
 
         int updatedStudents = studentRepository.graduateStudentsByGroup(groupId);
-        int updatedPractices = practiceRepository.approvePracticesByGroup(groupId);
+        int updatedPractices = practiceRepository.archivePracticesByGroup(groupId);
 
         return new Response(
                 String.format("Выпущено %d студентов и архивировано %d практик",
