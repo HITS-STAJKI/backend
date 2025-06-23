@@ -99,7 +99,7 @@ public class UserController {
 
     @Operation(summary = "Получение информации пользователя")
     @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("hasRole('DEAN')")
+    //@PreAuthorize("hasRole('DEAN')")
     @GetMapping("/{id}")
     public UserDetailsDto getUserById(@PathVariable UUID id) {
         return userService.getUserDetailsById(id);
