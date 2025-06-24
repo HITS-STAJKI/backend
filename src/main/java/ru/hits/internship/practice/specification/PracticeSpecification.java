@@ -47,21 +47,15 @@ public class PracticeSpecification {
         };
     }
 
-    public static Specification<PracticeEntity> isReportApproved(Boolean isReportApproved) {
+    public static Specification<PracticeEntity> isReportGraded(Boolean isReportGraded) {
         return (root, query, criteriaBuilder) -> {
-            if (isReportApproved == null) {
+            if (isReportGraded == null) {
                 return criteriaBuilder.conjunction();
             }
-            if (isReportApproved) {
-                return criteriaBuilder.and(
-                        criteriaBuilder.isNotNull(root.get("report")),
-                        criteriaBuilder.isTrue(root.get("report").get("isApproved"))
-                );
+            if (isReportGraded) {
+                return criteriaBuilder.isNotNull(root.get("report").get("grade"));
             } else {
-                return criteriaBuilder.or(
-                        criteriaBuilder.isNull(root.get("report")),
-                        criteriaBuilder.isFalse(root.get("report").get("isApproved"))
-                );
+                return criteriaBuilder.isNull(root.get("report").get("grade"));
             }
         };
     }

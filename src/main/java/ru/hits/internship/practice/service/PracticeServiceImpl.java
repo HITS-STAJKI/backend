@@ -70,7 +70,7 @@ public class PracticeServiceImpl implements PracticeService {
     public PagedListDto<PracticeDto> getAllPractices(GetAllPracticeFilter filter, Pageable pageable) {
         Specification<PracticeEntity> specification = Specification
                 .where(PracticeSpecification.hasReport(filter.getHasReport()))
-                .and(PracticeSpecification.isReportApproved(filter.getIsReportApproved()))
+                .and(PracticeSpecification.isReportGraded(filter.getIsReportGraded()))
                 .and(PracticeSpecification.hasCompanyId(filter.getCompanyId()))
                 .and(PracticeSpecification.hasGroupInGroupIds(filter.getGroupIds()))
                 .and(PracticeSpecification.isArchived(filter.getIsArchived()))

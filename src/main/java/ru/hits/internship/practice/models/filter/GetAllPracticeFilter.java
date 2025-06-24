@@ -21,8 +21,8 @@ public class GetAllPracticeFilter {
     private UUID companyId;
     @Schema(description = "Флаг выбора практик с прикрепленным отчетом или без. null - если все", example = "null")
     private Boolean hasReport;
-    @Schema(description = "Флаг выдачи практик с подтвержденным отчетом", example = "null")
-    private Boolean isReportApproved;
+    @Schema(description = "Флаг выдачи практик с оцененным отчетом", example = "null")
+    private Boolean isReportGraded;
     @Schema(description = "Флаг выдачи архивных данных", example = "null")
     private Boolean isArchived;
     @Schema(description = "Флаг подтвержденных практик", example = "null")
