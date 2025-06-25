@@ -15,7 +15,6 @@ import ru.hits.internship.group.entity.GroupEntity;
 import ru.hits.internship.group.repository.GroupRepository;
 import ru.hits.internship.interview.models.StatusEnum;
 import ru.hits.internship.interview.repository.InterviewRepository;
-import ru.hits.internship.partner.repository.CompanyPartnerRepository;
 import ru.hits.internship.practice.entity.PracticeEntity;
 import ru.hits.internship.practice.mapper.PracticeMapper;
 import ru.hits.internship.practice.models.CreatePracticeDto;
@@ -26,7 +25,6 @@ import ru.hits.internship.practice.models.filter.GetAllPracticeFilter;
 import ru.hits.internship.practice.repository.PracticeRepository;
 import ru.hits.internship.practice.specification.PracticeSpecification;
 import ru.hits.internship.report.entity.ReportEntity;
-import ru.hits.internship.stack.repository.StackRepository;
 import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.role.response.RoleDto;
 import ru.hits.internship.user.model.dto.role.response.StudentDto;
@@ -42,12 +40,10 @@ import java.util.UUID;
 @Service
 public class PracticeServiceImpl implements PracticeService {
     private final PracticeRepository repository;
-    private final CompanyPartnerRepository companyPartnerRepository;
     private final InterviewRepository interviewRepository;
     private final GroupRepository groupRepository;
     private final StudentRepository studentRepository;
     private final StudentService studentService;
-    private final StackRepository stackRepository;
     private final PracticeMapper mapper;
 
     @Override

@@ -33,6 +33,10 @@ public class ReportServiceImpl implements ReportService {
 
         var report = practice.getReport();
 
+        if (report == null) {
+            throw new NotFoundException(String.format("Отсутствует отчет по практике с id %s", practiceId));
+        }
+
         return mapper.toDto(report);
     }
 
