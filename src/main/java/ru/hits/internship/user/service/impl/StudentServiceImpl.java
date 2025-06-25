@@ -244,6 +244,10 @@ public class StudentServiceImpl implements StudentService {
             userRepository.saveAll(usersToSave);
             studentRepository.saveAll(studentsToSave);
 
+            for (StudentEntity student : studentsToSave) {
+                chatService.createChat(student.getId());
+            }
+
             Workbook resultWorkbook = new XSSFWorkbook();
             Sheet resultSheet = resultWorkbook.createSheet("Результат импорта");
 
