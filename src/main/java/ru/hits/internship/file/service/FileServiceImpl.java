@@ -21,6 +21,7 @@ import ru.hits.internship.file.repository.FileRepository;
 import ru.hits.internship.file.util.FileUtils;
 import ru.hits.internship.file.validator.FileValidator;
 import ru.hits.internship.partner.repository.CompanyPartnerRepository;
+import ru.hits.internship.report.repository.ReportRepository;
 import ru.hits.internship.user.model.dto.user.AuthUser;
 
 import java.util.UUID;
@@ -30,6 +31,7 @@ import java.util.UUID;
 public class FileServiceImpl implements FileService {
     private final FileRepository fileRepository;
     private final CompanyPartnerRepository companyPartnerRepository;
+    private final ReportRepository reportRepository;
     private final MinioStorageService minioStorageService;
     private final FileMapper fileMapper;
     private final FileValidator fileValidator;
@@ -94,6 +96,12 @@ public class FileServiceImpl implements FileService {
                     .ifPresent(company -> {
                         company.setFileId(null);
                         companyPartnerRepository.save(company);
+                    });
+
+            reportRepository.findByFileId(fileId)
+                    .ifPresent(report -> {
+                        report.setFileId(null);
+                        reportRepository.save(report);
                     });
 
             eventPublisher.publishEvent(new FileDeleteEvent(fileEntity.getObjectKey()));
