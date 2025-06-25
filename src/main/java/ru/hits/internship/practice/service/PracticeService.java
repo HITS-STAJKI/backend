@@ -16,6 +16,8 @@ import java.util.UUID;
 public interface PracticeService {
     PracticeDto getStudentCurrentPractice(UUID studentId);
 
+    PracticeDto getPracticeById(UUID practiceId);
+
     PagedPracticesDto getStudentPractices(UUID studentId, Pageable pageable);
 
     PagedListDto<PracticeDto> getAllPractices(GetAllPracticeFilter filter, Pageable pageable);

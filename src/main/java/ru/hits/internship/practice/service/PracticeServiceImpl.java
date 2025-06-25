@@ -59,6 +59,14 @@ public class PracticeServiceImpl implements PracticeService {
     }
 
     @Override
+    public PracticeDto getPracticeById(UUID practiceId) {
+        var practice = repository.findById(practiceId)
+                .orElseThrow(() -> new NotFoundException(PracticeEntity.class, practiceId));
+
+        return mapper.toDto(practice);
+    }
+
+    @Override
     public PagedPracticesDto getStudentPractices(UUID studentId, Pageable pageable) {
         StudentDto student = studentService.getStudent(studentId);
         Page<PracticeDto> practices = repository.findAllByStudentId(studentId, pageable)

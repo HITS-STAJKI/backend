@@ -13,6 +13,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,6 +69,17 @@ public class PracticeController {
             @RequestParam("id") @Parameter(description = "Id студента") UUID studentId
     ) {
         return practiceService.getStudentCurrentPractice(studentId);
+    }
+
+    @Operation(
+            summary = "Получение информации о практике по id",
+            description = "Позволяет получить информацию о практике по её id"
+    )
+    @SecurityRequirement(name = "bearerAuth")
+    @GetMapping("/{practiceId}")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR', 'EDUCATIONAL_PROGRAM_LEAD')")
+    public PracticeDto getPracticeById(@PathVariable @Parameter(description = "Id практики") UUID practiceId) {
+        return practiceService.getPracticeById(practiceId);
     }
 
     @Operation(
