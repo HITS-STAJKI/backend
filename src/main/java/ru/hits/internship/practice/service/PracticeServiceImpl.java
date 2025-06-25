@@ -87,6 +87,7 @@ public class PracticeServiceImpl implements PracticeService {
     }
 
     @Override
+    @Transactional
     public PracticeDto createStudentPractice(AuthUser authUser, CreatePracticeDto createPracticeDto) {
         UUID interviewId = createPracticeDto.getInterviewId();
 
@@ -122,6 +123,7 @@ public class PracticeServiceImpl implements PracticeService {
     }
 
     @Override
+    @Transactional
     public PracticeDto approveStudentPractice(UUID studentId) {
         var student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new NotFoundException(String.format("Не найден студент с id: %s ", studentId)));
@@ -189,6 +191,7 @@ public class PracticeServiceImpl implements PracticeService {
     }
 
     @Override
+    @Transactional
     public PracticeDto updatePractice(UUID practiceId, UpdatePracticeDto updatePracticeDto) {
         var practice = repository.findById(practiceId)
                 .orElseThrow(() -> new NotFoundException(String.format("Практика с id: %s не найдена", practiceId)));
@@ -200,6 +203,7 @@ public class PracticeServiceImpl implements PracticeService {
     }
 
     @Override
+    @Transactional
     public PracticeDto archiveStudentPractice(UUID practiceId) {
         var practice = repository.findById(practiceId)
                 .orElseThrow(() -> new NotFoundException(String.format("Практика с id: %s не найдена", practiceId)));

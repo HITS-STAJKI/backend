@@ -12,5 +12,6 @@ import ru.hits.internship.user.mapper.UserMapper;
 public interface PracticeMapper {
     @Mapping(target = "user", source = "student.user")
     @Mapping(target = "group", source = "student.group")
+    @Mapping(target = "isReportAttached", expression = "java(entity.getReport() != null && entity.getReport().getFileId() != null)")
     PracticeDto toDto(PracticeEntity entity);
 }

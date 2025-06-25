@@ -33,4 +33,6 @@ public class PracticeDto {
     private Boolean isArchived;
     @Schema(description = "Подтверждена куратором", example = "true")
     private Boolean isApproved;
+    @Schema(description = "Прикреплен ли файл отчета", example = "true")
+    private Boolean isReportAttached;
 }
