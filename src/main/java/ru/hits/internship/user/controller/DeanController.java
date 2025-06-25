@@ -43,7 +43,7 @@ public class DeanController {
 
     @Operation(summary = "Создание представителя деканата")
     @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("hasAnyRole('ADMIN', 'DEAN')")
+    @PreAuthorize("hasAnyRole('DEAN')")
     @PostMapping
     public DeanDto createDean(@RequestBody @Valid DeanCreateDto createDto) {
         return deanService.createDean(createDto);
