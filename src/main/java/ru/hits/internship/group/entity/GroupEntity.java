@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -30,5 +31,5 @@ public class GroupEntity {
     @Column(name = "number", nullable = false, unique = true)
     private String number;
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
-    private Set<StudentEntity> students;
+    private Set<StudentEntity> students = new HashSet<>();
 }

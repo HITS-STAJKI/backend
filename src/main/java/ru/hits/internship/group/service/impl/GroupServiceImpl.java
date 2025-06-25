@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.hits.internship.common.exceptions.BadRequestException;
 import ru.hits.internship.common.exceptions.NotFoundException;
 import ru.hits.internship.common.filters.Filter;
 import ru.hits.internship.common.models.pagination.PagedListDto;
@@ -78,6 +79,10 @@ public class GroupServiceImpl implements GroupService {
     public void deleteGroup(UUID id) {
         GroupEntity group = groupRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Группа с id %s не найдена".formatted(id)));
+
+        if (!group.getStudents().isEmpty()) {
+            throw new BadRequestException("Нельзя удалить группу с id %s, т.к в ней находятся студенты".formatted(id));
+        }
 
         groupRepository.delete(group);
     }
