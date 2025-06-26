@@ -15,11 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hits.internship.common.models.pagination.PagedListDto;
 import ru.hits.internship.common.models.response.Response;
-import ru.hits.internship.user.model.common.UserRole;
 import ru.hits.internship.user.model.dto.auth.LoginCredentialsDto;
 import ru.hits.internship.user.model.dto.auth.PasswordEditDto;
 import ru.hits.internship.user.model.dto.auth.RegistrationRequestDto;
@@ -34,7 +32,6 @@ import ru.hits.internship.user.model.dto.user.UserShortDto;
 import ru.hits.internship.user.service.AuthService;
 import ru.hits.internship.user.service.UserService;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -60,7 +57,7 @@ public class UserController {
 
     @Operation(summary = "Изменение информации текущего пользователя")
     @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("!hasRole('STUDENT')")
+    @PreAuthorize("hasAnyRole('DEAN', 'CURATOR', 'EDUCATIONAL_PROGRAM_LEAD', 'TEACHER')")
     @PutMapping
     public UserShortDto updateCurrentUser(
             @AuthenticationPrincipal AuthUser authUser,
