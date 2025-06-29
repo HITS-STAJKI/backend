@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.hits.internship.chat.entity.ChatEntity;
 import ru.hits.internship.chat.entity.ChatReadStateEntity;
 import ru.hits.internship.chat.mapper.ChatMapper;
-import ru.hits.internship.chat.model.chat.ChatDto;
 import ru.hits.internship.chat.model.chat.ChatInfoDto;
 import ru.hits.internship.chat.repository.ChatReadStateRepository;
 import ru.hits.internship.chat.repository.ChatRepository;
@@ -18,6 +17,7 @@ import ru.hits.internship.user.model.entity.UserEntity;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
 import ru.hits.internship.user.repository.StudentRepository;
 import ru.hits.internship.user.repository.UserRepository;
+
 import java.util.UUID;
 
 @Service
@@ -32,17 +32,14 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     @Transactional
-    public ChatDto createChat(UUID studentId) {
-        StudentEntity student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new NotFoundException(StudentEntity.class, studentId));
-
-        if (chatRepository.existsByStudent_Id(studentId)) {
+    public void createChat(StudentEntity student) {
+        if (student.getChat() != null) {
             throw new BadRequestException("Для данного студента уже создан чат");
         }
 
         ChatEntity chat = chatMapper.toEntity(student);
 
-        return chatMapper.toDto(chatRepository.save(chat));
+        chatRepository.save(chat);
     }
 
     @Override

@@ -13,6 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import ru.hits.internship.user.model.entity.role.RoleEntity;
 
 import java.time.LocalDateTime;
@@ -39,5 +41,6 @@ public class UserEntity {
     @Column(name = "last_login_date")
     private LocalDateTime lastLoginDate;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
     private Set<RoleEntity> roles = new HashSet<>();
 }

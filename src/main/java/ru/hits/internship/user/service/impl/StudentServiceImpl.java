@@ -245,7 +245,7 @@ public class StudentServiceImpl implements StudentService {
             studentRepository.saveAll(studentsToSave);
 
             for (StudentEntity student : studentsToSave) {
-                chatService.createChat(student.getId());
+                chatService.createChat(student);
             }
 
             Workbook resultWorkbook = new XSSFWorkbook();
@@ -359,7 +359,7 @@ public class StudentServiceImpl implements StudentService {
         StudentEntity student = StudentMapper.INSTANCE.toEntity(user, group);
         studentRepository.save(student);
 
-        chatService.createChat(student.getId());
+        chatService.createChat(student);
 
         return StudentMapper.INSTANCE.toDto(student);
     }

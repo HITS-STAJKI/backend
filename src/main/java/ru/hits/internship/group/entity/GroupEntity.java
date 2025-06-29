@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import ru.hits.internship.user.model.entity.role.StudentEntity;
 
 import java.util.HashSet;
@@ -31,5 +33,6 @@ public class GroupEntity {
     @Column(name = "number", nullable = false, unique = true)
     private String number;
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SUBSELECT)
     private Set<StudentEntity> students = new HashSet<>();
 }

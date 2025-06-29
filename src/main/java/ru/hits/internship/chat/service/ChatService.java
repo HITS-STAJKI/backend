@@ -1,11 +1,12 @@
 package ru.hits.internship.chat.service;
 
-import ru.hits.internship.chat.model.chat.ChatDto;
 import ru.hits.internship.chat.model.chat.ChatInfoDto;
+import ru.hits.internship.user.model.entity.role.StudentEntity;
+
 import java.util.UUID;
 
 public interface ChatService {
-    ChatDto createChat(UUID studentId);
+    void createChat(StudentEntity student);
 
     ChatInfoDto getMyChatInfo(UUID id);
 }
