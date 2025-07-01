@@ -13,5 +13,6 @@ public interface PracticeMapper {
     @Mapping(target = "user", source = "student.user")
     @Mapping(target = "group", source = "student.group")
     @Mapping(target = "isReportAttached", expression = "java(entity.getReport() != null && entity.getReport().getFileId() != null)")
+    @Mapping(target = "reportGrade", expression = "java(entity.getReport() != null ? entity.getReport().getGrade() : null)")
     PracticeDto toDto(PracticeEntity entity);
 }

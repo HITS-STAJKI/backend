@@ -35,4 +35,6 @@ public class PracticeDto {
     private Boolean isApproved;
     @Schema(description = "Прикреплен ли файл отчета", example = "true")
     private Boolean isReportAttached;
+    @Schema(description = "Оценка за отчет", example = "5")
+    private Integer reportGrade;
 }
